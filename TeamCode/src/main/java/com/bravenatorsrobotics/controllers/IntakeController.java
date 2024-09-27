@@ -8,7 +8,7 @@ import com.bravenatorsrobotics.components.IntakeComponent;
  *
  */
 @Config
-public class IntakeController extends AbstractComponentController {
+public class IntakeController extends AbstractController {
 
     public static final double INITIAL_PIVOT_POSITION   = 0;
     public static final double FULL_PIVOT_POSITION      = 1;
