@@ -25,6 +25,9 @@ public class Teleop extends LinearOpMode {
 
     private double offsetHeading = 0.0;
 
+    // Components
+    private IntakeComponent intakeComponent;
+
     // Controllers
     private ControlSystemController controlSystemController;
     private IntakeController intakeController;
@@ -47,7 +50,7 @@ public class Teleop extends LinearOpMode {
 
         // Initialize our components
         ControlSystemComponent controlSystemComponent = new ControlSystemComponent(super.hardwareMap);
-        IntakeComponent intakeComponent = new IntakeComponent(super.hardwareMap);
+        this.intakeComponent = new IntakeComponent(super.hardwareMap);
 
         // Create and Initialize our controllers
         this.controlSystemController = new ControlSystemController(controlSystemComponent, ControlSystemController.Strategy.MANUAL);
@@ -121,7 +124,14 @@ public class Teleop extends LinearOpMode {
                 if(isPressed)
                     this.intakeController.pivotToFullPivot();
                 break;
-
+            case FtcGamePad.GAMEPAD_A:
+                if(!isPressed) {
+                    if(this.intakeComponent.getTargetTensionServoPosition() == IntakeController.INITIAL_TENSION_POSITION) {
+                        this.intakeController.tensionToFullTension();
+                    } else {
+                        this.intakeController.tensionToInitialTension();
+                    }
+                }
         }
 
     }
