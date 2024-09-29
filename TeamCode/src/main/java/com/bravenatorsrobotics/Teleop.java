@@ -21,6 +21,8 @@ public class Teleop extends LinearOpMode {
 
     private MecanumDrive drive;
 
+    private double offsetHeading = 0.0;
+
     private ControlSystemController controlSystemController;
 
     private void initialize() {
@@ -82,6 +84,15 @@ public class Teleop extends LinearOpMode {
 
     private void onDriverGamePadChange(FtcGamePad gamePad, int button, boolean isPressed) {
 
+        switch (button) {
+
+            case FtcGamePad.GAMEPAD_BACK -> {
+                if(isPressed)
+                    offsetHeading = drive.getRawExternalHeading();
+            }
+
+        }
+
     }
 
     private void onOperatorGamePadChange(FtcGamePad gamePad, int button, boolean isPressed) {
@@ -96,7 +107,7 @@ public class Teleop extends LinearOpMode {
         double x    = Range.clip(Math.pow(gamepad1.left_stick_x, DRIVER_CONTROLLER_EASE_POW) + xt, -1.0, 1.0);
         double rx   = Range.clip(Math.pow(gamepad1.right_stick_x, DRIVER_CONTROLLER_EASE_POW), -1.0, 1.0);
 
-        double botHeading = -drive.getRawExternalHeading();
+        double botHeading = -drive.getRawExternalHeading() + offsetHeading;
 
         double rotX = (x * Math.cos(botHeading)) - (y * Math.sin(botHeading));
         double rotY = (x * Math.sin(botHeading)) + (y * Math.cos(botHeading));
