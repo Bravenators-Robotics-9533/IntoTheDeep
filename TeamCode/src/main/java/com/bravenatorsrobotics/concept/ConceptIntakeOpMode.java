@@ -46,19 +46,23 @@ public class ConceptIntakeOpMode extends LinearOpMode {
         switch (button) {
 
             case FtcGamePad.GAMEPAD_A:
-                this.intakeController.tensionToInitialTension();
+                if(pressed)
+                    this.intakeController.tensionToInitialTension();
                 break;
 
             case FtcGamePad.GAMEPAD_Y:
-                this.intakeController.tensionToFullTension();
+                if(pressed)
+                    this.intakeController.tensionToFullTension();
                 break;
 
             case FtcGamePad.GAMEPAD_DPAD_LEFT:
-                this.intakeController.pivotToInitialPivot();
+                if(pressed)
+                    this.intakeController.pivotToInitialPivot();
                 break;
 
             case FtcGamePad.GAMEPAD_DPAD_RIGHT:
-                this.intakeController.pivotToFullPivot();
+                if(pressed)
+                    this.intakeController.pivotToFullPivot();
                 break;
 
         }
