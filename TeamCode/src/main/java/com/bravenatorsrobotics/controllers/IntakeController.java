@@ -1,6 +1,7 @@
 package com.bravenatorsrobotics.controllers;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.bravenatorsrobotics.Teleop;
 import com.bravenatorsrobotics.components.IntakeComponent;
 
 /*
