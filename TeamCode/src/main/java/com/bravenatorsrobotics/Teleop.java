@@ -99,10 +99,10 @@ public class Teleop extends LinearOpMode {
 
         switch (button) {
 
-            case FtcGamePad.GAMEPAD_BACK -> {
+            case FtcGamePad.GAMEPAD_BACK:
                 if(isPressed)
                     offsetHeading = drive.getRawExternalHeading();
-            }
+                break;
 
         }
 
@@ -112,15 +112,15 @@ public class Teleop extends LinearOpMode {
 
         switch (button) {
 
-            case FtcGamePad.GAMEPAD_DPAD_LEFT -> {
+            case FtcGamePad.GAMEPAD_DPAD_LEFT:
                 if(isPressed)
                     this.intakeController.pivotToInitialPivot();
-            }
+                break;
 
-            case FtcGamePad.GAMEPAD_DPAD_RIGHT -> {
+            case FtcGamePad.GAMEPAD_DPAD_RIGHT:
                 if(isPressed)
                     this.intakeController.pivotToFullPivot();
-            }
+                break;
 
         }
 
