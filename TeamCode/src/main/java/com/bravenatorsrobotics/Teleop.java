@@ -2,6 +2,7 @@ package com.bravenatorsrobotics;
 
 import com.bravenatorsrobotics.components.ControlSystemComponent;
 import com.bravenatorsrobotics.components.IntakeComponent;
+import com.bravenatorsrobotics.config.ConfigMap;
 import com.bravenatorsrobotics.controllers.ControlSystemController;
 import com.bravenatorsrobotics.controllers.IntakeController;
 import com.bravenatorsrobotics.io.FtcGamePad;
@@ -33,12 +34,23 @@ public class Teleop extends LinearOpMode {
     private IntakeController intakeController;
 
     private void initialize() {
-        //  Get the Config
+        // Load the current config
+        ConfigMap.load(super.hardwareMap.appContext); // Must happen before you use static ConfigMap
 
-        /*
-         * Get offset heading (field centric)
-         * If we started autonomous on blue then rotate 90deg
-         */
+/* ================================================================================================================================
+ * INSTRUCTIONS FOR MARINA
+ * HOW TO GET THE CURRENT ALLIANCE COLOR
+ * LOOK BELOW
+ */
+        if(ConfigMap.getAllianceColor() == ConfigMap.AllianceColor.RED) {
+            System.out.println("Hey it's configured to red");
+        } else {
+            System.out.println("Hey it's configured to blue");
+        }
+/*
+ * DELETE THE ABOVE LINES WHEN YOU UNDERSTAND OR COMMENT THEM OUT
+ * ================================================================================================================================
+ */
 
         // Get the GamePads
         this.driverGamePad      = new FtcGamePad("Driver", gamepad1, this::onDriverGamePadChange);
