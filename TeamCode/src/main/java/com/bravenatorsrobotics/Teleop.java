@@ -115,15 +115,16 @@ public class Teleop extends LinearOpMode {
 
         switch (button) {
 
-            case FtcGamePad.GAMEPAD_DPAD_LEFT:
-                if(isPressed)
-                    this.intakeController.pivotToInitialPivot();
+            case FtcGamePad.GAMEPAD_B:
+                if(!isPressed) {
+                    if (this.intakeComponent.getTargetPivotServoPosition() == IntakeController.INITIAL_PIVOT_POSITION) {
+                        this.intakeController.pivotToFullPivot();
+                    } else {
+                        this.intakeController.pivotToInitialPivot();
+                    }
+                }
                 break;
 
-            case FtcGamePad.GAMEPAD_DPAD_RIGHT:
-                if(isPressed)
-                    this.intakeController.pivotToFullPivot();
-                break;
             case FtcGamePad.GAMEPAD_A:
                 if(!isPressed) {
                     if(this.intakeComponent.getTargetTensionServoPosition() == IntakeController.INITIAL_TENSION_POSITION) {
@@ -132,6 +133,7 @@ public class Teleop extends LinearOpMode {
                         this.intakeController.tensionToInitialTension();
                     }
                 }
+                break;
         }
 
     }
