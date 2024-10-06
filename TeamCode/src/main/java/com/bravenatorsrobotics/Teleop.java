@@ -99,7 +99,7 @@ public class Teleop extends LinearOpMode {
 
             this.handleDrive(); // Handle Drive
 
-            // Handle the GamePads
+            // Hand;le the GamePads
             this.driverGamePad.update();
             this.operatorGamePad.update();
 
