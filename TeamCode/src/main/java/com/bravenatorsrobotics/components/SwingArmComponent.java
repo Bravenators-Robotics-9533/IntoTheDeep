@@ -35,7 +35,12 @@ public class SwingArmComponent extends AbstractComponent {
 
     }
 
+    public void setTargetPosition(int targetPosition) { this.swingArmMotor.setTargetPosition(targetPosition); }
     public int getTargetPosition() { return this.swingArmMotor.getTargetPosition(); }
+
+    public void setMode(DcMotor.RunMode runMode) { this.swingArmMotor.setMode(runMode); }
+    public DcMotor.RunMode getMode() { return this.swingArmMotor.getMode(); }
+
     public int getCurrentPosition() { return this.swingArmMotor.getCurrentPosition(); }
 
     public boolean isMotorBusy() { return this.swingArmMotor.isBusy(); }
