@@ -120,8 +120,8 @@ public class SwingArmController extends AbstractController {
     }
 
     public void goToRestPosition() { this.state = SwingArmState.REST; }
-    public void goToSpScoringPosition() { this.state = SwingArmState.SCORING_SPECIMEN; }
-    public void goToFoldPosition() { this.state = SwingArmState.START; }
-    public void goToBasketPosition() { this.state = SwingArmState.SCORING_BASKET; }
+    public void goToScoringSpecimenPosition() { this.state = SwingArmState.SCORING_SPECIMEN; }
+    public void goToStartPosition() { this.state = SwingArmState.START; }
+    public void goToScoringBasketPosition() { this.state = SwingArmState.SCORING_BASKET; }
 
 }

@@ -22,7 +22,7 @@ public class LiftComponent extends AbstractComponent {
         this.liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
-    public void setMotorMode(DcMotor.RunMode runMode) {
+    public void setMode(DcMotor.RunMode runMode) {
         this.liftMotor.setMode(runMode);
     }
 
@@ -45,7 +45,7 @@ public class LiftComponent extends AbstractComponent {
         this.liftMotor.setVelocity(MAX_MOTOR_VELOCITY * power);
 
     }
-
+    public void setTargetPosition(int targetPosition) { this.liftMotor.setTargetPosition(targetPosition); }
     public int getTargetPosition() { return this.liftMotor.getTargetPosition(); }
     public int getCurrentPosition() { return this.liftMotor.getCurrentPosition(); }
 
