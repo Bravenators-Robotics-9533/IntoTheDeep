@@ -54,7 +54,7 @@ public class SwingArmController extends AbstractController {
     public static final int SWING_ARM_POSITION_SCORING_SPECIMEN = 0; // TODO: Fill in
     public static final int SWING_ARM_POSITION_SCORING_BASKET = 0; // TODO: Fill in
 
-    // TODO: UPDATE THESE STATES TO THE NEW NAME
+
     protected enum SwingArmState {
 
         START,

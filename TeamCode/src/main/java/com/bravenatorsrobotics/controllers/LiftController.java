@@ -24,7 +24,7 @@ public class LiftController extends AbstractController {
     public static final int LIFT_MANUAL = 0; // TODO: Fill in
 
 
-    // TODO: UPDATE THESE STATES TO THE NEW NAME
+
     protected enum LiftState {
 
         DOWN,
