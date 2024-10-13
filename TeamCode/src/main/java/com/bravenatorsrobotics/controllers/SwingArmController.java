@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * Please go through this file, read all comments and make changes.
  * Don't forget to find your experimental values
  *
- * When this is this controller will only control the swign arm component
+ * When this is this controller will only control the swing arm component
  *
  * You then need to make a multicontroller system that will control the swing arm, intake basket,
  * and lift at the same time.
@@ -49,24 +49,24 @@ public class SwingArmController extends AbstractController {
      *
      * then after you change them change it all over the file
      */
-    public static final int SWING_ARM_POSITION_FOLD = 0; // TODO: Fill in
+    public static final int SWING_ARM_POSITION_START = 0; // TODO: Fill in
     public static final int SWING_ARM_POSITION_REST = 0; // TODO: Fill in
-    public static final int SWING_ARM_POSITION_SP_SCORING = 0; // TODO: Fill in
-    public static final int SWING_ARM_POSITION_BASKET = 0; // TODO: Fill in
+    public static final int SWING_ARM_POSITION_SCORING_SPECIMEN = 0; // TODO: Fill in
+    public static final int SWING_ARM_POSITION_SCORING_BASKET = 0; // TODO: Fill in
 
     // TODO: UPDATE THESE STATES TO THE NEW NAME
     protected enum SwingArmState {
 
-        FOLD,
+        START,
         REST,
-        SP_SCORING,
-        BASKET
+        SCORING_SPECIMEN,
+        SCORING_BASKET
 
     }
 
     protected final SwingArmComponent swingArmComponent;
 
-    protected SwingArmState state = SwingArmState.FOLD;
+    protected SwingArmState state = SwingArmState.START;
 
     public SwingArmController(SwingArmComponent swingArmComponent) {
 
@@ -83,36 +83,28 @@ public class SwingArmController extends AbstractController {
     @Override
     public void update() {
 
-        int position = switch (state) {
-            case FOLD -> SWING_ARM_POSITION_FOLD;
-            case BASKET -> SWING_ARM_POSITION_BASKET;
-            case REST -> SWING_ARM_POSITION_REST;
-            case SP_SCORING -> SWING_ARM_POSITION_SP_SCORING;
-        };
 
-        asyncRunToPosition(position);
 
-        // IF YOU NEED THE LEGACY WAY BECAUSE THE NEW WAY DOESN'T WORK ON YOUR POTATO OF A COMPUTER
-//        switch (state) {
-//
-//            case FOLD:
-//                asyncRunToPosition(SWING_ARM_POSITION_FOLD);
-//                break;
-//
-//            case BASKET:
-//                asyncRunToPosition(SWING_ARM_POSITION_BASKET);
-//                break;
-//
-//            case SP_SCORING:
-//                asyncRunToPosition(SWING_ARM_POSITION_SP_SCORING);
-//                break;
-//
-//            default:
-//            case REST:
-//                asyncRunToPosition(SWING_ARM_POSITION_REST);
-//                break;
-//
-//        }
+        switch (state) {
+
+            case START:
+               asyncRunToPosition(SWING_ARM_POSITION_START);
+               break;
+
+           case SCORING_BASKET:
+                asyncRunToPosition(SWING_ARM_POSITION_SCORING_BASKET);
+               break;
+
+            case SCORING_SPECIMEN:
+                asyncRunToPosition(SWING_ARM_POSITION_SCORING_SPECIMEN);
+                break;
+
+            default:
+            case REST:
+                asyncRunToPosition(SWING_ARM_POSITION_REST);
+                break;
+
+        }
 
     }
 
@@ -128,8 +120,8 @@ public class SwingArmController extends AbstractController {
     }
 
     public void goToRestPosition() { this.state = SwingArmState.REST; }
-    public void goToSpScoringPosition() { this.state = SwingArmState.SP_SCORING; }
-    public void goToFoldPosition() { this.state = SwingArmState.FOLD; }
-    public void goToBasketPosition() { this.state = SwingArmState.BASKET; }
+    public void goToSpScoringPosition() { this.state = SwingArmState.SCORING_SPECIMEN; }
+    public void goToFoldPosition() { this.state = SwingArmState.START; }
+    public void goToBasketPosition() { this.state = SwingArmState.SCORING_BASKET; }
 
 }
