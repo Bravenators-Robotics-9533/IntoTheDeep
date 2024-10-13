@@ -18,6 +18,28 @@ public class ScoringMultiController extends AbstractMultiController {
         this.swingArmController = swingArmController;
     }
 
+    // TODO: Make elbow controller
+
+    public void goToStartPosition(){
+        // TODO: Fill in controller positions
+    }
+
+    public void goToRestPosition(){
+        // TODO: Fill in controller positions
+    }
+
+    public void goToGrabbingPosition(){
+        // TODO: Fill in controller positions
+    }
+
+    public void goToBucketScoringPosition(){
+        // TODO: Fill in controller positions
+    }
+
+    public void goToSpecimenScoringPosition(){
+        // TODO: Fill in controller positions
+    }
+
     @Override
     public void update() {
         // DO NOT UPDATE CHILD CONTROLLERS HERE JUST LOGIC
