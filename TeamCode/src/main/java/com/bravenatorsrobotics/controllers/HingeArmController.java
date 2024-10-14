@@ -4,7 +4,21 @@ import com.acmerobotics.dashboard.config.Config;
 import com.bravenatorsrobotics.components.HingeArmComponent;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+/*
 
+    SAME POINTS I STATED IN HINGE ARM COMPONENT CLASS. EVEN MORE SO HERE THOUGH BECAUSE YOU
+    SEE HOW THE STATE MACHINE IS PRETTY MUCH THE SAME.
+
+    IN PROGRAMMING THERES A PARADIME (this is spelled right btw, i googled it)
+    CALLED DRY (DON'T REPEAT YOURSELF)
+
+    DRY CODING IS JUST WRITING THINGS ONCE AND DONE AND REUSING.
+
+    NOTICE HOW IF YOU MAKE CHANGES TO THE STATE MACHINE YOU WOULD HAVE TO DO IT IN TWO CLASSES.
+
+    THIS IS CALLED UNINTENTIONAL DISCRETE LOGIC COUPLING. GENERALLY NOT RECOMMENDED.
+
+ */
 
 @Config
 public class HingeArmController extends AbstractController {
