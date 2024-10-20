@@ -15,6 +15,12 @@ public class LiftController extends AbstractController {
 
 
     /*
+        // TODO: README
+        I DON'T KNOW WHAT MANUAL IS. I THOUGHT YOU WOULD MAKE THE FINITE STATE MACHINE
+        MANUALLY CONTROL THE ARM. BUT YOU ARE AUTOMATICALLY RUNNING IT TO POS ASYNC
+        AND WHY DOES MANUAL HAVE A POSITION LIKE AN INT? I DON'T UNDERSTAND WHAT YOU'RE
+        TRYING TO DO WITH THAT
+
         Manual in this may need to be changed since this will be a changing value
         dependant on where the lift currently is and the input on the controller
      */
