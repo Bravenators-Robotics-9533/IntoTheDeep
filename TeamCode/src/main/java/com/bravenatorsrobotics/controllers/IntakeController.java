@@ -12,7 +12,7 @@ import com.bravenatorsrobotics.components.IntakeComponent;
 public class IntakeController extends AbstractController {
 
     public static final double INITIAL_PIVOT_POSITION   = 0;
-    public static final double FULL_PIVOT_POSITION      = .63;
+    public static final double FULL_PIVOT_POSITION      = 1;
 
     public static final double INITIAL_TENSION_POSITION = 0.5;
     public static final double FULL_TENSION_POSITION    = 1;

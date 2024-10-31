@@ -1,8 +1,11 @@
 package com.bravenatorsrobotics;
 
+import com.acmerobotics.dashboard.config.Config;
+import com.bravenatorsrobotics.components.ArmComponent;
 import com.bravenatorsrobotics.components.ControlSystemComponent;
 import com.bravenatorsrobotics.components.IntakeComponent;
 import com.bravenatorsrobotics.config.ConfigMap;
+import com.bravenatorsrobotics.controllers.ArmController;
 import com.bravenatorsrobotics.controllers.ControlSystemController;
 import com.bravenatorsrobotics.controllers.IntakeController;
 import com.bravenatorsrobotics.io.FtcGamePad;
@@ -13,6 +16,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.drive.MecanumDrive;
 
+@Config
 @TeleOp(name = "Teleop", group = "Competition")
 public class Teleop extends LinearOpMode {
 
@@ -28,10 +32,12 @@ public class Teleop extends LinearOpMode {
 
     // Components
     private IntakeComponent intakeComponent;
+    private ArmComponent armComponent;
 
     // Controllers
     private ControlSystemController controlSystemController;
     private IntakeController intakeController;
+    private ArmController armController;
 
     private void initialize() {
         // Load the current config
@@ -64,12 +70,17 @@ public class Teleop extends LinearOpMode {
         ControlSystemComponent controlSystemComponent = new ControlSystemComponent(super.hardwareMap);
         this.intakeComponent = new IntakeComponent(super.hardwareMap);
 
+        this.armComponent = new ArmComponent(super.hardwareMap);
+
         // Create and Initialize our controllers
         this.controlSystemController = new ControlSystemController(controlSystemComponent, ControlSystemController.Strategy.MANUAL);
         this.controlSystemController.initialize();
 
         this.intakeController = new IntakeController(intakeComponent);
         this.intakeController.initialize();
+
+        this.armController = new ArmController(armComponent);
+        this.armController.initialize();
 
         // Initialize the vision system (if needed)
 
@@ -106,6 +117,9 @@ public class Teleop extends LinearOpMode {
             // Update the component controllers
             this.intakeController.update();
 
+            this.armController.printTelemetry(telemetry);
+            this.armController.update();
+
         }
 
     }
@@ -123,29 +137,76 @@ public class Teleop extends LinearOpMode {
 
     }
 
+    public static double RET_SHOULDER = 0.0;
+    public static double RET_ELBOW = 0.025;
+
+    // Bottom Basket
+    public static double BOTTOM_BASKET_SHOULDER = 0.8;
+    public static double BOTTOM_BASKET_ELBOW = 0.5;
+
+    // Low Bar
+    public static double LOW_BAR_SHOULDER = 0.75;
+    public static double LOW_BAR_ELBOW = 0.72;
+
+    // High Bar
+    public static double HIGH_BAR_SHOULDER = 0.35;
+    public static double HIGH_BAR_ELBOW = 0.2;
+
+    // Top Basket
+    public static double TOP_BASKET_SHOULDER = 1.0;
+    public static double TOP_BASKET_ELBOW = 0.5;
+
     private void onOperatorGamePadChange(FtcGamePad gamePad, int button, boolean isPressed) {
 
         switch (button) {
 
-            case FtcGamePad.GAMEPAD_B:
-                if(!isPressed) {
-                    if (this.intakeComponent.getTargetPivotServoPosition() == IntakeController.INITIAL_PIVOT_POSITION) {
-                        this.intakeController.pivotToFullPivot();
-                    } else {
-                        this.intakeController.pivotToInitialPivot();
-                    }
+            case FtcGamePad.GAMEPAD_DPAD_DOWN:
+                if(isPressed) {
+                    this.armController.setShoulderPosition(RET_SHOULDER);
+                    this.armController.setElbowPosition(RET_ELBOW);
                 }
                 break;
 
-            case FtcGamePad.GAMEPAD_A:
-                if(!isPressed) {
-                    if(this.intakeComponent.getTargetTensionServoPosition() == IntakeController.INITIAL_TENSION_POSITION) {
-                        this.intakeController.tensionToFullTension();
-                    } else {
-                        this.intakeController.tensionToInitialTension();
-                    }
+            case FtcGamePad.GAMEPAD_DPAD_LEFT:
+                if(isPressed) {
+                    this.armController.setShoulderPosition(LOW_BAR_SHOULDER);
+                    this.armController.setElbowPosition(LOW_BAR_ELBOW);
                 }
                 break;
+
+            case FtcGamePad.GAMEPAD_DPAD_UP:
+                if(isPressed) {
+                    this.armController.setShoulderPosition(HIGH_BAR_SHOULDER);
+                    this.armController.setElbowPosition(HIGH_BAR_ELBOW);
+                }
+
+                break;
+
+            case FtcGamePad.GAMEPAD_DPAD_RIGHT:
+                if(isPressed) {
+//                    this.armController.setElbowPosition(HIGH_BAR_ELBOW);
+//                    this.armController.setShoulderPosition(HIGH_BAR_SHOULDER);
+                }
+
+                break;
+
+            case FtcGamePad.GAMEPAD_X:
+                if(isPressed) {
+                    this.armController.setElbowPosition(BOTTOM_BASKET_ELBOW);
+                    this.armController.setShoulderPosition(BOTTOM_BASKET_SHOULDER);
+                }
+
+                break;
+
+            case FtcGamePad.GAMEPAD_Y:
+                if(isPressed) {
+                    this.armController.setElbowPosition(TOP_BASKET_ELBOW);
+                    this.armController.setShoulderPosition(TOP_BASKET_SHOULDER);
+                }
+
+                break;
+
+
         }
 
     }
