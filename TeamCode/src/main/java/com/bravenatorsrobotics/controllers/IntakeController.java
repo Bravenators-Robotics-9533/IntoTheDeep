@@ -41,4 +41,13 @@ public class IntakeController extends AbstractController {
     public void tensionToInitialTension() { this.intakeComponent.setTensionServoPosition(INITIAL_TENSION_POSITION); }
     public void tensionToFullTension() { this.intakeComponent.setTensionServoPosition(FULL_TENSION_POSITION); }
 
+    public void toggleTensionPosition() {
+
+        if(intakeComponent.getTargetTensionServoPosition() == INITIAL_TENSION_POSITION)
+            intakeComponent.setTensionServoPosition(FULL_TENSION_POSITION);
+        else
+            intakeComponent.setTensionServoPosition(INITIAL_TENSION_POSITION);
+
+    }
+
 }

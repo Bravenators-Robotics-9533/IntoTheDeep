@@ -156,6 +156,14 @@ public class Teleop extends LinearOpMode {
     public static double TOP_BASKET_SHOULDER = 1.0;
     public static double TOP_BASKET_ELBOW = 0.5;
 
+    // Intake Position
+    public static double INTAKE_BASKET_SHOULDER = 0.0;
+    public static double INTAKE_BASKET_ELBOW = 0.27;
+
+    // Capture Position
+    public static double CAPTURE_BASKET_SHOULDER = 0.0;
+    public static double CAPTURE_BASKET_ELBOW = 0.2;
+
     private void onOperatorGamePadChange(FtcGamePad gamePad, int button, boolean isPressed) {
 
         switch (button) {
@@ -190,6 +198,13 @@ public class Teleop extends LinearOpMode {
 
                 break;
 
+            case FtcGamePad.GAMEPAD_A:
+                if(isPressed) {
+                    this.intakeController.toggleTensionPosition();
+                }
+
+                break;
+
             case FtcGamePad.GAMEPAD_X:
                 if(isPressed) {
                     this.armController.setElbowPosition(BOTTOM_BASKET_ELBOW);
@@ -206,6 +221,21 @@ public class Teleop extends LinearOpMode {
 
                 break;
 
+            case FtcGamePad.GAMEPAD_RBUMPER:
+                if(isPressed) {
+                    this.armController.dangerousSetElbowPosition(INTAKE_BASKET_ELBOW);
+                    this.armController.dangerousSetShoulderPosition(INTAKE_BASKET_SHOULDER);
+                }
+
+                break;
+
+            case FtcGamePad.GAMEPAD_LBUMPER:
+                if(isPressed) {
+                    this.armController.dangerousSetElbowPosition(CAPTURE_BASKET_ELBOW);
+                    this.armController.dangerousSetShoulderPosition(CAPTURE_BASKET_SHOULDER);
+                }
+
+                break;
 
         }
 

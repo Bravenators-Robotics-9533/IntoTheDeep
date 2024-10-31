@@ -20,6 +20,8 @@ public class ArmController extends AbstractController {
     private double targetElbowPosition = 0;
     private double targetShoulderPosition = 0;
 
+    private boolean isDangerous = false;
+
     private final ArmComponent armComponent;
 
     public ArmController(ArmComponent armComponent) {
@@ -37,7 +39,7 @@ public class ArmController extends AbstractController {
         double adjustedTargetElbowPosition = targetElbowPosition;
         double adjustedTargetShoulderPosition = targetShoulderPosition;
 
-        if (targetElbowPosition > SAFE_ELBOW_POSITION && this.armComponent.shoulderMotor.getCurrentPosition() < SAFE_SHOULDER_POSITION) {
+        if (!isDangerous && targetElbowPosition > SAFE_ELBOW_POSITION && this.armComponent.shoulderMotor.getCurrentPosition() < SAFE_SHOULDER_POSITION) {
             adjustedTargetElbowPosition = SAFE_ELBOW_POSITION;
         }
 
@@ -51,10 +53,8 @@ public class ArmController extends AbstractController {
      */
     public void setShoulderPosition(double position) {
 
+        isDangerous = false;
         this.targetShoulderPosition = position;
-
-//        int targetMotorPosition = (int) (position * (double) SHOULDER_MAX);
-//        this.armComponent.setShoulderMotorPositionAsync(targetMotorPosition, MAX_SHOULDER_POWER);
 
     }
 
@@ -63,11 +63,25 @@ public class ArmController extends AbstractController {
      */
     public void setElbowPosition(double position) {
 
+        isDangerous = false;
         this.targetElbowPosition = position;
 
-//        int targetMotorPosition = (int) (position * (double) ELBOW_MAX);
-//
-//        this.armComponent.setElbowMotorPositionAsync(targetMotorPosition, MAX_ELBOW_POWER);
+    }
+
+    public void dangerousSetShoulderPosition(double position) {
+
+        isDangerous = true;
+        this.targetShoulderPosition = position;
+
+    }
+
+    /**
+     * @param position [0, 1] inclusive
+     */
+    public void dangerousSetElbowPosition(double position) {
+
+        isDangerous = true;
+        this.targetElbowPosition = position;
 
     }
 
