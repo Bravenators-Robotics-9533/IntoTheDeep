@@ -30,35 +30,20 @@ public class Teleop extends LinearOpMode {
 
     private double offsetHeading = 0.0;
 
-    // Components
-    private IntakeComponent intakeComponent;
-    private ArmComponent armComponent;
-
     // Controllers
     private ControlSystemController controlSystemController;
     private IntakeController intakeController;
     private ArmController armController;
 
     private void initialize() {
+
+        telemetry.addData("Status", "Initializing...");
+        telemetry.update();
+
         // Load the current config
         ConfigMap.load(super.hardwareMap.appContext); // Must happen before you use static ConfigMap
 
-/* ================================================================================================================================
- * INSTRUCTIONS FOR MARINA
- * HOW TO GET THE CURRENT ALLIANCE COLOR
- * LOOK BELOW
- */
-        if(ConfigMap.getAllianceColor() == ConfigMap.AllianceColor.RED) {
-            System.out.println("Hey it's configured to red");
-        } else {
-            System.out.println("Hey it's configured to blue");
-        }
-/*
- * DELETE THE ABOVE LINES WHEN YOU UNDERSTAND OR COMMENT THEM OUT
- * ================================================================================================================================
- */
-
-        // Get the GamePads
+        // Setup the GamePads
         this.driverGamePad      = new FtcGamePad("Driver", gamepad1, this::onDriverGamePadChange);
         this.operatorGamePad    = new FtcGamePad("Operator", gamepad2, this::onOperatorGamePadChange);
 
@@ -68,59 +53,67 @@ public class Teleop extends LinearOpMode {
 
         // Initialize our components
         ControlSystemComponent controlSystemComponent = new ControlSystemComponent(super.hardwareMap);
-        this.intakeComponent = new IntakeComponent(super.hardwareMap);
+        IntakeComponent intakeComponent = new IntakeComponent(super.hardwareMap);
+        ArmComponent armComponent = new ArmComponent(super.hardwareMap);
 
-        this.armComponent = new ArmComponent(super.hardwareMap);
-
-        // Create and Initialize our controllers
+        // Create the controllers
         this.controlSystemController = new ControlSystemController(controlSystemComponent, ControlSystemController.Strategy.MANUAL);
-        this.controlSystemController.initialize();
-
         this.intakeController = new IntakeController(intakeComponent);
-        this.intakeController.initialize();
-
         this.armController = new ArmController(armComponent);
+
+        // Initialize the controllers
+        this.controlSystemController.initialize();
+        this.intakeController.initialize();
         this.armController.initialize();
 
         // Initialize the vision system (if needed)
 
         // Initialize any autonomous controlled teleop sequences
+
+        telemetry.addData("Status", "Initialized!");
+        telemetry.update();
     }
 
-    // Main method that gets called when press init & start
-    @Override
-    public void runOpMode() throws InterruptedException {
+    private void runUpdateLoop() {
 
-        // Print to screen
-        telemetry.addData("Status", "Initializing...");
-        telemetry.update();
+        while(opModeIsActive()) { // Loop until stop pressed
 
-       this.initialize(); // Initialize all of the things
+            // Revalidate Component Cache
+            this.controlSystemController.update();
 
-        // Print status
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
-
-        waitForStart(); // Wait for the start button to be pressed
-
-        while(opModeIsActive()) { // Loop until not active
-
-            // Control System Controller Must Update First
-            this.controlSystemController.update(); // FIRST THING THAT HAPPENS IN UPDATE LOOP
-
-            this.handleDrive(); // Handle Drive
-
-            // Hand;le the GamePads
+            // Handle the GamePads
             this.driverGamePad.update();
             this.operatorGamePad.update();
 
             // Update the component controllers
+            this.armController.update();
             this.intakeController.update();
 
-            this.armController.printTelemetry(telemetry);
-            this.armController.update();
+            this.handleDrive(); // Handle Drive
 
         }
+
+    }
+
+    private void onStop() {
+
+    }
+
+    // Main method that gets called when init is pressed
+    @Override
+    public void runOpMode() throws InterruptedException {
+
+        // Init Teleop
+        this.initialize();
+
+        // Wait for the start button to be pressed
+        super.waitForStart(); // Blocks thread
+
+        // Wait and capture the program for the update loop (while running this will block thread)
+        this.runUpdateLoop();
+
+        // Handle Close Down Sequence
+        this.onStop();
 
     }
 
@@ -137,63 +130,25 @@ public class Teleop extends LinearOpMode {
 
     }
 
-    public static double RET_SHOULDER = 0.0;
-    public static double RET_ELBOW = 0.025;
-
-    // Bottom Basket
-    public static double BOTTOM_BASKET_SHOULDER = 0.8;
-    public static double BOTTOM_BASKET_ELBOW = 0.5;
-
-    // Low Bar
-    public static double LOW_BAR_SHOULDER = 0.75;
-    public static double LOW_BAR_ELBOW = 0.72;
-
-    // High Bar
-    public static double HIGH_BAR_SHOULDER = 0.35;
-    public static double HIGH_BAR_ELBOW = 0.2;
-
-    // Top Basket
-    public static double TOP_BASKET_SHOULDER = 1.0;
-    public static double TOP_BASKET_ELBOW = 0.5;
-
-    // Intake Position
-    public static double INTAKE_BASKET_SHOULDER = 0.0;
-    public static double INTAKE_BASKET_ELBOW = 0.27;
-
-    // Capture Position
-    public static double CAPTURE_BASKET_SHOULDER = 0.0;
-    public static double CAPTURE_BASKET_ELBOW = 0.2;
-
     private void onOperatorGamePadChange(FtcGamePad gamePad, int button, boolean isPressed) {
 
         switch (button) {
 
             case FtcGamePad.GAMEPAD_DPAD_DOWN:
                 if(isPressed) {
-                    this.armController.setShoulderPosition(RET_SHOULDER);
-                    this.armController.setElbowPosition(RET_ELBOW);
+                    this.armController.setTargetArmPosition(ArmController.ArmPosition.REST);
                 }
                 break;
 
             case FtcGamePad.GAMEPAD_DPAD_LEFT:
                 if(isPressed) {
-                    this.armController.setShoulderPosition(LOW_BAR_SHOULDER);
-                    this.armController.setElbowPosition(LOW_BAR_ELBOW);
+                    this.armController.setTargetArmPosition(ArmController.ArmPosition.BOTTOM_BAR);
                 }
                 break;
 
             case FtcGamePad.GAMEPAD_DPAD_UP:
                 if(isPressed) {
-                    this.armController.setShoulderPosition(HIGH_BAR_SHOULDER);
-                    this.armController.setElbowPosition(HIGH_BAR_ELBOW);
-                }
-
-                break;
-
-            case FtcGamePad.GAMEPAD_DPAD_RIGHT:
-                if(isPressed) {
-//                    this.armController.setElbowPosition(HIGH_BAR_ELBOW);
-//                    this.armController.setShoulderPosition(HIGH_BAR_SHOULDER);
+                    this.armController.setTargetArmPosition(ArmController.ArmPosition.HIGH_BAR);
                 }
 
                 break;
@@ -207,32 +162,28 @@ public class Teleop extends LinearOpMode {
 
             case FtcGamePad.GAMEPAD_X:
                 if(isPressed) {
-                    this.armController.setElbowPosition(BOTTOM_BASKET_ELBOW);
-                    this.armController.setShoulderPosition(BOTTOM_BASKET_SHOULDER);
+                    this.armController.setTargetArmPosition(ArmController.ArmPosition.BOTTOM_BASKET);
                 }
 
                 break;
 
             case FtcGamePad.GAMEPAD_Y:
                 if(isPressed) {
-                    this.armController.setElbowPosition(TOP_BASKET_ELBOW);
-                    this.armController.setShoulderPosition(TOP_BASKET_SHOULDER);
+                    this.armController.setTargetArmPosition(ArmController.ArmPosition.TOP_BASKET);
                 }
 
                 break;
 
             case FtcGamePad.GAMEPAD_RBUMPER:
                 if(isPressed) {
-                    this.armController.dangerousSetElbowPosition(INTAKE_BASKET_ELBOW);
-                    this.armController.dangerousSetShoulderPosition(INTAKE_BASKET_SHOULDER);
+                    this.armController.setTargetArmPosition(ArmController.ArmPosition.INTAKE);
                 }
 
                 break;
 
             case FtcGamePad.GAMEPAD_LBUMPER:
                 if(isPressed) {
-                    this.armController.dangerousSetElbowPosition(CAPTURE_BASKET_ELBOW);
-                    this.armController.dangerousSetShoulderPosition(CAPTURE_BASKET_SHOULDER);
+                    this.armController.setTargetArmPosition(ArmController.ArmPosition.CAPTURE);
                 }
 
                 break;
