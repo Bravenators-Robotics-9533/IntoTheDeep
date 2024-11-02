@@ -35,7 +35,7 @@ public class ArmController extends AbstractController {
 
     // Intake Position
     public static double INTAKE_BASKET_SHOULDER = 0.0;
-    public static double INTAKE_BASKET_ELBOW = 0.27;
+    public static double INTAKE_BASKET_ELBOW = 0.28;
 
     // Capture Position
     public static double CAPTURE_BASKET_SHOULDER = 0.0;
@@ -63,6 +63,7 @@ public class ArmController extends AbstractController {
 
     }
 
+    //Set maximum power and postition for control
     private static final double SHOULDER_MAX_POWER = 0.5;
     private static final int SHOULDER_MAX_ENCODER_POSITION = 1245;
 

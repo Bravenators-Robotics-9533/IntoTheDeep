@@ -11,8 +11,8 @@ import com.bravenatorsrobotics.components.IntakeComponent;
 @Config
 public class IntakeController extends AbstractController {
 
-    public static final double INITIAL_PIVOT_POSITION   = 0;
-    public static final double FULL_PIVOT_POSITION      = 1;
+    public static final double INITIAL_PIVOT_POSITION   = .53;
+    public static final double FULL_PIVOT_POSITION      = .17;
 
     public static final double INITIAL_TENSION_POSITION = 0.5;
     public static final double FULL_TENSION_POSITION    = 1;
@@ -47,6 +47,14 @@ public class IntakeController extends AbstractController {
             intakeComponent.setTensionServoPosition(FULL_TENSION_POSITION);
         else
             intakeComponent.setTensionServoPosition(INITIAL_TENSION_POSITION);
+
+    }
+    public void togglePivotPosition() {
+
+        if(intakeComponent.getTargetPivotServoPosition() == INITIAL_PIVOT_POSITION)
+            intakeComponent.setPivotServoPosition(FULL_PIVOT_POSITION);
+        else
+            intakeComponent.setPivotServoPosition(INITIAL_PIVOT_POSITION);
 
     }
 

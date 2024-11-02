@@ -24,7 +24,7 @@ public class ArmComponent extends AbstractComponent {
         this.resetSystemEncoders();
 
         // Reverse Motors
-        this.shoulderMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        //this.shoulderMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         this.elbowMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Set Zero Power Behavior to brake
