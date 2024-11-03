@@ -1,7 +1,6 @@
 package com.bravenatorsrobotics.controllers;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.bravenatorsrobotics.Teleop;
 import com.bravenatorsrobotics.components.IntakeComponent;
 
 /*
@@ -11,8 +10,11 @@ import com.bravenatorsrobotics.components.IntakeComponent;
 @Config
 public class IntakeController extends AbstractController {
 
-    public static final double INITIAL_PIVOT_POSITION   = .53;
-    public static final double FULL_PIVOT_POSITION      = .17;
+    public static final double INITIAL_PIVOT_X_POSITION   = .53;
+    public static final double FULL_PIVOT_X_POSITION      = .17;
+
+    public static final double INITIAL_PIVOT_Y_POSITION   = 0;
+    public static final double FULL_PIVOT_Y_POSITION      = 1;
 
     public static final double INITIAL_TENSION_POSITION = 0.5;
     public static final double FULL_TENSION_POSITION    = 1;
@@ -28,18 +30,13 @@ public class IntakeController extends AbstractController {
     @Override
     public void initialize() {
 
-        this.intakeComponent.setPivotServoPosition(INITIAL_PIVOT_POSITION);
+        this.intakeComponent.setPivotServoXPosition(INITIAL_PIVOT_X_POSITION);
+        this.intakeComponent.setPivotServoXPosition(INITIAL_PIVOT_Y_POSITION);
         this.intakeComponent.setTensionServoPosition(INITIAL_TENSION_POSITION);
 
     }
 
     @Override public void update() {}
-
-    public void pivotToInitialPivot() { this.intakeComponent.setPivotServoPosition(INITIAL_PIVOT_POSITION); }
-    public void pivotToFullPivot() { this.intakeComponent.setPivotServoPosition(FULL_PIVOT_POSITION); }
-
-    public void tensionToInitialTension() { this.intakeComponent.setTensionServoPosition(INITIAL_TENSION_POSITION); }
-    public void tensionToFullTension() { this.intakeComponent.setTensionServoPosition(FULL_TENSION_POSITION); }
 
     public void toggleTensionPosition() {
 
@@ -49,12 +46,20 @@ public class IntakeController extends AbstractController {
             intakeComponent.setTensionServoPosition(INITIAL_TENSION_POSITION);
 
     }
-    public void togglePivotPosition() {
+    public void togglePivotXPosition() {
 
-        if(intakeComponent.getTargetPivotServoPosition() == INITIAL_PIVOT_POSITION)
-            intakeComponent.setPivotServoPosition(FULL_PIVOT_POSITION);
+        if(intakeComponent.getTargetPivotServoXPosition() == INITIAL_PIVOT_X_POSITION)
+            intakeComponent.setPivotServoXPosition(FULL_PIVOT_X_POSITION);
         else
-            intakeComponent.setPivotServoPosition(INITIAL_PIVOT_POSITION);
+            intakeComponent.setPivotServoXPosition(INITIAL_PIVOT_X_POSITION);
+
+    }
+    public void togglePivotYPosition() {
+
+        if(intakeComponent.getTargetPivotServoYPosition() == INITIAL_PIVOT_Y_POSITION)
+            intakeComponent.setPivotServoYPosition(FULL_PIVOT_Y_POSITION);
+        else
+            intakeComponent.setPivotServoYPosition(INITIAL_PIVOT_Y_POSITION);
 
     }
 
