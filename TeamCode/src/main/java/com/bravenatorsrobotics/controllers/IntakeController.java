@@ -10,13 +10,14 @@ import com.bravenatorsrobotics.components.IntakeComponent;
 @Config
 public class IntakeController extends AbstractController {
 
-    public static final double INITIAL_PIVOT_X_POSITION   = .53;
-    public static final double FULL_PIVOT_X_POSITION      = .17;
+    public static final double INITIAL_PIVOT_X_POSITION   = 0.40;
+    public static final double FULL_PIVOT_X_POSITION      = 1;
 
-    public static final double INITIAL_PIVOT_Y_POSITION   = 0;
-    public static final double FULL_PIVOT_Y_POSITION      = 1;
+    public static final double INITIAL_PIVOT_Y_POSITION   = 1;
+    public static final double INTAKE_PIVOT_Y_POSITION = 0.45;
+    public static final double CAPTURE_PIVOT_Y_POSITION = 0.25;
 
-    public static final double INITIAL_TENSION_POSITION = 0.5;
+    public static final double INITIAL_TENSION_POSITION = 0.75;
     public static final double FULL_TENSION_POSITION    = 1;
 
     protected final IntakeComponent intakeComponent;
@@ -56,11 +57,25 @@ public class IntakeController extends AbstractController {
     }
     public void togglePivotYPosition() {
 
-        if(intakeComponent.getTargetPivotServoYPosition() == INITIAL_PIVOT_Y_POSITION)
-            intakeComponent.setPivotServoYPosition(FULL_PIVOT_Y_POSITION);
+        if(intakeComponent.getTargetPivotServoYPosition() == INTAKE_PIVOT_Y_POSITION)
+            intakeComponent.setPivotServoYPosition(CAPTURE_PIVOT_Y_POSITION);
         else
-            intakeComponent.setPivotServoYPosition(INITIAL_PIVOT_Y_POSITION);
+            intakeComponent.setPivotServoYPosition(INTAKE_PIVOT_Y_POSITION);
 
     }
+    public void RestPivotYPosition() {
 
+        intakeComponent.setPivotServoYPosition(INTAKE_PIVOT_Y_POSITION);
+
+    }
+    public void CapturePivotYPosition() {
+
+        intakeComponent.setPivotServoYPosition(INTAKE_PIVOT_Y_POSITION);
+
+    }
+    public void IntakePivotPosition(){
+
+        intakeComponent.setPivotServoYPosition(CAPTURE_PIVOT_Y_POSITION);
+
+    }
 }
