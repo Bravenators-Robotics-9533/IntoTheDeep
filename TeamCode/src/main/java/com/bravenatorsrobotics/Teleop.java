@@ -137,6 +137,7 @@ public class Teleop extends LinearOpMode {
             case FtcGamePad.GAMEPAD_DPAD_DOWN:
                 if(isPressed) {
                     this.armController.setTargetArmPosition(ArmController.ArmPosition.REST);
+                    this.intakeController.RestPivotYPosition();
                 }
                 break;
 
@@ -198,6 +199,7 @@ public class Teleop extends LinearOpMode {
             case FtcGamePad.GAMEPAD_LBUMPER:
                 if(isPressed) {
                     this.armController.setTargetArmPosition(ArmController.ArmPosition.CAPTURE);
+                    this.intakeController.CapturePivotYPosition();
                 }
 
                 break;
