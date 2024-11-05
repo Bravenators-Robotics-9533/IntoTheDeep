@@ -70,6 +70,11 @@ public class IntakeController extends AbstractController {
     }
     public void CapturePivotYPosition(){
 
+        intakeComponent.setPivotServoYPosition(INTAKE_PIVOT_Y_POSITION);
+
+    }
+    public void IntakePivotPosition(){
+
         intakeComponent.setPivotServoYPosition(CAPTURE_PIVOT_Y_POSITION);
 
     }
