@@ -95,7 +95,7 @@ public class ArmController extends AbstractController {
          * happen. The safety check just needs to be smarter and know what is "safe" and "not safe"
          */
         double targetElbowPosition = shouldRunSafetyChecks
-                ? elbowMovementConstraint.deriveDependentValue(this.armComponent.shoulderMotor.getCurrentPosition(), targetArmPosition.elbowPosition)
+                 ? elbowMovementConstraint.deriveDependentValue(this.armComponent.shoulderMotor.getCurrentPosition(), targetArmPosition.elbowPosition)
                 : targetArmPosition.elbowPosition;
 
         this.armComponent.setShoulderMotorPositionAsync((int) (targetShoulderPosition * SHOULDER_MAX_ENCODER_POSITION), SHOULDER_MAX_POWER);
