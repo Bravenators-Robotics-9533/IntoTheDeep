@@ -34,12 +34,12 @@ public class ArmController extends AbstractController {
     public static double HIGH_BAR_ELBOW = 0.2;
 
     // Intake Position
-    public static double INTAKE_BASKET_SHOULDER = 0.0;
-    public static double INTAKE_BASKET_ELBOW = 0.28;
+    public static double INTAKE_BASKET_SHOULDER = 0.11;
+    public static double INTAKE_BASKET_ELBOW = 0.25;
 
     // Capture Position
-    public static double CAPTURE_BASKET_SHOULDER = 0.0;
-    public static double CAPTURE_BASKET_ELBOW = 0.2;
+    public static double CAPTURE_BASKET_SHOULDER = 0.11;
+    public static double CAPTURE_BASKET_ELBOW = 0.32;
 
     public enum ArmPosition {
 
