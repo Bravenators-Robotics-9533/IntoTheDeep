@@ -10,15 +10,17 @@ import com.bravenatorsrobotics.components.IntakeComponent;
 @Config
 public class IntakeController extends AbstractController {
 
-    public static double INITIAL_PIVOT_X_POSITION   = 0.40;
-    public static double FULL_PIVOT_X_POSITION      = 1;
+    public static final double INITIAL_PIVOT_X_POSITION   = 0.40;
+    public static final double FULL_PIVOT_X_POSITION      = .725;
 
-    public static double INITIAL_PIVOT_Y_POSITION   = 1;
-    public static double INTAKE_PIVOT_Y_POSITION = 0.25;
-    public static double CAPTURE_PIVOT_Y_POSITION = 0.0;
+    public static final double INITIAL_PIVOT_Y_POSITION   = 1;
+    public static final double AUTO_INTAKE_PIVOT_Y_POSITION = 0.45;
+    public static final double AUTO_CAPTURE_PIVOT_Y_POSITION = 0.25;
+    public static final double TELE_INTAKE_PIVOT_Y_POSITION = 0.17;
+    public static final double TELE_CAPTURE_PIVOT_Y_POSITION = 0;
 
-    public static double INITIAL_TENSION_POSITION = 0.75;
-    public static double FULL_TENSION_POSITION    = 1;
+    public static final double INITIAL_TENSION_POSITION = 0.7;
+    public static final double FULL_TENSION_POSITION    = 1;
 
     protected final IntakeComponent intakeComponent;
 
@@ -66,25 +68,36 @@ public class IntakeController extends AbstractController {
 
     public void togglePivotYPosition() {
 
-        if(intakeComponent.getTargetPivotServoYPosition() == INTAKE_PIVOT_Y_POSITION)
-            intakeComponent.setPivotServoYPosition(CAPTURE_PIVOT_Y_POSITION);
+        if(intakeComponent.getTargetPivotServoYPosition() == TELE_INTAKE_PIVOT_Y_POSITION)
+            intakeComponent.setPivotServoYPosition(TELE_CAPTURE_PIVOT_Y_POSITION);
         else
-            intakeComponent.setPivotServoYPosition(INTAKE_PIVOT_Y_POSITION);
+            intakeComponent.setPivotServoYPosition(TELE_INTAKE_PIVOT_Y_POSITION);
 
     }
-    public void RestPivotYPosition() {
+    public void PivotYRestPosition() {
 
-        intakeComponent.setPivotServoYPosition(INTAKE_PIVOT_Y_POSITION);
-
-    }
-    public void CapturePivotYPosition() {
-
-        intakeComponent.setPivotServoYPosition(INTAKE_PIVOT_Y_POSITION);
+        intakeComponent.setPivotServoYPosition(AUTO_CAPTURE_PIVOT_Y_POSITION);
 
     }
-    public void IntakePivotPosition(){
+    public void AutoPivotYCapturePosition() {
 
-        intakeComponent.setPivotServoYPosition(CAPTURE_PIVOT_Y_POSITION);
+        intakeComponent.setPivotServoYPosition(AUTO_INTAKE_PIVOT_Y_POSITION);
+
+    }
+    public void AutoPivotYIntakePosition(){
+
+        intakeComponent.setPivotServoYPosition(AUTO_CAPTURE_PIVOT_Y_POSITION);
+
+    }
+    public void TelePivotYCapturePosition() {
+
+        intakeComponent.setPivotServoYPosition(TELE_INTAKE_PIVOT_Y_POSITION);
+
+    }
+
+    public void TelePivotYIntakePosition(){
+
+        intakeComponent.setPivotServoYPosition(TELE_CAPTURE_PIVOT_Y_POSITION);
 
     }
 
