@@ -41,6 +41,10 @@ public class ArmController extends AbstractController {
     public static double CAPTURE_BASKET_SHOULDER = 0.11;
     public static double CAPTURE_BASKET_ELBOW = 0.32;
 
+    //Hang Robot Position
+    public static double HANG_ROBOT_SHOULDER = 0.5;
+    public static double HANG_ROBOT_ELBOW = 0.0;
+
     public enum ArmPosition {
 
         REST(REST_SHOULDER, REST_ELBOW),
@@ -51,7 +55,9 @@ public class ArmController extends AbstractController {
         TOP_BASKET(TOP_BASKET_SHOULDER, TOP_BASKET_ELBOW),
 
         BOTTOM_BAR(BOTTOM_BAR_SHOULDER, BOTTOM_BAR_ELBOW),
-        HIGH_BAR(HIGH_BAR_SHOULDER, HIGH_BAR_ELBOW);
+        HIGH_BAR(HIGH_BAR_SHOULDER, HIGH_BAR_ELBOW),
+
+        HANG(HANG_ROBOT_SHOULDER, HANG_ROBOT_SHOULDER);
 
         public final double shoulderPosition;
         public final double elbowPosition;
