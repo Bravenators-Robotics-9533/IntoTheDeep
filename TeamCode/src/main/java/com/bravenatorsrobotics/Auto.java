@@ -97,7 +97,7 @@ public class Auto extends LinearOpMode {
             return;
 
         this.intakeController.tension();
-        this.intakeController.CapturePivotYPosition();
+        this.intakeController.AutoPivotYCapturePosition();
 
         drive.setPoseEstimate(new Pose2d(-45, 65, Math.toRadians(90)));
 
@@ -122,7 +122,7 @@ public class Auto extends LinearOpMode {
         this.intakeController.release();
 
         sleep(500);
-        this.intakeController.IntakePivotPosition();
+        this.intakeController.AutoPivotYIntakePosition();
 
         Trajectory backUp = drive.trajectoryBuilder(new Pose2d(56.0, 46.0, Math.toRadians(225)))
                 .lineTo(new Vector2d(50.0, 50.0))
