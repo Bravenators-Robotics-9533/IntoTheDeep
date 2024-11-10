@@ -130,9 +130,14 @@ public class Teleop extends LinearOpMode {
                     offsetHeading = drive.getRawExternalHeading();
                 break;
 
-            case FtcGamePad.GAMEPAD_Y:
+            case FtcGamePad.GAMEPAD_DPAD_LEFT:
                 if(isPressed)
-                    this.armController.setTargetArmPosition(ArmController.ArmPosition.HANG);
+                    this.armController.setTargetArmPosition(ArmController.ArmPosition.HANG_READY);
+                break;
+
+            case FtcGamePad.GAMEPAD_DPAD_RIGHT:
+                if(isPressed)
+                    this.armController.setTargetArmPosition(ArmController.ArmPosition.HANG_DONE);
                 break;
 
             case FtcGamePad.GAMEPAD_RBUMPER:
