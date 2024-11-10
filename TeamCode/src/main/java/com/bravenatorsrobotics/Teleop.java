@@ -22,6 +22,7 @@ public class Teleop extends LinearOpMode {
 
     public static final int DRIVER_CONTROLLER_EASE_POW = 1;
     public static final double ROBOT_SPEED_LIMIT = 1.0;
+    public static final double ROBOT_SLOW_SPEED_LIMIT = 0.2;
 
     private FtcGamePad driverGamePad;
     private FtcGamePad operatorGamePad;
@@ -34,6 +35,9 @@ public class Teleop extends LinearOpMode {
     private ControlSystemController controlSystemController;
     private IntakeController intakeController;
     private ArmController armController;
+
+    private boolean isSlowModeEnabled = false;
+    private boolean shouldAutoDisableSlowMode = false;
 
     private void initialize() {
 
@@ -126,13 +130,29 @@ public class Teleop extends LinearOpMode {
                     offsetHeading = drive.getRawExternalHeading();
                 break;
 
-            case FtcGamePad.GAMEPAD_RBUMPER:
+            case FtcGamePad.GAMEPAD_Y:
                 if(isPressed)
                     this.armController.setTargetArmPosition(ArmController.ArmPosition.HANG);
+                break;
+
+            case FtcGamePad.GAMEPAD_RBUMPER:
+                if(isPressed) {
+                    isSlowModeEnabled = !isSlowModeEnabled;
+                    shouldAutoDisableSlowMode = false;
+                }
+
+                break;
 
         }
 
 
+    }
+
+    private void autoDisableSlowMode() {
+        if(shouldAutoDisableSlowMode) {
+            this.isSlowModeEnabled = false;
+            this.shouldAutoDisableSlowMode = false;
+        }
     }
 
     private void onOperatorGamePadChange(FtcGamePad gamePad, int button, boolean isPressed) {
@@ -143,18 +163,22 @@ public class Teleop extends LinearOpMode {
                 if(isPressed) {
                     this.armController.setTargetArmPosition(ArmController.ArmPosition.REST);
                     this.intakeController.PivotYRestPosition();
+                    autoDisableSlowMode();
                 }
+
                 break;
 
             case FtcGamePad.GAMEPAD_DPAD_LEFT:
                 if(isPressed) {
                     this.armController.setTargetArmPosition(ArmController.ArmPosition.BOTTOM_BAR);
+                    autoDisableSlowMode();
                 }
                 break;
 
             case FtcGamePad.GAMEPAD_DPAD_UP:
                 if(isPressed) {
                     this.armController.setTargetArmPosition(ArmController.ArmPosition.HIGH_BAR);
+                    autoDisableSlowMode();
                 }
 
                 break;
@@ -183,6 +207,8 @@ public class Teleop extends LinearOpMode {
             case FtcGamePad.GAMEPAD_X:
                 if(isPressed) {
                     this.armController.setTargetArmPosition(ArmController.ArmPosition.BOTTOM_BASKET);
+                    this.shouldAutoDisableSlowMode = true;
+                    this.isSlowModeEnabled = true;
                 }
 
                 break;
@@ -190,6 +216,8 @@ public class Teleop extends LinearOpMode {
             case FtcGamePad.GAMEPAD_Y:
                 if(isPressed) {
                     this.armController.setTargetArmPosition(ArmController.ArmPosition.TOP_BASKET);
+                    this.shouldAutoDisableSlowMode = true;
+                    this.isSlowModeEnabled = true;
                 }
 
                 break;
@@ -198,6 +226,7 @@ public class Teleop extends LinearOpMode {
                 if(isPressed) {
                     this.armController.setTargetArmPosition(ArmController.ArmPosition.INTAKE);
                     this.intakeController.TelePivotYIntakePosition();
+                    this.autoDisableSlowMode();
                 }
 
                 break;
@@ -206,7 +235,7 @@ public class Teleop extends LinearOpMode {
                 if(isPressed) {
                     this.armController.setTargetArmPosition(ArmController.ArmPosition.CAPTURE);
                     this.intakeController.TelePivotYIntakePosition();
-
+                    this.autoDisableSlowMode();
                 }
 
                 break;
@@ -230,9 +259,7 @@ public class Teleop extends LinearOpMode {
 
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
 
-        double adjustedSpeedLimit = ROBOT_SPEED_LIMIT;
-
-        // If the lift is up change the speed limit to 0.2
+        double adjustedSpeedLimit = (isSlowModeEnabled ? ROBOT_SLOW_SPEED_LIMIT : ROBOT_SPEED_LIMIT);
 
         double flPower  = Range.clip((rotY + rotX + rx) / denominator, -adjustedSpeedLimit, adjustedSpeedLimit);
         double blPower  = Range.clip((rotY - rotX + rx) / denominator, -adjustedSpeedLimit, adjustedSpeedLimit);
