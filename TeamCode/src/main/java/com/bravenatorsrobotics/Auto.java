@@ -119,6 +119,7 @@ public class Auto extends LinearOpMode {
         this.loopUntilDriveDone();
 
         // Drop the thing
+        this.intakeController.AutoPivotYCapturePosition();
         this.intakeController.release();
 
         sleep(500);
