@@ -35,7 +35,7 @@ public class ArmController extends AbstractController {
 
     // Intake Position
     public static double INTAKE_BASKET_SHOULDER = 0.11;
-    public static double INTAKE_BASKET_ELBOW = 0.25;
+    public static double INTAKE_BASKET_ELBOW = 0.23;
 
     // Capture Position
     public static double CAPTURE_BASKET_SHOULDER = 0.11;
@@ -76,7 +76,7 @@ public class ArmController extends AbstractController {
     private static final double SHOULDER_MAX_POWER = 0.5;
     private static final int SHOULDER_MAX_ENCODER_POSITION = 1245;
 
-    private static final double ELBOW_MAX_POWER = 0.5;
+    private static final double ELBOW_MAX_POWER = 0.25;
     private static final int ELBOW_MAX_ENCODER_POSITION = 1335;
 
     private final ArmComponent armComponent;
@@ -128,5 +128,6 @@ public class ArmController extends AbstractController {
         telemetry.update();
 
     }
+
 
 }

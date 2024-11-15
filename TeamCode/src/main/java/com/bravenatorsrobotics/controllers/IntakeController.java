@@ -21,6 +21,7 @@ public class IntakeController extends AbstractController {
     public static final double TELE_PICKUP_PIVOT_Y_POSITION = 0.52;
     public static final double INITIAL_TENSION_POSITION = 0;
     public static final double FULL_TENSION_POSITION    = 1;
+    public static final double TENSION_SERVO_OFF =0.5;
 
     protected final IntakeComponent intakeComponent;
 
@@ -41,6 +42,9 @@ public class IntakeController extends AbstractController {
 
     @Override public void update() {}
 
+    public void Tensionservooff(){
+        intakeComponent.setTensionServoPosition(TENSION_SERVO_OFF);
+    }
     public void toggleTensionPosition() {
 
         if(intakeComponent.getTargetTensionServoPosition() == INITIAL_TENSION_POSITION)
