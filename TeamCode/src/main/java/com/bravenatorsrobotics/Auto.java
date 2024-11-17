@@ -104,7 +104,7 @@ public class Auto extends LinearOpMode {
         Trajectory moveOffWall = drive.trajectoryBuilder(new Pose2d(45, 65, Math.toRadians(90)))
                 .lineToLinearHeading(new Pose2d(49.5, 47.5, Math.toRadians(225)))
                 // 52 50
-                .addDisplacementMarker(1.0,
+                .addDisplacementMarker(2,
                         () -> this.armController.setTargetArmPosition(ArmController.ArmPosition.BOTTOM_BASKET))
                 .build();
 

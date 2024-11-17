@@ -26,8 +26,8 @@ public class ArmController extends AbstractController {
     public static double TOP_BASKET_ELBOW = 0.5;
 
     // Bottom Bar
-    public static double BOTTOM_BAR_SHOULDER = 0.8;
-    public static double BOTTOM_BAR_ELBOW = 0.22;
+    public static double BOTTOM_BAR_SHOULDER = 1.0;
+    public static double BOTTOM_BAR_ELBOW = 0.6;
 
     // High Bar
     public static double HIGH_BAR_SHOULDER = 0.95;
@@ -46,6 +46,10 @@ public class ArmController extends AbstractController {
     public static double HANG_ROBOT_READY_ELBOW = 0;
     public static double HANG_ROBOT_DONE_SHOULDER = 0;
     public static double HANG_ROBOT_DONE_ELBOW = 0;
+
+    //Top Basket 1
+    public static double TOP_BASKET_1_SHOULDER = 1.0;
+    public static double TOP_BASKET_1_ELBOW = 0.45;
 
     public enum ArmPosition {
 
@@ -73,7 +77,7 @@ public class ArmController extends AbstractController {
     }
 
     //Set maximum power and postition for control
-    private static final double SHOULDER_MAX_POWER = 0.5;
+    private static final double SHOULDER_MAX_POWER = 0.4;
     private static final int SHOULDER_MAX_ENCODER_POSITION = 1245;
 
     private static final double ELBOW_MAX_POWER = 0.25;

@@ -22,6 +22,7 @@ public class IntakeController extends AbstractController {
     public static final double INITIAL_TENSION_POSITION = 0;
     public static final double FULL_TENSION_POSITION    = 1;
     public static final double TENSION_SERVO_OFF =0.5;
+    public static final double TOP_BASKET_PIVOT_Y_POSITION = 1;
 
     protected final IntakeComponent intakeComponent;
 
@@ -34,8 +35,8 @@ public class IntakeController extends AbstractController {
     @Override
     public void initialize() {
 
-        this.intakeComponent.setPivotServoXPosition(INITIAL_PIVOT_X_POSITION);
-        this.intakeComponent.setPivotServoXPosition(INITIAL_PIVOT_Y_POSITION);
+
+        this.intakeComponent.setPivotServoYPosition(INITIAL_PIVOT_Y_POSITION);
         this.intakeComponent.setTensionServoPosition(TENSION_SERVO_OFF);
 
     }
@@ -53,14 +54,7 @@ public class IntakeController extends AbstractController {
             intakeComponent.setTensionServoPosition(INITIAL_TENSION_POSITION);
 
     }
-    public void togglePivotXPosition() {
 
-        if(intakeComponent.getTargetPivotServoXPosition() == INITIAL_PIVOT_X_POSITION)
-            intakeComponent.setPivotServoXPosition(FULL_PIVOT_X_POSITION);
-        else
-            intakeComponent.setPivotServoXPosition(INITIAL_PIVOT_X_POSITION);
-
-    }
 
     public void tension() {
         intakeComponent.setTensionServoPosition(FULL_TENSION_POSITION);
@@ -109,6 +103,10 @@ public class IntakeController extends AbstractController {
     public void TelePivotYPickupPosition() {
 
         intakeComponent.setPivotServoYPosition(TELE_PICKUP_PIVOT_Y_POSITION);
+    }
+
+    public void TopBasketPivotYPosition() {
+        intakeComponent.setPivotServoYPosition(TOP_BASKET_PIVOT_Y_POSITION);
     }
 
 
