@@ -16,8 +16,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.drive.MecanumDrive;
 
 @Config
-@Autonomous(name="Autonomous", group="Competition")
-public class Auto extends LinearOpMode {
+@Autonomous(name="NoParkAuto", group="Competition")
+public class NoParkAuto extends LinearOpMode {
 
 
     private ArmController armController;
@@ -70,7 +70,7 @@ public class Auto extends LinearOpMode {
     private void sleep(int milliseconds) {
         ElapsedTime timer = new ElapsedTime();
 
-        while(opModeIsActive() && timer.milliseconds() < milliseconds) {
+        while (opModeIsActive() && timer.milliseconds() < milliseconds) {
             this.update();
         }
 
@@ -85,7 +85,7 @@ public class Auto extends LinearOpMode {
 
     private void loopUntilDriveDone() {
 
-        while(opModeIsActive() && drive.isBusy()) {
+        while (opModeIsActive() && drive.isBusy()) {
             update();
         }
 
@@ -143,15 +143,6 @@ public class Auto extends LinearOpMode {
                 .build();
 
         drive.followTrajectoryAsync(swingAround);
-        this.loopUntilDriveDone();
-
-        sleep(2000);
-
-        Trajectory park = drive.trajectoryBuilder(new Pose2d(49 + 15, 40, Math.toRadians(90)))
-                .lineTo(new Vector2d(49 + 15, 10))
-                .build();
-
-        drive.followTrajectoryAsync(park);
         this.loopUntilDriveDone();
 
 

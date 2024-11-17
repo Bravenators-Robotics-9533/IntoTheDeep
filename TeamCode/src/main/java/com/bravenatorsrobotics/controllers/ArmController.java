@@ -18,7 +18,7 @@ public class ArmController extends AbstractController {
     public static double REST_ELBOW = 0.025;
 
     // Bottom Basket
-    public static double BOTTOM_BASKET_SHOULDER = 0.8;
+    public static double BOTTOM_BASKET_SHOULDER = 0.75;
     public static double BOTTOM_BASKET_ELBOW = 0.5;
 
     // Top Basket
@@ -26,19 +26,19 @@ public class ArmController extends AbstractController {
     public static double TOP_BASKET_ELBOW = 0.5;
 
     // Bottom Bar
-    public static double BOTTOM_BAR_SHOULDER = 0.9;
-    public static double BOTTOM_BAR_ELBOW = 0.25;
+    public static double BOTTOM_BAR_SHOULDER = 0.8;
+    public static double BOTTOM_BAR_ELBOW = 0.22;
 
     // High Bar
-    public static double HIGH_BAR_SHOULDER = 0.9;
+    public static double HIGH_BAR_SHOULDER = 0.95;
     public static double HIGH_BAR_ELBOW = 0;
 
     // Intake Position
-    public static double INTAKE_BASKET_SHOULDER = 0.11;
+    public static double INTAKE_BASKET_SHOULDER = 0.12;
     public static double INTAKE_BASKET_ELBOW = 0.23;
 
     // Capture Position
-    public static double CAPTURE_BASKET_SHOULDER = 0.11;
+    public static double CAPTURE_BASKET_SHOULDER = 0.12;
     public static double CAPTURE_BASKET_ELBOW = 0.32;
 
     //Hang Robot Position

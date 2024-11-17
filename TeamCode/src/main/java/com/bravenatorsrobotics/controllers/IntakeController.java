@@ -36,7 +36,7 @@ public class IntakeController extends AbstractController {
 
         this.intakeComponent.setPivotServoXPosition(INITIAL_PIVOT_X_POSITION);
         this.intakeComponent.setPivotServoXPosition(INITIAL_PIVOT_Y_POSITION);
-        this.intakeComponent.setTensionServoPosition(INITIAL_TENSION_POSITION);
+        this.intakeComponent.setTensionServoPosition(TENSION_SERVO_OFF);
 
     }
 

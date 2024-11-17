@@ -259,7 +259,7 @@ public class Teleop extends LinearOpMode {
         double x    = -Range.clip(Math.pow(gamepad1.left_stick_x, DRIVER_CONTROLLER_EASE_POW) + xt, -1.0, 1.0);
         double rx   = Range.clip(Math.pow(gamepad1.right_stick_x, DRIVER_CONTROLLER_EASE_POW), -1.0, 1.0);
 
-        double botHeading = -drive.getRawExternalHeading() + offsetHeading;
+        double botHeading = offsetHeading;
 
         double rotX = (x * Math.cos(botHeading)) - (y * Math.sin(botHeading));
         double rotY = (x * Math.sin(botHeading)) + (y * Math.cos(botHeading));
