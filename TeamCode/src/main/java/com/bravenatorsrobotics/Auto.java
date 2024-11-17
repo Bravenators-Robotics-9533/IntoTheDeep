@@ -99,20 +99,22 @@ public class Auto extends LinearOpMode {
         this.intakeController.release();
         this.intakeController.AutoPivotYCapturePosition();
 
+        this.armController.setTargetArmPosition(ArmController.ArmPosition.BOTTOM_BASKET);
+
+        sleep(350);
+
         drive.setPoseEstimate(new Pose2d(-45, 65, Math.toRadians(90)));
 
         Trajectory moveOffWall = drive.trajectoryBuilder(new Pose2d(45, 65, Math.toRadians(90)))
                 .lineToLinearHeading(new Pose2d(49.5, 47.5, Math.toRadians(225)))
                 // 52 50
-                .addDisplacementMarker(2,
-                        () -> this.armController.setTargetArmPosition(ArmController.ArmPosition.BOTTOM_BASKET))
                 .build();
 
         drive.followTrajectoryAsync(moveOffWall);
         this.loopUntilDriveDone(); // Stuck until trajectory done.
 
         Trajectory moveToScore = drive.trajectoryBuilder(new Pose2d(49.5, 47.5, Math.toRadians(220)))
-                .lineTo(new Vector2d(55, 50))
+                .lineTo(new Vector2d(56, 45))
                 .build();
 
         drive.followTrajectoryAsync(moveToScore);
@@ -153,7 +155,9 @@ public class Auto extends LinearOpMode {
 
         drive.followTrajectoryAsync(park);
         this.loopUntilDriveDone();
-
+//
+//        Trajectory parkParkLOLNickWroteThis = drive.trajectoryBuilder(new Pose2d(49 + 15, 6))
+//                .lineToLinearHeading()
 
     }
 }
