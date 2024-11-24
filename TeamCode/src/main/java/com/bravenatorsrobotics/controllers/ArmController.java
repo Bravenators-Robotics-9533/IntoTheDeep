@@ -1,13 +1,25 @@
 package com.bravenatorsrobotics.controllers;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.bravenatorsrobotics.components.ArmComponent;
 import com.bravenatorsrobotics.utils.MovementConstraint;
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @Config
 public class ArmController extends AbstractController {
+
+    //Telemetry
+    private Telemetry telemetry;
+    private final ArmComponent armComponent;
+
+
+    public ArmController(ArmComponent armComponent, Telemetry telemetry) {
+        this.armComponent = armComponent;
+        this.telemetry = telemetry;
+    }
+
 
     // Safety Definitions
     private static final double SHOULDER_SAFE_POSITION = 1.0;
@@ -15,7 +27,10 @@ public class ArmController extends AbstractController {
     private static final MovementConstraint elbowMovementConstraint = new MovementConstraint(SHOULDER_SAFE_POSITION, ELBOW_SAFE_POSITION);
 
     public static double REST_SHOULDER = 0.0;
-    public static double REST_ELBOW = 0.025;
+    public static double REST_ELBOW = 0.0; //0.025
+
+    public static double TOUCH_GRASS_SHOULDER = 0.0;
+    public static double TOUCH_GRASS_ELBOW = 0.2;
 
     // Bottom Basket
     public static double BOTTOM_BASKET_SHOULDER = 0.75;
@@ -31,7 +46,7 @@ public class ArmController extends AbstractController {
 
     // High Bar
     public static double HIGH_BAR_SHOULDER = 0.95;
-    public static double HIGH_BAR_ELBOW = 0;
+    public static double HIGH_BAR_ELBOW = 1; //0
 
     // Intake Position
     public static double INTAKE_BASKET_SHOULDER = 0.12;
@@ -47,7 +62,7 @@ public class ArmController extends AbstractController {
     public static double HANG_ROBOT_DONE_SHOULDER = 0;
     public static double HANG_ROBOT_DONE_ELBOW = 0;
 
-    //Top Basket 1
+    // Top Basket 1
     public static double TOP_BASKET_1_SHOULDER = 1.0;
     public static double TOP_BASKET_1_ELBOW = 0.45;
 
@@ -63,6 +78,8 @@ public class ArmController extends AbstractController {
         BOTTOM_BAR(BOTTOM_BAR_SHOULDER, BOTTOM_BAR_ELBOW),
         HIGH_BAR(HIGH_BAR_SHOULDER, HIGH_BAR_ELBOW),
 
+        TOUCH_GRASS(TOUCH_GRASS_SHOULDER, TOUCH_GRASS_ELBOW),
+
         HANG_READY(HANG_ROBOT_READY_SHOULDER, HANG_ROBOT_READY_ELBOW),
         HANG_DONE(HANG_ROBOT_DONE_SHOULDER, HANG_ROBOT_DONE_ELBOW);
 
@@ -77,13 +94,12 @@ public class ArmController extends AbstractController {
     }
 
     //Set maximum power and postition for control
-    private static final double SHOULDER_MAX_POWER = 0.4;
+    private static final double SHOULDER_MAX_POWER = 0.4; //0.4
     private static final int SHOULDER_MAX_ENCODER_POSITION = 1245;
 
-    private static final double ELBOW_MAX_POWER = 0.25;
-    private static final int ELBOW_MAX_ENCODER_POSITION = 1335;
+    private static final double ELBOW_MAX_POWER = .725; //0.25
+    private static final int ELBOW_MAX_ENCODER_POSITION = 10800 ; //1335
 
-    private final ArmComponent armComponent;
 
     private ArmPosition targetArmPosition = ArmPosition.REST;
     private boolean shouldRunSafetyChecks = true;
@@ -114,6 +130,8 @@ public class ArmController extends AbstractController {
         this.armComponent.setShoulderMotorPositionAsync((int) (targetShoulderPosition * SHOULDER_MAX_ENCODER_POSITION), SHOULDER_MAX_POWER);
         this.armComponent.setElbowMotorPositionAsync((int) (targetElbowPosition * ELBOW_MAX_ENCODER_POSITION), ELBOW_MAX_POWER);
 
+        printTelemetry();
+
     }
 
     public void setTargetArmPosition(ArmPosition armPosition) {
@@ -121,17 +139,20 @@ public class ArmController extends AbstractController {
         this.targetArmPosition = armPosition;
 
         // Run safety checks if and only if amr position is not INTAKE or CAPTURE (dangerous move for INTAKE and CAPTURE position)
-        this.shouldRunSafetyChecks = !(armPosition == ArmPosition.INTAKE || armPosition == ArmPosition.CAPTURE);
+        this.shouldRunSafetyChecks = !(armPosition == ArmPosition.INTAKE || armPosition == ArmPosition.CAPTURE || armPosition == ArmPosition.TOUCH_GRASS);
 
     }
 
-    public void printTelemetry(Telemetry telemetry) {
+    public void printTelemetry() {
 
         telemetry.addData("Shoulder Motor", (double) armComponent.shoulderMotor.getCurrentPosition() / SHOULDER_MAX_ENCODER_POSITION);
-        telemetry.addData("Elbow Motor", (double) armComponent.elbowMotor.getCurrentPosition() / ELBOW_MAX_ENCODER_POSITION);
+        telemetry.addData("Elbow Motor", (double) armComponent.elbowMotor.getCurrentPosition() ); //add / ELBOW_MAX_ENCODER_POSITION
         telemetry.update();
 
     }
+
+
+
 
 
 }

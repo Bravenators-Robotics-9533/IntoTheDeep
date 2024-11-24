@@ -1,5 +1,7 @@
 package com.bravenatorsrobotics;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.bravenatorsrobotics.components.ArmComponent;
 import com.bravenatorsrobotics.components.ControlSystemComponent;
@@ -48,8 +50,8 @@ public class Teleop extends LinearOpMode {
         ConfigMap.load(super.hardwareMap.appContext); // Must happen before you use static ConfigMap
 
         // Setup the GamePads
-        this.driverGamePad      = new FtcGamePad("Driver", gamepad1, this::onDriverGamePadChange);
-        this.operatorGamePad    = new FtcGamePad("Operator", gamepad2, this::onOperatorGamePadChange);
+        this.driverGamePad = new FtcGamePad("Driver", gamepad1, this::onDriverGamePadChange);
+        this.operatorGamePad = new FtcGamePad("Operator", gamepad2, this::onOperatorGamePadChange);
 
         // Create Mecanum Drive
         this.drive = new MecanumDrive(super.hardwareMap);
@@ -63,19 +65,23 @@ public class Teleop extends LinearOpMode {
         // Create the controllers
         this.controlSystemController = new ControlSystemController(controlSystemComponent, ControlSystemController.Strategy.MANUAL);
         this.intakeController = new IntakeController(intakeComponent);
-        this.armController = new ArmController(armComponent);
+        this.armController = new ArmController(armComponent, telemetry); // Pass telemetry here
 
         // Initialize the controllers
         this.controlSystemController.initialize();
         this.intakeController.initialize();
-        this.armController.initialize();
+
+        if (StaticEnvironment.ShouldZeroLift)
+            this.armController.initialize();
+        else
+            StaticEnvironment.ShouldZeroLift = true;
 
         // Initialize the vision system (if needed)
 
         // Initialize any autonomous controlled teleop sequences
-
         telemetry.addData("Status", "Initialized!");
         telemetry.update();
+
     }
 
     private void runUpdateLoop() {
@@ -92,6 +98,8 @@ public class Teleop extends LinearOpMode {
             // Update the component controllers
             this.armController.update();
             this.intakeController.update();
+
+
 
             this.handleDrive(); // Handle Drive
 

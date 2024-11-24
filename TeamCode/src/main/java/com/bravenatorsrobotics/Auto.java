@@ -40,6 +40,8 @@ public class Auto extends LinearOpMode {
         IntakeComponent intakeComponent = new IntakeComponent(super.hardwareMap);
         this.intakeController = new IntakeController(intakeComponent);
 
+        StaticEnvironment.ShouldZeroLift = false;
+
         telemetry.addData("Status", "Initialized!");
         telemetry.update();
     }
@@ -106,8 +108,7 @@ public class Auto extends LinearOpMode {
         drive.setPoseEstimate(new Pose2d(-45, 65, Math.toRadians(90)));
 
         Trajectory moveOffWall = drive.trajectoryBuilder(new Pose2d(45, 65, Math.toRadians(90)))
-                .lineToLinearHeading(new Pose2d(49.5, 47.5, Math.toRadians(225)))
-                // 52 50
+                .lineToLinearHeading(new Pose2d(49.5, 47.5, Math.toRadians(220)))
                 .build();
 
         drive.followTrajectoryAsync(moveOffWall);
@@ -137,7 +138,6 @@ public class Auto extends LinearOpMode {
         drive.followTrajectoryAsync(backUp);
         this.loopUntilDriveDone();
 
-
         sleep(1000);
 
         Trajectory swingAround = drive.trajectoryBuilder(new Pose2d(50.0, 50.0), Math.toRadians(225))
@@ -149,15 +149,27 @@ public class Auto extends LinearOpMode {
 
         sleep(2000);
 
+        this.intakeController.Tensionservooff();
+
         Trajectory park = drive.trajectoryBuilder(new Pose2d(49 + 15, 40, Math.toRadians(90)))
-                .lineTo(new Vector2d(49 + 15, 10))
+                .lineToLinearHeading(new Pose2d(49 + 15, 1, Math.toRadians(0)))
                 .build();
 
         drive.followTrajectoryAsync(park);
         this.loopUntilDriveDone();
-//
-//        Trajectory parkParkLOLNickWroteThis = drive.trajectoryBuilder(new Pose2d(49 + 15, 6))
-//                .lineToLinearHeading()
+
+        Trajectory parkParkLOLNickWroteThis = drive.trajectoryBuilder(new Pose2d(49 + 15, 1))
+                .lineTo(new Vector2d(49 + 15 - 25, 1))
+                .build();
+
+        drive.followTrajectoryAsync(parkParkLOLNickWroteThis);
+        this.loopUntilDriveDone();
+
+        this.armController.setTargetArmPosition(ArmController.ArmPosition.TOUCH_GRASS);
+
+        while(opModeIsActive()) {
+            this.armController.update();
+        }
 
     }
 }
