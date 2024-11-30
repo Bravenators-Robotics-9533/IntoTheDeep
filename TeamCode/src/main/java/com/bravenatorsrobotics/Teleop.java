@@ -1,7 +1,5 @@
 package com.bravenatorsrobotics;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.acmerobotics.dashboard.config.Config;
 import com.bravenatorsrobotics.components.ArmComponent;
 import com.bravenatorsrobotics.components.ControlSystemComponent;
@@ -177,6 +175,7 @@ public class Teleop extends LinearOpMode {
                     this.armController.setTargetArmPosition(ArmController.ArmPosition.REST);
                     this.intakeController.TopBasketPivotYPosition();
                     autoDisableSlowMode();
+                    this.armController.setShoulderMaxPower(0.2);
                 }
 
                 break;
@@ -215,7 +214,7 @@ public class Teleop extends LinearOpMode {
 
             case FtcGamePad.GAMEPAD_B:
                 if(isPressed) {
-                    this.intakeController.Tensionservooff();
+                    this.intakeController.Tensionservosoff();
                 }
 
                 break;

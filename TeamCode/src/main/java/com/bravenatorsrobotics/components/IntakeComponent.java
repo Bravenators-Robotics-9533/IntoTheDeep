@@ -8,14 +8,15 @@ public class IntakeComponent extends AbstractComponent {
 
 
     protected final Servo pivotServoY;
-    protected final Servo tensionServo;
+    protected final Servo tensionServoL;
+    protected final Servo tensionServoR;
 
     public IntakeComponent(HardwareMap hardwareMap) {
         super(hardwareMap);
 
-
         pivotServoY      = hardwareMap.get(Servo.class, HardwareMapIdentities.INTAKE_PIVOT_Y);
-        tensionServo    = hardwareMap.get(Servo.class, HardwareMapIdentities.INTAKE_TENSION);
+        tensionServoL    = hardwareMap.get(Servo.class, HardwareMapIdentities.INTAKE_TENSION_L);
+        tensionServoR    = hardwareMap.get(Servo.class, HardwareMapIdentities.INTAKE_TENSION_R);
     }
 
 
@@ -32,11 +33,23 @@ public class IntakeComponent extends AbstractComponent {
     /**
      * @param position range [0.0, 1.0]
      */
-    public void setTensionServoPosition(double position) {
-        tensionServo.setPosition(position);
+    public void setTensionServoLPosition(double position) {
+        tensionServoL.setPosition(position);
     }
 
+
+
+    /**
+     * @param position range [0.0, 1.0]
+     */
+    public void setTensionServoRPosition(double position) {
+        tensionServoR.setPosition(position);
+    }
+
+
+
     public double getTargetPivotServoYPosition() { return pivotServoY.getPosition(); }
-    public double getTargetTensionServoPosition() { return tensionServo.getPosition(); }
+    public double getTargetTensionServoLPosition() { return tensionServoL.getPosition(); }
+    public double getTargetTensionServoRPosition() { return tensionServoR.getPosition(); }
 
 }

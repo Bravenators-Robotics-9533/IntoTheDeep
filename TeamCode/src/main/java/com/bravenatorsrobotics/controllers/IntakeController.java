@@ -19,9 +19,12 @@ public class IntakeController extends AbstractController {
     public static final double TELE_INTAKE_PIVOT_Y_POSITION = 0.38;
     public static final double TELE_CAPTURE_PIVOT_Y_POSITION = 0.5;
     public static final double TELE_PICKUP_PIVOT_Y_POSITION = 0.52;
-    public static final double INITIAL_TENSION_POSITION = 0;
-    public static final double FULL_TENSION_POSITION    = 1;
-    public static final double TENSION_SERVO_OFF =0.5;
+    public static final double INITIAL_TENSION_L_POSITION = 0;
+    public static final double INITIAL_TENSION_R_POSITION = 1;
+    public static final double FULL_TENSION_L_POSITION    = 1;
+    public static final double FULL_TENSION_R_POSITION    = 0;
+    public static final double TENSION_SERVO_L_OFF =0.5;
+    public static final double TENSION_SERVO_R_OFF =0.5;
     public static final double TOP_BASKET_PIVOT_Y_POSITION = 1;
 
     protected final IntakeComponent intakeComponent;
@@ -37,31 +40,40 @@ public class IntakeController extends AbstractController {
 
 
         this.intakeComponent.setPivotServoYPosition(INITIAL_PIVOT_Y_POSITION);
-        this.intakeComponent.setTensionServoPosition(TENSION_SERVO_OFF);
+        this.intakeComponent.setTensionServoLPosition(TENSION_SERVO_L_OFF);
+        this.intakeComponent.setTensionServoRPosition(TENSION_SERVO_R_OFF);
 
     }
 
     @Override public void update() {}
 
-    public void Tensionservooff(){
-        intakeComponent.setTensionServoPosition(TENSION_SERVO_OFF);
+    public void Tensionservosoff(){
+        intakeComponent.setTensionServoLPosition(TENSION_SERVO_L_OFF);
+        intakeComponent.setTensionServoRPosition(TENSION_SERVO_R_OFF);
     }
+
     public void toggleTensionPosition() {
 
-        if(intakeComponent.getTargetTensionServoPosition() == INITIAL_TENSION_POSITION)
-            intakeComponent.setTensionServoPosition(FULL_TENSION_POSITION);
-        else
-            intakeComponent.setTensionServoPosition(INITIAL_TENSION_POSITION);
+        if((intakeComponent.getTargetTensionServoLPosition() == INITIAL_TENSION_L_POSITION) && (intakeComponent.getTargetTensionServoRPosition() == INITIAL_TENSION_R_POSITION)) {
+            intakeComponent.setTensionServoLPosition(FULL_TENSION_L_POSITION);
+            intakeComponent.setTensionServoRPosition(FULL_TENSION_R_POSITION);
+        }
+        else {
+            intakeComponent.setTensionServoLPosition(INITIAL_TENSION_L_POSITION);
+            intakeComponent.setTensionServoRPosition(INITIAL_TENSION_R_POSITION);
+        }
 
     }
 
 
     public void tension() {
-        intakeComponent.setTensionServoPosition(FULL_TENSION_POSITION);
+        intakeComponent.setTensionServoLPosition(FULL_TENSION_L_POSITION);
+        intakeComponent.setTensionServoRPosition(FULL_TENSION_R_POSITION);
     }
 
     public void release() {
-        intakeComponent.setTensionServoPosition(INITIAL_TENSION_POSITION);
+        intakeComponent.setTensionServoLPosition(INITIAL_TENSION_L_POSITION);
+        intakeComponent.setTensionServoRPosition(INITIAL_TENSION_R_POSITION);
     }
 
     public void togglePivotYPosition() {
@@ -110,4 +122,4 @@ public class IntakeController extends AbstractController {
     }
 
 
-    }
+}

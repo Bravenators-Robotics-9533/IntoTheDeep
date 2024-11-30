@@ -149,7 +149,7 @@ public class Auto extends LinearOpMode {
 
         sleep(2000);
 
-        this.intakeController.Tensionservooff();
+        this.intakeController.Tensionservosoff();
 
         Trajectory park = drive.trajectoryBuilder(new Pose2d(49 + 15, 40, Math.toRadians(90)))
                 .lineToLinearHeading(new Pose2d(49 + 15, 1, Math.toRadians(0)))

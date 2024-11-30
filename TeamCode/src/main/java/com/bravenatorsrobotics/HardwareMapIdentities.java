@@ -7,6 +7,7 @@ public final class HardwareMapIdentities {
 
     public static final String INTAKE_PIVOT_X = "intakePivotX";
     public static final String INTAKE_PIVOT_Y = "intakePivotY";
-    public static final String INTAKE_TENSION = "intakeTension";
+    public static final String INTAKE_TENSION_L = "intakeTensionL";
+    public static final String INTAKE_TENSION_R = "intakeTensionR";
 
 }

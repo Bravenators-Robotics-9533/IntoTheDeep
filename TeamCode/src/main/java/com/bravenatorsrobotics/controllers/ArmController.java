@@ -38,11 +38,11 @@ public class ArmController extends AbstractController {
 
     // Top Basket
     public static double TOP_BASKET_SHOULDER = 1.0;
-    public static double TOP_BASKET_ELBOW = 0.5;
+    public static double TOP_BASKET_ELBOW = 0.495;
 
     // Bottom Bar
-    public static double BOTTOM_BAR_SHOULDER = 0.4;
-    public static double BOTTOM_BAR_ELBOW = 0.25;
+    public static double BOTTOM_BAR_SHOULDER = 0.94;
+    public static double BOTTOM_BAR_ELBOW = 0.49;
 
     // High Bar
     public static double HIGH_BAR_SHOULDER = 0.5;
@@ -93,8 +93,12 @@ public class ArmController extends AbstractController {
 
     }
 
-    //Set maximum power and postition for control
-    private static final double SHOULDER_MAX_POWER = 0.4; //0.4
+    private double SHOULDER_MAX_POWER = 0.4; // Default max power
+
+    public void setShoulderMaxPower(double power) {
+        this.SHOULDER_MAX_POWER = power;
+    }
+
     private static final int SHOULDER_MAX_ENCODER_POSITION = 1245;
 
     private static final double ELBOW_MAX_POWER = .725; //0.25
@@ -142,6 +146,8 @@ public class ArmController extends AbstractController {
         this.shouldRunSafetyChecks = !(armPosition == ArmPosition.INTAKE || armPosition == ArmPosition.CAPTURE || armPosition == ArmPosition.TOUCH_GRASS);
 
     }
+
+
 
     public void printTelemetry() {
 
