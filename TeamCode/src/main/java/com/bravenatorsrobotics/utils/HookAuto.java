@@ -16,8 +16,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.drive.MecanumDrive;
 
 @Config
-@Autonomous(name="Autonomous", group="Competition")
-public class Auto extends LinearOpMode {
+@Autonomous(name="HookAuto", group="Competition")
+public class HookAuto extends LinearOpMode {
 
 
     private ArmController armController;
@@ -98,78 +98,51 @@ public class Auto extends LinearOpMode {
         if (!super.opModeIsActive())
             return;
 
-        //this.intakeController.release();
-        this.intakeController.AutoPivotYCapturePosition();
-        this.armController.setTargetArmPosition(ArmController.ArmPosition.CAPTURE);
-
-        sleep(1500);
-
-        this.armController.setShoulderMaxPower(0.2);
-        this.armController.setTargetArmPosition(ArmController.ArmPosition.TOP_BASKET);
+        this.intakeController.release();
+        this.armController.setTargetArmPosition(ArmController.ArmPosition.HIGH_BAR);
+        sleep(250);
+        this.intakeController.TelePivotYIntakePosition();
 
 
-        sleep(2000);
+        sleep(3000);
 
-        drive.setPoseEstimate(new Pose2d(-45, 65, Math.toRadians(90)));
 
-        Trajectory moveOffWall = drive.trajectoryBuilder(new Pose2d(45, 65, Math.toRadians(90)))
-                .lineToLinearHeading(new Pose2d(49.5, 47.5, Math.toRadians(220)))
+        drive.setPoseEstimate(new Pose2d(-22.5, 65, Math.toRadians(90)));
+
+        Trajectory moveOffWall = drive.trajectoryBuilder(new Pose2d(22.5, 65, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(22.5, 55, Math.toRadians(90)))
                 .build();
 
         drive.followTrajectoryAsync(moveOffWall);
         this.loopUntilDriveDone(); // Stuck until trajectory done.
 
-        Trajectory moveToScore = drive.trajectoryBuilder(new Pose2d(49.5, 47.5, Math.toRadians(220)))
-                .lineTo(new Vector2d(68, 58))
+        sleep(750);
+        this.intakeController.TelePivotYCapturePosition();
+        sleep(500);
+
+        Trajectory moveToScore = drive.trajectoryBuilder(new Pose2d(22.5, 55, Math.toRadians(90)))
+                .lineTo(new Vector2d(22.5, 63))
                 .build();
 
         drive.followTrajectoryAsync(moveToScore);
         this.loopUntilDriveDone();
-
-        // Drop the thing
-        this.intakeController.AutoPivotYCapturePosition();
         this.intakeController.tension();
+
+        this.armController.setTargetArmPosition(ArmController.ArmPosition.REST);
 
 
         sleep(1500);
 
-        Trajectory backUp = drive.trajectoryBuilder(new Pose2d(68, 58, Math.toRadians(225)))
-                .lineTo(new Vector2d(45.0, 48.0))
+        Trajectory backUp = drive.trajectoryBuilder(new Pose2d(22.5, 53, Math.toRadians(90)))
+                .lineTo(new Vector2d(-50.0, 55.0))
                 .build();
 
         drive.followTrajectoryAsync(backUp);
         this.loopUntilDriveDone();
+        this.intakeController.release();
 
+        sleep(10000);
 
-        sleep(1000);
-        this.armController.setTargetArmPosition(ArmController.ArmPosition.REST);
-
-        Trajectory swingAround = drive.trajectoryBuilder(new Pose2d(45.0, 48.0), Math.toRadians(225))
-                .lineToLinearHeading(new Pose2d(49 + 15, 42, Math.toRadians(90)))
-                .build();
-
-        drive.followTrajectoryAsync(swingAround);
-        this.loopUntilDriveDone();
-
-        sleep(2000);
-
-        this.intakeController.Tensionservosoff();
-
-        Trajectory park = drive.trajectoryBuilder(new Pose2d(49 + 15, 40, Math.toRadians(90)))
-                .lineToLinearHeading(new Pose2d(49 + 15, 1, Math.toRadians(0)))
-                .build();
-
-        drive.followTrajectoryAsync(park);
-        this.loopUntilDriveDone();
-
-        Trajectory parkParkLOLNickWroteThis = drive.trajectoryBuilder(new Pose2d(49 + 15, 1))
-                .lineTo(new Vector2d(49 + 15 - 25, 1))
-                .build();
-
-        drive.followTrajectoryAsync(parkParkLOLNickWroteThis);
-        this.loopUntilDriveDone();
-
-        this.armController.setTargetArmPosition(ArmController.ArmPosition.TOUCH_GRASS);
 
         while(opModeIsActive()) {
             this.armController.update();
