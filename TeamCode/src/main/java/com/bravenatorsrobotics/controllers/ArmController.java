@@ -41,20 +41,20 @@ public class ArmController extends AbstractController {
     public static double TOP_BASKET_ELBOW = 0.5;
 
     // Bottom Bar
-    public static double BOTTOM_BAR_SHOULDER = 1.0;
-    public static double BOTTOM_BAR_ELBOW = 0.6;
+    public static double BOTTOM_BAR_SHOULDER = 0.4;
+    public static double BOTTOM_BAR_ELBOW = 0.25;
 
     // High Bar
-    public static double HIGH_BAR_SHOULDER = 0.95;
-    public static double HIGH_BAR_ELBOW = 1; //0
+    public static double HIGH_BAR_SHOULDER = 0.5;
+    public static double HIGH_BAR_ELBOW = 0.35; //0
 
     // Intake Position
     public static double INTAKE_BASKET_SHOULDER = 0.18;
-    public static double INTAKE_BASKET_ELBOW = 0.28;
+    public static double INTAKE_BASKET_ELBOW = 0.32;
 
     // Capture Position
     public static double CAPTURE_BASKET_SHOULDER = 0.18;
-    public static double CAPTURE_BASKET_ELBOW = 0.33;
+    public static double CAPTURE_BASKET_ELBOW = 0.34;
 
     //Hang Robot Position
     public static double HANG_ROBOT_READY_SHOULDER = 0.8;
@@ -63,7 +63,7 @@ public class ArmController extends AbstractController {
     public static double HANG_ROBOT_DONE_ELBOW = 0;
 
     // Top Basket 1
-    public static double TOP_BASKET_1_SHOULDER = 1.0;
+    public static double TOP_BASKET_1_SHOULDER = 0.5;
     public static double TOP_BASKET_1_ELBOW = 0.45;
 
     public enum ArmPosition {
