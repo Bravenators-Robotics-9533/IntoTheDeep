@@ -16,8 +16,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.drive.MecanumDrive;
 
 @Config
-@Autonomous(name="HookAuto", group="Competition")
-public class HookAuto extends LinearOpMode {
+@Autonomous(name="AutoHook", group="Competition")
+public class AutoHook extends LinearOpMode {
 
 
     private ArmController armController;
@@ -98,10 +98,10 @@ public class HookAuto extends LinearOpMode {
         if (!super.opModeIsActive())
             return;
 
-        this.intakeController.release();
+        //this.intakeController.release();
         this.armController.setTargetArmPosition(ArmController.ArmPosition.HIGH_BAR);
-        sleep(250);
-        this.intakeController.TelePivotYIntakePosition();
+        sleep(750);
+        this.intakeController.AutoPivotYIntakePosition();
 
 
         sleep(3000);
@@ -110,7 +110,7 @@ public class HookAuto extends LinearOpMode {
         drive.setPoseEstimate(new Pose2d(-22.5, 65, Math.toRadians(90)));
 
         Trajectory moveOffWall = drive.trajectoryBuilder(new Pose2d(22.5, 65, Math.toRadians(90)))
-                .lineToLinearHeading(new Pose2d(22.5, 55, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(22.5, 54, Math.toRadians(90)))
                 .build();
 
         drive.followTrajectoryAsync(moveOffWall);
@@ -120,7 +120,7 @@ public class HookAuto extends LinearOpMode {
         this.intakeController.TelePivotYCapturePosition();
         sleep(500);
 
-        Trajectory moveToScore = drive.trajectoryBuilder(new Pose2d(22.5, 55, Math.toRadians(90)))
+        Trajectory moveToScore = drive.trajectoryBuilder(new Pose2d(22.5, 54, Math.toRadians(90)))
                 .lineTo(new Vector2d(22.5, 63))
                 .build();
 
@@ -134,12 +134,13 @@ public class HookAuto extends LinearOpMode {
         sleep(1500);
 
         Trajectory backUp = drive.trajectoryBuilder(new Pose2d(22.5, 53, Math.toRadians(90)))
-                .lineTo(new Vector2d(-50.0, 55.0))
+                .lineTo(new Vector2d(-55.0, 55.0))
                 .build();
 
         drive.followTrajectoryAsync(backUp);
         this.loopUntilDriveDone();
-        this.intakeController.release();
+        this.intakeController.tensionServosOff();
+
 
         sleep(10000);
 

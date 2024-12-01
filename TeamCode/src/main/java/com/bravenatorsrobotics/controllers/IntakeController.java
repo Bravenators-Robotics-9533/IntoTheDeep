@@ -14,9 +14,9 @@ public class IntakeController extends AbstractController {
     public static final double FULL_PIVOT_X_POSITION      = .725;
 
     public static final double INITIAL_PIVOT_Y_POSITION   = 1;
-    public static final double AUTO_INTAKE_PIVOT_Y_POSITION = 0.75;
+    public static final double AUTO_INTAKE_PIVOT_Y_POSITION = 0.2;
     public static final double AUTO_CAPTURE_PIVOT_Y_POSITION = 0.45;
-    public static final double TELE_INTAKE_PIVOT_Y_POSITION = 0.36;
+    public static final double TELE_INTAKE_PIVOT_Y_POSITION = 0.23;
     public static final double TELE_CAPTURE_PIVOT_Y_POSITION = 0.5;
     public static final double TELE_PICKUP_PIVOT_Y_POSITION = 0.52;
     public static final double INITIAL_TENSION_L_POSITION = 0;
@@ -47,7 +47,7 @@ public class IntakeController extends AbstractController {
 
     @Override public void update() {}
 
-    public void Tensionservosoff(){
+    public void tensionServosOff(){
         intakeComponent.setTensionServoLPosition(TENSION_SERVO_L_OFF);
         intakeComponent.setTensionServoRPosition(TENSION_SERVO_R_OFF);
     }

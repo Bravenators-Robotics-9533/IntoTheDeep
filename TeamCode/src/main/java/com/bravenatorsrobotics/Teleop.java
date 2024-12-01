@@ -216,7 +216,7 @@ public class Teleop extends LinearOpMode {
 
             case FtcGamePad.GAMEPAD_B:
                 if(isPressed) {
-                    this.intakeController.Tensionservosoff();
+                    this.intakeController.tensionServosOff();
                 }
 
                 break;
