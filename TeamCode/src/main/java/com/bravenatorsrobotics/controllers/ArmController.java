@@ -10,16 +10,14 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 @Config
 public class ArmController extends AbstractController {
 
-    //Telemetry
+    // Telemetry
     private Telemetry telemetry;
     private final ArmComponent armComponent;
-
 
     public ArmController(ArmComponent armComponent, Telemetry telemetry) {
         this.armComponent = armComponent;
         this.telemetry = telemetry;
     }
-
 
     // Safety Definitions
     private static final double SHOULDER_SAFE_POSITION = 1.0;
@@ -56,7 +54,7 @@ public class ArmController extends AbstractController {
     public static double CAPTURE_BASKET_SHOULDER = 0.17;
     public static double CAPTURE_BASKET_ELBOW = 0.34;
 
-    //Hang Robot Position
+    // Hang Robot Position
     public static double HANG_ROBOT_READY_SHOULDER = 0.8;
     public static double HANG_ROBOT_READY_ELBOW = 0;
     public static double HANG_ROBOT_DONE_SHOULDER = 0;
