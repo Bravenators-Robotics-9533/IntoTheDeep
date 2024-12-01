@@ -98,6 +98,8 @@ public class AutoHook extends LinearOpMode {
         if (!super.opModeIsActive())
             return;
 
+        sleep(8000);
+
         //this.intakeController.release();
         this.armController.setTargetArmPosition(ArmController.ArmPosition.HIGH_BAR);
         sleep(750);

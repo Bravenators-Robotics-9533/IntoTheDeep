@@ -68,11 +68,7 @@ public class Teleop extends LinearOpMode {
         // Initialize the controllers
         this.controlSystemController.initialize();
         this.intakeController.initialize();
-
-        if (StaticEnvironment.ShouldZeroLift)
-            this.armController.initialize();
-        else
-            StaticEnvironment.ShouldZeroLift = true;
+        this.armController.initialize();
 
         // Initialize the vision system (if needed)
 
@@ -96,8 +92,6 @@ public class Teleop extends LinearOpMode {
             // Update the component controllers
             this.armController.update();
             this.intakeController.update();
-
-
 
             this.handleDrive(); // Handle Drive
 

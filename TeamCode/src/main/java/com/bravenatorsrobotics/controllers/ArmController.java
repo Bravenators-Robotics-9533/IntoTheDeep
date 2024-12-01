@@ -44,7 +44,7 @@ public class ArmController extends AbstractController {
 
     // High Bar
     public static double HIGH_BAR_SHOULDER = 0.55;
-    public static double HIGH_BAR_ELBOW = 0.385; //0
+    public static double HIGH_BAR_ELBOW = 0.34 ; //0
 
     // Intake Position
     public static double INTAKE_BASKET_SHOULDER = 0.17;
@@ -52,7 +52,7 @@ public class ArmController extends AbstractController {
 
     // Capture Position
     public static double CAPTURE_BASKET_SHOULDER = 0.17;
-    public static double CAPTURE_BASKET_ELBOW = 0.34;
+    public static double CAPTURE_BASKET_ELBOW = 0.35;
 
     // Hang Robot Position
     public static double HANG_ROBOT_READY_SHOULDER = 0.8;
