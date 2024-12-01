@@ -147,6 +147,8 @@ public class ArmController extends AbstractController {
 
     }
 
+    public ArmPosition getTargetArmPosition() { return this.targetArmPosition; }
+
 
 
     public void printTelemetry() {
