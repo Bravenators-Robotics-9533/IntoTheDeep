@@ -1,11 +1,13 @@
 package com.bravenatorsrobotics;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.bravenatorsrobotics.components.ArmComponent;
+import com.bravenatorsrobotics.components.LiftComponent;
+import com.bravenatorsrobotics.components.SlideComponent;
 import com.bravenatorsrobotics.components.ControlSystemComponent;
 import com.bravenatorsrobotics.components.IntakeComponent;
 import com.bravenatorsrobotics.config.ConfigMap;
-import com.bravenatorsrobotics.controllers.ArmController;
+import com.bravenatorsrobotics.controllers.LiftController;
+import com.bravenatorsrobotics.controllers.SlideController;
 import com.bravenatorsrobotics.controllers.ControlSystemController;
 import com.bravenatorsrobotics.controllers.IntakeController;
 import com.bravenatorsrobotics.io.FtcGamePad;
@@ -20,21 +22,26 @@ import org.firstinspires.ftc.teamcode.drive.MecanumDrive;
 @TeleOp(name = "Teleop", group = "Competition")
 public class Teleop extends LinearOpMode {
 
+    //MechDrive Controlling
     public static final int DRIVER_CONTROLLER_EASE_POW = 1;
     public static final double ROBOT_SPEED_LIMIT = 1.0;
     public static final double ROBOT_SLOW_SPEED_LIMIT = 0.2;
-
-    private FtcGamePad driverGamePad;
-    private FtcGamePad operatorGamePad;
 
     private MecanumDrive drive;
 
     private double offsetHeading = 0.0;
 
+
+    //Create the gamepads
+    private FtcGamePad driverGamePad;
+    private FtcGamePad operatorGamePad;
+
+
     // Controllers
     private ControlSystemController controlSystemController;
     private IntakeController intakeController;
-    private ArmController armController;
+    private LiftController liftController;
+    private SlideController slideController;
 
     private boolean isSlowModeEnabled = false;
     private boolean shouldAutoDisableSlowMode = false;
@@ -58,23 +65,28 @@ public class Teleop extends LinearOpMode {
         // Initialize our components
         ControlSystemComponent controlSystemComponent = new ControlSystemComponent(super.hardwareMap);
         IntakeComponent intakeComponent = new IntakeComponent(super.hardwareMap);
-        ArmComponent armComponent = new ArmComponent(super.hardwareMap);
+        LiftComponent liftComponent = new LiftComponent(super.hardwareMap);
+        SlideComponent slideComponent = new SlideComponent(super.hardwareMap);
+
 
         // Create the controllers
         this.controlSystemController = new ControlSystemController(controlSystemComponent, ControlSystemController.Strategy.MANUAL);
         this.intakeController = new IntakeController(intakeComponent);
-        this.armController = new ArmController(armComponent, telemetry); // Pass telemetry here
+        this.liftController = new LiftController(liftComponent, telemetry);
+        this.slideController = new SlideController(slideComponent, telemetry);
 
         // Initialize the controllers
         this.controlSystemController.initialize();
         this.intakeController.initialize();
-        this.armController.initialize();
+        this.liftController.initialize();
+        this.slideController.initialize();
 
         // Initialize the vision system (if needed)
 
         // Initialize any autonomous controlled teleop sequences
         telemetry.addData("Status", "Initialized!");
         telemetry.update();
+
 
     }
 
@@ -90,9 +102,10 @@ public class Teleop extends LinearOpMode {
             this.operatorGamePad.update();
 
             // Update the component controllers
-            this.armController.update();
+            this.liftController.update();
             this.intakeController.update();
 
+            this.handleSlide();
             this.handleDrive(); // Handle Drive
 
         }
@@ -130,15 +143,7 @@ public class Teleop extends LinearOpMode {
                     offsetHeading = drive.getRawExternalHeading();
                 break;
 
-            case FtcGamePad.GAMEPAD_DPAD_LEFT:
-                if(isPressed)
-                    this.armController.setTargetArmPosition(ArmController.ArmPosition.HANG_READY);
-                break;
 
-            case FtcGamePad.GAMEPAD_DPAD_RIGHT:
-                if(isPressed)
-                    this.armController.setTargetArmPosition(ArmController.ArmPosition.HANG_DONE);
-                break;
 
             case FtcGamePad.GAMEPAD_RBUMPER:
                 if(isPressed) {
@@ -159,7 +164,7 @@ public class Teleop extends LinearOpMode {
             this.shouldAutoDisableSlowMode = false;
         }
     }
-
+    
     private void onOperatorGamePadChange(FtcGamePad gamePad, int button, boolean isPressed) {
 
         switch (button) {
@@ -167,15 +172,8 @@ public class Teleop extends LinearOpMode {
             case FtcGamePad.GAMEPAD_DPAD_DOWN:
                 if(isPressed) {
 
-                    this.armController.setShoulderMaxPower(0.2);
-
-                    if(this.armController.getTargetArmPosition() == ArmController.ArmPosition.TOP_BASKET) {
-                        this.armController.setTargetArmPosition(ArmController.ArmPosition.BOTTOM_BAR);
-                    } else {
-                        this.armController.setTargetArmPosition(ArmController.ArmPosition.REST);
-                    }
-
-                    this.intakeController.TopBasketPivotYPosition();
+                    this.liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
+                    this.intakeController.passOffPivotYPosition();
                     autoDisableSlowMode();
 
                 }
@@ -184,9 +182,9 @@ public class Teleop extends LinearOpMode {
 
             case FtcGamePad.GAMEPAD_DPAD_LEFT:
                 if(isPressed) {
-                    this.armController.setShoulderMaxPower(0.4);
-                    this.armController.setTargetArmPosition(ArmController.ArmPosition.BOTTOM_BAR);
-                    this.intakeController.TopBasketPivotYPosition();
+                    this.liftController.setTargetLiftPosition(LiftController.LiftPosition.LOW_BAR);
+                    this.intakeController.passOffPivotYPosition();
+                    this.intakeController.release();
                     autoDisableSlowMode();
                 }
                 break;
@@ -195,8 +193,9 @@ public class Teleop extends LinearOpMode {
 
             case FtcGamePad.GAMEPAD_DPAD_UP:
                 if(isPressed) {
-                    this.intakeController.TelePivotYIntakePosition();
-                    this.armController.setTargetArmPosition(ArmController.ArmPosition.HIGH_BAR);
+                    this.liftController.setTargetLiftPosition(LiftController.LiftPosition.HIGH_BAR);
+                    this.intakeController.passOffPivotYPosition();
+                    this.intakeController.release();
                     autoDisableSlowMode();
                 }
 
@@ -225,7 +224,9 @@ public class Teleop extends LinearOpMode {
 
             case FtcGamePad.GAMEPAD_X:
                 if(isPressed) {
-                    this.armController.setTargetArmPosition(ArmController.ArmPosition.BOTTOM_BASKET);
+                    this.liftController.setTargetLiftPosition(LiftController.LiftPosition.BOTTOM_BASKET);
+                    this.intakeController.passOffPivotYPosition();
+                    this.intakeController.release();
                     this.shouldAutoDisableSlowMode = true;
                     this.isSlowModeEnabled = true;
                 }
@@ -234,40 +235,42 @@ public class Teleop extends LinearOpMode {
 
             case FtcGamePad.GAMEPAD_Y:
                 if(isPressed) {
-                    this.armController.setShoulderMaxPower(0.2);
-                    this.armController.setTargetArmPosition(ArmController.ArmPosition.TOP_BASKET);
+                    this.liftController.setTargetLiftPosition(LiftController.LiftPosition.TOP_BASKET);
+                    this.intakeController.passOffPivotYPosition();
+                    this.intakeController.release();
                     this.shouldAutoDisableSlowMode = true;
                     this.isSlowModeEnabled = true;
-                    this.intakeController.TopBasketPivotYPosition();
+
                 }
 
                 break;
 
             case FtcGamePad.GAMEPAD_LBUMPER:
                 if(isPressed) {
-                    this.armController.setTargetArmPosition(ArmController.ArmPosition.INTAKE);
-                    this.intakeController.TelePivotYIntakePosition();
+                    this.intakeController.intakePivotYPosition();
                     this.autoDisableSlowMode();
                 }
 
                 break;
-
+            //TODO: This Case May Not Be Necessary
             case FtcGamePad.GAMEPAD_RBUMPER:
                 if(isPressed) {
-                    this.armController.setTargetArmPosition(ArmController.ArmPosition.CAPTURE);
-                    this.intakeController.TelePivotYCapturePosition();
+                    this.intakeController.capturePivotYPosition();
                     this.autoDisableSlowMode();
                 }
 
                 break;
 
-            case FtcGamePad.GAMEPAD_LSTICK_BTN:
-                if(isPressed) {
-                    this.intakeController.spinBlock();
-                }
 
         }
 
+    }
+
+    private void handleSlide() {
+        double extendTrigger = gamepad2.right_trigger; // Extend with the right trigger
+        double retractTrigger = gamepad2.left_trigger; // Retract with the left trigger
+
+        slideController.update(extendTrigger, retractTrigger);
     }
 
     // Field-Centric Mecanum Logic

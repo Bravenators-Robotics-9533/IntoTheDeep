@@ -13,19 +13,17 @@ public class IntakeController extends AbstractController {
     public static final double INITIAL_PIVOT_X_POSITION   = 0.40;
     public static final double FULL_PIVOT_X_POSITION      = .725;
 
-    public static final double INITIAL_PIVOT_Y_POSITION   = 1;
-    public static final double AUTO_INTAKE_PIVOT_Y_POSITION = 0;
-    public static final double AUTO_CAPTURE_PIVOT_Y_POSITION = 0.45;
-    public static final double TELE_INTAKE_PIVOT_Y_POSITION = 0.25;
-    public static final double TELE_CAPTURE_PIVOT_Y_POSITION = 0.5;
-    public static final double TELE_PICKUP_PIVOT_Y_POSITION = 0.52;
+    public static final double PASS_OFF_PIVOT_Y_POSITION  = 1;
+    public static final double INTAKE_PIVOT_Y_POSITION    = 0.2;
+    public static final double CAPTURE_PIVOT_Y_POSITION = 0;
+
     public static final double INITIAL_TENSION_L_POSITION = 0;
     public static final double INITIAL_TENSION_R_POSITION = 1;
     public static final double FULL_TENSION_L_POSITION    = 1;
     public static final double FULL_TENSION_R_POSITION    = 0;
     public static final double TENSION_SERVO_L_OFF =0.5;
     public static final double TENSION_SERVO_R_OFF =0.5;
-    public static final double TOP_BASKET_PIVOT_Y_POSITION = 1;
+
 
     protected final IntakeComponent intakeComponent;
 
@@ -39,7 +37,7 @@ public class IntakeController extends AbstractController {
     public void initialize() {
 
 
-        this.intakeComponent.setPivotServoYPosition(INITIAL_PIVOT_Y_POSITION);
+        this.intakeComponent.setPivotServoYPosition(PASS_OFF_PIVOT_Y_POSITION);
         this.intakeComponent.setTensionServoLPosition(TENSION_SERVO_L_OFF);
         this.intakeComponent.setTensionServoRPosition(TENSION_SERVO_R_OFF);
 
@@ -76,54 +74,32 @@ public class IntakeController extends AbstractController {
         intakeComponent.setTensionServoRPosition(INITIAL_TENSION_R_POSITION);
     }
 
-    public void spinBlock(){
-        intakeComponent.setTensionServoLPosition(INITIAL_TENSION_L_POSITION);
-        intakeComponent.setTensionServoRPosition(FULL_TENSION_R_POSITION);
-    }
 
     public void togglePivotYPosition() {
 
-        if(intakeComponent.getTargetPivotServoYPosition() == TELE_INTAKE_PIVOT_Y_POSITION)
-            intakeComponent.setPivotServoYPosition(TELE_PICKUP_PIVOT_Y_POSITION);
+        if(intakeComponent.getTargetPivotServoYPosition() == INTAKE_PIVOT_Y_POSITION)
+            intakeComponent.setPivotServoYPosition(CAPTURE_PIVOT_Y_POSITION);
         else
-            intakeComponent.setPivotServoYPosition(TELE_INTAKE_PIVOT_Y_POSITION);
+            intakeComponent.setPivotServoYPosition(INTAKE_PIVOT_Y_POSITION);
 
     }
-    public void PivotYRestPosition() {
+    public void passOffPivotYPosition() {
 
-        intakeComponent.setPivotServoYPosition(AUTO_CAPTURE_PIVOT_Y_POSITION);
-
-    }
-    public void AutoPivotYCapturePosition() {
-
-        intakeComponent.setPivotServoYPosition(AUTO_CAPTURE_PIVOT_Y_POSITION);
-
-    }
-    public void AutoPivotYIntakePosition(){
-
-        intakeComponent.setPivotServoYPosition(AUTO_INTAKE_PIVOT_Y_POSITION
-        );
-
-    }
-    public void TelePivotYCapturePosition() {
-
-        intakeComponent.setPivotServoYPosition(TELE_CAPTURE_PIVOT_Y_POSITION);
+        intakeComponent.setPivotServoYPosition(PASS_OFF_PIVOT_Y_POSITION);
 
     }
 
-    public void TelePivotYIntakePosition(){
 
-        intakeComponent.setPivotServoYPosition(TELE_INTAKE_PIVOT_Y_POSITION);
+    public void capturePivotYPosition() {
+
+        intakeComponent.setPivotServoYPosition(CAPTURE_PIVOT_Y_POSITION);
 
     }
 
-    public void TelePivotYPickupPosition() {
+    public void intakePivotYPosition(){
 
-        intakeComponent.setPivotServoYPosition(TELE_PICKUP_PIVOT_Y_POSITION);
-    }
+        intakeComponent.setPivotServoYPosition(INTAKE_PIVOT_Y_POSITION);
 
-    public void TopBasketPivotYPosition() {
-        intakeComponent.setPivotServoYPosition(TOP_BASKET_PIVOT_Y_POSITION);
     }
 
 
