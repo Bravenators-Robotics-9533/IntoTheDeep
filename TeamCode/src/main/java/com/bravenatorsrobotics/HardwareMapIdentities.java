@@ -7,9 +7,8 @@ public final class HardwareMapIdentities {
 
     public static final String SLIDE_MOTOR = "slideMotor";
 
-    //TODO: the shoulder and elbow need to be removed
-    public static final String SHOULDER_MOTOR = "shoulder";
-    public static final String ELBOW_MOTOR = "elbow";
+    public static final String OUTTAKE_CLAW = "passoffclaw";
+    public static final String WALL_CLAW = "wallclaw";
 
     public static final String INTAKE_PIVOT_Y = "intakePivotY";
     public static final String INTAKE_TENSION_L = "intakeTensionL";

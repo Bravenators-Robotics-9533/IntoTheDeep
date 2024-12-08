@@ -5,11 +5,13 @@ import com.bravenatorsrobotics.components.LiftComponent;
 import com.bravenatorsrobotics.components.SlideComponent;
 import com.bravenatorsrobotics.components.ControlSystemComponent;
 import com.bravenatorsrobotics.components.IntakeComponent;
+import com.bravenatorsrobotics.components.OuttakeComponent;
 import com.bravenatorsrobotics.config.ConfigMap;
 import com.bravenatorsrobotics.controllers.LiftController;
 import com.bravenatorsrobotics.controllers.SlideController;
 import com.bravenatorsrobotics.controllers.ControlSystemController;
 import com.bravenatorsrobotics.controllers.IntakeController;
+import com.bravenatorsrobotics.controllers.OuttakeController;
 import com.bravenatorsrobotics.io.FtcGamePad;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -40,6 +42,7 @@ public class Teleop extends LinearOpMode {
     // Controllers
     private ControlSystemController controlSystemController;
     private IntakeController intakeController;
+    private OuttakeController outtakeController;
     private LiftController liftController;
     private SlideController slideController;
 
@@ -65,6 +68,7 @@ public class Teleop extends LinearOpMode {
         // Initialize our components
         ControlSystemComponent controlSystemComponent = new ControlSystemComponent(super.hardwareMap);
         IntakeComponent intakeComponent = new IntakeComponent(super.hardwareMap);
+        OuttakeComponent outtakeComponent = new OuttakeComponent(super.hardwareMap);
         LiftComponent liftComponent = new LiftComponent(super.hardwareMap);
         SlideComponent slideComponent = new SlideComponent(super.hardwareMap);
 
@@ -72,12 +76,14 @@ public class Teleop extends LinearOpMode {
         // Create the controllers
         this.controlSystemController = new ControlSystemController(controlSystemComponent, ControlSystemController.Strategy.MANUAL);
         this.intakeController = new IntakeController(intakeComponent);
+        this.outtakeController = new OuttakeController(outtakeComponent);
         this.liftController = new LiftController(liftComponent, telemetry);
         this.slideController = new SlideController(slideComponent, telemetry);
 
         // Initialize the controllers
         this.controlSystemController.initialize();
         this.intakeController.initialize();
+        this.outtakeController.initialize();
         this.liftController.initialize();
         this.slideController.initialize();
 
@@ -104,6 +110,7 @@ public class Teleop extends LinearOpMode {
             // Update the component controllers
             this.liftController.update();
             this.intakeController.update();
+            this.outtakeController.update();
 
             this.handleSlide();
             this.handleDrive(); // Handle Drive
@@ -164,7 +171,7 @@ public class Teleop extends LinearOpMode {
             this.shouldAutoDisableSlowMode = false;
         }
     }
-    
+
     private void onOperatorGamePadChange(FtcGamePad gamePad, int button, boolean isPressed) {
 
         switch (button) {
@@ -173,6 +180,7 @@ public class Teleop extends LinearOpMode {
                 if(isPressed) {
 
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
+                    this.outtakeController.outtakeServoOpen();
                     this.intakeController.passOffPivotYPosition();
                     autoDisableSlowMode();
 
@@ -183,6 +191,7 @@ public class Teleop extends LinearOpMode {
             case FtcGamePad.GAMEPAD_DPAD_LEFT:
                 if(isPressed) {
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.LOW_BAR);
+                    outtakeController.outtakeServoClosed();
                     this.intakeController.passOffPivotYPosition();
                     this.intakeController.release();
                     autoDisableSlowMode();
@@ -194,6 +203,7 @@ public class Teleop extends LinearOpMode {
             case FtcGamePad.GAMEPAD_DPAD_UP:
                 if(isPressed) {
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.HIGH_BAR);
+                    this.outtakeController.outtakeServoClosed();
                     this.intakeController.passOffPivotYPosition();
                     this.intakeController.release();
                     autoDisableSlowMode();
@@ -225,6 +235,7 @@ public class Teleop extends LinearOpMode {
             case FtcGamePad.GAMEPAD_X:
                 if(isPressed) {
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.BOTTOM_BASKET);
+                    this.outtakeController.outtakeServoClosed();
                     this.intakeController.passOffPivotYPosition();
                     this.intakeController.release();
                     this.shouldAutoDisableSlowMode = true;
@@ -236,6 +247,7 @@ public class Teleop extends LinearOpMode {
             case FtcGamePad.GAMEPAD_Y:
                 if(isPressed) {
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.TOP_BASKET);
+                    this.outtakeController.outtakeServoClosed();
                     this.intakeController.passOffPivotYPosition();
                     this.intakeController.release();
                     this.shouldAutoDisableSlowMode = true;
@@ -244,7 +256,7 @@ public class Teleop extends LinearOpMode {
                 }
 
                 break;
-
+            //TODO: This Case May Not Be Necessary
             case FtcGamePad.GAMEPAD_LBUMPER:
                 if(isPressed) {
                     this.intakeController.intakePivotYPosition();
@@ -252,10 +264,10 @@ public class Teleop extends LinearOpMode {
                 }
 
                 break;
-            //TODO: This Case May Not Be Necessary
+            
             case FtcGamePad.GAMEPAD_RBUMPER:
                 if(isPressed) {
-                    this.intakeController.capturePivotYPosition();
+                    this.outtakeController.outtakeServoOpen();
                     this.autoDisableSlowMode();
                 }
 

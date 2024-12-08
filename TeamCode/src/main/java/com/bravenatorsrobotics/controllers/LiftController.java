@@ -1,9 +1,8 @@
 package com.bravenatorsrobotics.controllers;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.bravenatorsrobotics.components.ArmComponent;
 import com.bravenatorsrobotics.components.LiftComponent;
-import com.bravenatorsrobotics.utils.MovementConstraint;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @Config
