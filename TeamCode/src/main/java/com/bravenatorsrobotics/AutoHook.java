@@ -5,8 +5,10 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.bravenatorsrobotics.components.IntakeComponent;
+import com.bravenatorsrobotics.components.LiftComponent;
 import com.bravenatorsrobotics.config.ConfigMap;
 import com.bravenatorsrobotics.controllers.IntakeController;
+import com.bravenatorsrobotics.controllers.LiftController;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -18,7 +20,7 @@ import org.firstinspires.ftc.teamcode.drive.MecanumDrive;
 public class AutoHook extends LinearOpMode {
 
 
-    private ArmController armController;
+    private LiftController liftController;
     private IntakeController intakeController;
 
     private MecanumDrive drive;
@@ -32,8 +34,8 @@ public class AutoHook extends LinearOpMode {
 
         drive = new MecanumDrive(super.hardwareMap);
 
-        ArmComponent armComponent = new ArmComponent(super.hardwareMap);
-        this.armController = new ArmController(armComponent, telemetry);
+        LiftComponent armComponent = new LiftComponent(super.hardwareMap);
+        this.liftController = new LiftController(armComponent, telemetry);
 
         IntakeComponent intakeComponent = new IntakeComponent(super.hardwareMap);
         this.intakeController = new IntakeController(intakeComponent);
@@ -77,7 +79,7 @@ public class AutoHook extends LinearOpMode {
     }
 
     private void update() {
-        this.armController.update();
+        this.liftController.update();
         this.intakeController.update();
 
         this.drive.update();
@@ -99,9 +101,9 @@ public class AutoHook extends LinearOpMode {
         sleep(8000);
 
         //this.intakeController.release();
-        this.armController.setTargetArmPosition(ArmController.ArmPosition.HIGH_BAR);
+        this.liftController.setTargetLiftPosition(LiftController.LiftPosition.HIGH_BAR);
         sleep(750);
-        this.intakeController.AutoPivotYIntakePosition();
+        this.intakeController.intakePivotYPosition();
 
 
         sleep(3000);
@@ -117,7 +119,7 @@ public class AutoHook extends LinearOpMode {
         this.loopUntilDriveDone(); // Stuck until trajectory done.
 
         sleep(750);
-        this.intakeController.TelePivotYCapturePosition();
+        this.intakeController.capturePivotYPosition();
         sleep(500);
 
         Trajectory moveToScore = drive.trajectoryBuilder(new Pose2d(22.5, 54, Math.toRadians(90)))
@@ -128,7 +130,7 @@ public class AutoHook extends LinearOpMode {
         this.loopUntilDriveDone();
         this.intakeController.tension();
 
-        this.armController.setTargetArmPosition(ArmController.ArmPosition.REST);
+        this.liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
 
 
         sleep(1500);
@@ -146,7 +148,7 @@ public class AutoHook extends LinearOpMode {
 
 
         while(opModeIsActive()) {
-            this.armController.update();
+            this.liftController.update();
         }
 
     }

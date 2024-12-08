@@ -5,8 +5,10 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.bravenatorsrobotics.components.IntakeComponent;
+import com.bravenatorsrobotics.components.LiftComponent;
 import com.bravenatorsrobotics.config.ConfigMap;
 import com.bravenatorsrobotics.controllers.IntakeController;
+import com.bravenatorsrobotics.controllers.LiftController;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -18,7 +20,7 @@ import org.firstinspires.ftc.teamcode.drive.MecanumDrive;
 public class Auto extends LinearOpMode {
 
 
-    private ArmController armController;
+    private LiftController liftController;
     private IntakeController intakeController;
 
     private MecanumDrive drive;
@@ -32,8 +34,8 @@ public class Auto extends LinearOpMode {
 
         drive = new MecanumDrive(super.hardwareMap);
 
-        ArmComponent armComponent = new ArmComponent(super.hardwareMap);
-        this.armController = new ArmController(armComponent, telemetry);
+        LiftComponent armComponent = new LiftComponent(super.hardwareMap);
+        this.liftController = new LiftController(armComponent, telemetry);
 
         IntakeComponent intakeComponent = new IntakeComponent(super.hardwareMap);
         this.intakeController = new IntakeController(intakeComponent);
@@ -77,7 +79,7 @@ public class Auto extends LinearOpMode {
     }
 
     private void update() {
-        this.armController.update();
+        this.liftController.update();
         this.intakeController.update();
 
         this.drive.update();
@@ -97,13 +99,12 @@ public class Auto extends LinearOpMode {
             return;
 
         //this.intakeController.release();
-        this.intakeController.AutoPivotYCapturePosition();
-        this.armController.setTargetArmPosition(ArmController.ArmPosition.CAPTURE);
+        this.intakeController.capturePivotYPosition();
+        this.liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
 
         sleep(1500);
 
-        this.armController.setShoulderMaxPower(0.2);
-        this.armController.setTargetArmPosition(ArmController.ArmPosition.TOP_BASKET);
+        this.liftController.setTargetLiftPosition(LiftController.LiftPosition.TOP_BASKET);
 
 
         sleep(2000);
@@ -125,7 +126,7 @@ public class Auto extends LinearOpMode {
         this.loopUntilDriveDone();
 
         // Drop the thing
-        this.intakeController.AutoPivotYCapturePosition();
+        this.intakeController.capturePivotYPosition();
         this.intakeController.tension();
 
 
@@ -140,7 +141,7 @@ public class Auto extends LinearOpMode {
 
 
         sleep(1000);
-        this.armController.setTargetArmPosition(ArmController.ArmPosition.REST);
+        this.liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
 
         Trajectory swingAround = drive.trajectoryBuilder(new Pose2d(45.0, 48.0), Math.toRadians(225))
                 .lineToLinearHeading(new Pose2d(49 + 15, 42, Math.toRadians(90)))
@@ -167,10 +168,10 @@ public class Auto extends LinearOpMode {
         drive.followTrajectoryAsync(parkParkLOLNickWroteThis);
         this.loopUntilDriveDone();
 
-        this.armController.setTargetArmPosition(ArmController.ArmPosition.TOUCH_GRASS);
+        this.liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
 
         while(opModeIsActive()) {
-            this.armController.update();
+            this.liftController.update();
         }
 
     }
