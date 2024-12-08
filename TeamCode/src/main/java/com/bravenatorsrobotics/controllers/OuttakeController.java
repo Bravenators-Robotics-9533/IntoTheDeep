@@ -6,8 +6,11 @@ import com.bravenatorsrobotics.components.OuttakeComponent;
 @Config
 public class OuttakeController extends AbstractController {
 
-    public static final double OUTTAKE_CLOSED = 0;
-    public static final double OUTTAKE_OPEN = 1;
+    public static final double PASS_OFF_CLOSED = 0;
+    public static final double PASS_OFF_OPEN = 1;
+
+    public static final double WALL_CLAW_CLOSED = 0;
+    public static final double WALL_CLAW_OPEN = 1;
 
     private final OuttakeComponent outtakeComponent;
 
@@ -15,10 +18,12 @@ public class OuttakeController extends AbstractController {
         this.outtakeComponent = outtakeComponent;
     }
 
+
     @Override
     public void initialize() {
         // Initialize the outtake servo in the closed position
-        this.outtakeComponent.setOuttakeServoPosition(OUTTAKE_CLOSED);
+        this.outtakeComponent.setPassOffServoPosition(PASS_OFF_OPEN);
+        this.outtakeComponent.setWallClawServoPosition(WALL_CLAW_CLOSED);
     }
 
     @Override
@@ -29,26 +34,35 @@ public class OuttakeController extends AbstractController {
     /**
      * Opens the outtake servo.
      */
-    public void outtakeServoOpen() {
-        outtakeComponent.setOuttakeServoPosition(OUTTAKE_OPEN);
+    public void passOffServoOpen() {
+        outtakeComponent.setPassOffServoPosition(PASS_OFF_OPEN);
     }
 
     /**
      * Toggles the outtake position between open and closed.
      */
-    public void toggleOuttakePosition() {
+    public void togglePassOffServoPosition() {
         double currentPosition = outtakeComponent.getTargetOuttakeServoPosition();
-        if (currentPosition == OUTTAKE_CLOSED) {
-            outtakeComponent.setOuttakeServoPosition(OUTTAKE_OPEN);
+        if (currentPosition == PASS_OFF_CLOSED) {
+            outtakeComponent.setPassOffServoPosition(PASS_OFF_OPEN);
         } else {
-            outtakeComponent.setOuttakeServoPosition(OUTTAKE_CLOSED);
+            outtakeComponent.setPassOffServoPosition(PASS_OFF_CLOSED);
+        }
+    }
+
+    public void toggleWallClawServoPosition() {
+        double currentPosition = outtakeComponent.getTargetWallClawServoPosition();
+        if (currentPosition == WALL_CLAW_CLOSED) {
+            outtakeComponent.setWallClawServoPosition(WALL_CLAW_OPEN);
+        } else {
+            outtakeComponent.setWallClawServoPosition(WALL_CLAW_OPEN);
         }
     }
 
     /**
      * Sets the outtake servo to the closed position.
      */
-    public void outtakeServoClosed() {
-        outtakeComponent.setOuttakeServoPosition(OUTTAKE_CLOSED);
+    public void passOffServoClosed() {
+        outtakeComponent.setPassOffServoPosition(PASS_OFF_CLOSED);
     }
 }

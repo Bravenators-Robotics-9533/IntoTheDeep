@@ -7,12 +7,14 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class OuttakeComponent extends AbstractComponent {
 
 
-    protected final Servo outtakeServo;
+    protected final Servo passOffServo;
+    protected final Servo wallClawServo;
 
     public OuttakeComponent(HardwareMap hardwareMap) {
         super(hardwareMap);
 
-        outtakeServo    = hardwareMap.get(Servo.class, HardwareMapIdentities.OUTTAKE_CLAW);
+        passOffServo    = hardwareMap.get(Servo.class, HardwareMapIdentities.PASS_OFF_CLAW);
+        wallClawServo    = hardwareMap.get(Servo.class, HardwareMapIdentities.WALL_CLAW);
     }
 
 
@@ -20,10 +22,18 @@ public class OuttakeComponent extends AbstractComponent {
     /**
      * @param position range [0.0, 1.0]
      */
-    public void setOuttakeServoPosition(double position) {
-        outtakeServo.setPosition(position);
+    public void setPassOffServoPosition(double position) {
+        passOffServo.setPosition(position);
     }
 
-    public double getTargetOuttakeServoPosition() { return outtakeServo.getPosition(); }
+    /**
+     * @param position range [0.0, 1.0]
+     */
+    public void setWallClawServoPosition(double position) {
+        wallClawServo.setPosition(position);
+    }
+
+    public double getTargetWallClawServoPosition() { return wallClawServo.getPosition(); }
+    public double getTargetOuttakeServoPosition() { return passOffServo.getPosition(); }
 
 }
