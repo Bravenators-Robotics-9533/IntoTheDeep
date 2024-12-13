@@ -22,8 +22,8 @@ public class LiftController extends AbstractController {
     public static double LEFT_REST_POSITION = 0.0;
     public static double RIGHT_REST_POSITION = 0.0;
 
-    public static double LEFT_TOP_BASKET_POSITION = 0.0;
-    public static double RIGHT_TOP_BASKET_POSITION = 0.0;
+    public static double LEFT_TOP_BASKET_POSITION = 1.0;
+    public static double RIGHT_TOP_BASKET_POSITION = 1.0;
 
     public static double LEFT_BOTTOM_BASKET_POSITION = 0.0;
     public static double RIGHT_BOTTOM_BASKET_POSITION = 0.0;
@@ -69,8 +69,8 @@ public class LiftController extends AbstractController {
 
     //Set Max Encoder Positions
     //TODO: THESE VALUES WILL NEED TO BE CHANGED (will most likely be the same number)
-    private static final int LEFT_LIFT_MAX_ENCODER_POSITION = 0;
-    private static final int RIGHT_LIFT_MAX_ENCODER_POSITION = 0 ;
+    private static final int LEFT_LIFT_MAX_ENCODER_POSITION = 11350;
+    private static final int RIGHT_LIFT_MAX_ENCODER_POSITION = 11350 ;
 
     private LiftController.LiftPosition targetLiftPosition = LiftController.LiftPosition.REST;
 
@@ -114,8 +114,8 @@ public class LiftController extends AbstractController {
 
     public void printTelemetry() {
 
-        telemetry.addData("Shoulder Motor", (double) liftComponent.lLiftMotor.getCurrentPosition() ); // add / LEFT_LIFT_MAX_ENCODER_POSITION);
-        telemetry.addData("Elbow Motor", (double) liftComponent.rLiftMotor.getCurrentPosition() ); //add / ELBOW_MAX_ENCODER_POSITION
+        telemetry.addData("Left Lift Motor", (double) liftComponent.lLiftMotor.getCurrentPosition() ); // add / LEFT_LIFT_MAX_ENCODER_POSITION);
+        telemetry.addData("Right Lift Motor", (double) liftComponent.rLiftMotor.getCurrentPosition() ); //add / ELBOW_MAX_ENCODER_POSITION
         telemetry.update();
 
     }

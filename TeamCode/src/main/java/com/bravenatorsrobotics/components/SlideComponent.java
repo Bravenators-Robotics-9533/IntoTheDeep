@@ -14,6 +14,8 @@ public class SlideComponent extends AbstractComponent {
     public static int MAX_ENCODER_POSITION = 5000; // Maximum slide extension
     public static int MIN_ENCODER_POSITION = 0;    // Minimum slide retraction
 
+    private int dynamicMinEncoderPosition = MIN_ENCODER_POSITION; // Dynamically updated min position
+
     public DcMotorEx slideMotor;
     public DigitalChannel limitSwitch; // Optional magnetic limit sensor
 
@@ -35,7 +37,7 @@ public class SlideComponent extends AbstractComponent {
         this.resetSystemEncoders();
 
         // Reverse Motor Direction if needed
-        this.slideMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Set Zero Power Behavior
         this.slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -56,7 +58,12 @@ public class SlideComponent extends AbstractComponent {
      * @param power    Motor power (positive value)
      */
     public void setSlidePositionAsync(int position, double power) {
-        position = Math.max(MIN_ENCODER_POSITION, Math.min(MAX_ENCODER_POSITION, position)); // Clamp position
+        // Ensure dynamic minimum position is updated before using it for safety checks
+        updateDynamicMinPosition();
+
+        // Clamp position within encoder limits
+        position = Math.max(dynamicMinEncoderPosition, Math.min(MAX_ENCODER_POSITION, position));
+
         slideMotor.setTargetPosition(position);
         slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slideMotor.setPower(Math.abs(power));
@@ -67,26 +74,26 @@ public class SlideComponent extends AbstractComponent {
      *
      * @param power Motor power (-1.0 to 1.0)
      */
+    // Ensure manual power respects dynamicMinEncoderPosition
     public void setManualPower(double power) {
         int currentPosition = slideMotor.getCurrentPosition();
 
         // Clamp movement based on encoder limits
         if ((power > 0 && currentPosition >= MAX_ENCODER_POSITION) ||
-                (power < 0 && currentPosition <= MIN_ENCODER_POSITION)) {
+                (power < 0 && currentPosition <= dynamicMinEncoderPosition)) {
             slideMotor.setPower(0);
             return;
         }
 
-        // Stop if limit switch is triggered (only for retracting)
         if (power < 0 && limitSwitch != null && !limitSwitch.getState()) {
             slideMotor.setPower(0);
+            dynamicMinEncoderPosition = currentPosition; // Update minimum encoder position dynamically
             return;
         }
 
         slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         slideMotor.setPower(power);
     }
-
     /**
      * Stops the slide motor.
      */
@@ -102,4 +109,32 @@ public class SlideComponent extends AbstractComponent {
     public int getCurrentPosition() {
         return slideMotor.getCurrentPosition();
     }
+
+
+
+
+    /**
+     * Updates the dynamic minimum encoder position if the limit switch is triggered.
+     */
+    public void updateDynamicMinPosition() {
+        if (limitSwitch != null && !limitSwitch.getState()) { // Limit switch is triggered
+            int newMinPosition = getCurrentPosition();
+            if (newMinPosition > dynamicMinEncoderPosition) { // Prevent backward updates
+                dynamicMinEncoderPosition = newMinPosition;
+            }
+        }
+    }
+
+    /**
+     * Gets the current dynamic minimum encoder position.
+     *
+     * @return Dynamic minimum encoder position.
+     */
+    public int getDynamicMinEncoderPosition() {
+        return dynamicMinEncoderPosition;
+    }
+
+
+
+
 }

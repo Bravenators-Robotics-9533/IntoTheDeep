@@ -25,6 +25,9 @@ public class SlideController {
     public void initialize() {
         // Ensure the slide is stopped and encoder values are reset
         slideComponent.resetSystemEncoders();
+
+        // Update the dynamic minimum position based on the limit switch
+        slideComponent.updateDynamicMinPosition();
     }
 
     /**
@@ -37,11 +40,21 @@ public class SlideController {
         // Calculate power based on triggers
         double slidePower = extendTrigger - retractTrigger;
 
+        // Update the dynamic minimum position if the limit switch is triggered
+        slideComponent.updateDynamicMinPosition();
+
         // Apply manual control
         slideComponent.setManualPower(slidePower * SLIDE_POWER);
 
+        // Update the dynamic minimum position if the limit switch is triggered
+        slideComponent.updateDynamicMinPosition();
+
         // Optionally, update telemetry for debugging
         telemetry.addData("Slide Position", slideComponent.getCurrentPosition());
+        telemetry.addData("Dynamic Min Position", slideComponent.getDynamicMinEncoderPosition());
+        if (slideComponent.limitSwitch != null) {
+            telemetry.addData("Limit Switch Triggered", !slideComponent.limitSwitch.getState());
+        }
     }
 
     /**
@@ -50,8 +63,14 @@ public class SlideController {
      * @param position Target encoder position.
      */
     public void moveToPosition(int position) {
-        position = Range.clip(position, SlideComponent.MIN_ENCODER_POSITION, SlideComponent.MAX_ENCODER_POSITION);
+        position = Range.clip(position,
+                slideComponent.getDynamicMinEncoderPosition(),
+                SlideComponent.MAX_ENCODER_POSITION);
         this.targetPosition = position;
+
+        // Ensure dynamic minimum position is updated before moving to the target position
+        slideComponent.updateDynamicMinPosition();
+
         slideComponent.setSlidePositionAsync(targetPosition, SLIDE_POWER);
     }
 

@@ -29,8 +29,8 @@ public class LiftComponent extends AbstractComponent {
 
 
         // Set Zero Power Behavior
-        this.rLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        this.lLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.rLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        this.lLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     }
 
     /**

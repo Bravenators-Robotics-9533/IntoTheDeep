@@ -282,6 +282,9 @@ public class Teleop extends LinearOpMode {
         double extendTrigger = gamepad2.right_trigger; // Extend with the right trigger
         double retractTrigger = gamepad2.left_trigger; // Retract with the left trigger
 
+        // Update dynamic minimum position periodically
+        slideController.update(extendTrigger, retractTrigger);
+
         slideController.update(extendTrigger, retractTrigger);
     }
 
