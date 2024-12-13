@@ -6,12 +6,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 @Config
 public class LiftComponent extends AbstractComponent {
 
     public DcMotorEx lLiftMotor;
     public DcMotorEx rLiftMotor;
+    private TouchSensor touchSensor;
 
     public LiftComponent(HardwareMap hardwareMap) {
         super(hardwareMap);
@@ -31,6 +33,9 @@ public class LiftComponent extends AbstractComponent {
         // Set Zero Power Behavior
         this.rLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         this.lLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+        // Initialize the Touch Sensor
+        this.touchSensor = hardwareMap.get(TouchSensor.class, HardwareMapIdentities.LIFT_TOUCH_SENSOR);
     }
 
     /**
@@ -43,6 +48,11 @@ public class LiftComponent extends AbstractComponent {
 
         lLiftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rLiftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    //Check if touch sensor pressed
+    public boolean isTouchSensorPressed() {
+        return touchSensor.isPressed();
     }
 
     /**

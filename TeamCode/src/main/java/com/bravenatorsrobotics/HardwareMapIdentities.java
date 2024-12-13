@@ -15,5 +15,6 @@ public final class HardwareMapIdentities {
     public static final String INTAKE_TENSION_R = "intakeTensionR";
 
     public static final String SLIDE_LIMIT_SWITCH = "limitSwitch";
+    public static final String LIFT_TOUCH_SENSOR = "limitSwitch";
 
 }

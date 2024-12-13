@@ -68,7 +68,6 @@ public class LiftController extends AbstractController {
     }
 
     //Set Max Encoder Positions
-    //TODO: THESE VALUES WILL NEED TO BE CHANGED (will most likely be the same number)
     private static final int LEFT_LIFT_MAX_ENCODER_POSITION = 11350;
     private static final int RIGHT_LIFT_MAX_ENCODER_POSITION = 11350 ;
 
@@ -89,14 +88,12 @@ public class LiftController extends AbstractController {
     @Override
     public void update() {
 
+        if (liftComponent.isTouchSensorPressed()) {
+            this.liftComponent.resetSystemEncoders();
+        }
+
         double targetLeftLiftPosition = targetLiftPosition.leftLiftPosition;
         double targetRightLiftPosition = targetLiftPosition.leftLiftPosition;
-
-        // TODO: REDEFINE CONSTRAINTS TO NOT NEED TO BE BYPASSED
-        /* This shouldn't be conditional. Eventually the constraint system needs to be updated
-         * enough so that the conditional is baked into the logic "shouldRunSafetyChecks" should not
-         * happen. The safety check just needs to be smarter and know what is "safe" and "not safe"
-         */
 
 
         this.liftComponent.setShoulderMotorPositionAsync((int) (targetLeftLiftPosition * LEFT_LIFT_MAX_ENCODER_POSITION), LEFT_LIFT_MAX_POWER);
@@ -110,7 +107,9 @@ public class LiftController extends AbstractController {
         this.targetLiftPosition = liftPosition;
     }
 
-    public LiftController.LiftPosition getTargetLiftPosition() { return this.targetLiftPosition; }
+    public LiftController.LiftPosition getTargetLiftPosition() {
+        return this.targetLiftPosition;
+    }
 
     public void printTelemetry() {
 
