@@ -64,6 +64,8 @@ public class IntakeController extends AbstractController {
     }
 
 
+
+
     public void tension() {
         intakeComponent.setTensionServoLPosition(FULL_TENSION_L_POSITION);
         intakeComponent.setTensionServoRPosition(FULL_TENSION_R_POSITION);

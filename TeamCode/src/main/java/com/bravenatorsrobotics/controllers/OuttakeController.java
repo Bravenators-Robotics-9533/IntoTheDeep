@@ -51,13 +51,21 @@ public class OuttakeController extends AbstractController {
     }
 
     public void toggleWallClawServoPosition() {
-        double currentPosition = outtakeComponent.getTargetWallClawServoPosition();
-        if (currentPosition == WALL_CLAW_CLOSED) {
+        if (outtakeComponent.getTargetWallClawServoPosition() == WALL_CLAW_CLOSED) {
             outtakeComponent.setWallClawServoPosition(WALL_CLAW_OPEN);
         } else {
-            outtakeComponent.setWallClawServoPosition(WALL_CLAW_OPEN);
+            outtakeComponent.setWallClawServoPosition(WALL_CLAW_CLOSED);
         }
     }
+
+    public void wallClawClosed(){
+        outtakeComponent.setWallClawServoPosition(WALL_CLAW_CLOSED);
+    }
+
+    public void wallClawOpen(){
+        outtakeComponent.setWallClawServoPosition(WALL_CLAW_OPEN);
+    }
+
 
     /**
      * Sets the outtake servo to the closed position.

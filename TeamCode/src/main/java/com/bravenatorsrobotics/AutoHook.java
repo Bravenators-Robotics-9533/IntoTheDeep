@@ -6,9 +6,12 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.bravenatorsrobotics.components.IntakeComponent;
 import com.bravenatorsrobotics.components.LiftComponent;
+import com.bravenatorsrobotics.components.OuttakeComponent;
 import com.bravenatorsrobotics.config.ConfigMap;
 import com.bravenatorsrobotics.controllers.IntakeController;
+import com.bravenatorsrobotics.controllers.OuttakeController;
 import com.bravenatorsrobotics.controllers.LiftController;
+import com.bravenatorsrobotics.controllers.OuttakeController;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -22,6 +25,7 @@ public class AutoHook extends LinearOpMode {
 
     private LiftController liftController;
     private IntakeController intakeController;
+    private OuttakeController outtakeController;
 
     private MecanumDrive drive;
 
@@ -40,7 +44,12 @@ public class AutoHook extends LinearOpMode {
         IntakeComponent intakeComponent = new IntakeComponent(super.hardwareMap);
         this.intakeController = new IntakeController(intakeComponent);
 
+        OuttakeComponent outtakeComponent = new OuttakeComponent(super.hardwareMap);
+        this.outtakeController = new OuttakeController(outtakeComponent);
+
         StaticEnvironment.ShouldZeroLift = false;
+
+        this.outtakeController.wallClawClosed();
 
         telemetry.addData("Status", "Initialized!");
         telemetry.update();
@@ -81,6 +90,7 @@ public class AutoHook extends LinearOpMode {
     private void update() {
         this.liftController.update();
         this.intakeController.update();
+        this.outtakeController.update();
 
         this.drive.update();
     }
@@ -98,54 +108,39 @@ public class AutoHook extends LinearOpMode {
         if (!super.opModeIsActive())
             return;
 
-        sleep(8000);
-
-        //this.intakeController.release();
+        this.outtakeController.wallClawClosed();
+        sleep(100);
         this.liftController.setTargetLiftPosition(LiftController.LiftPosition.HIGH_BAR);
-        sleep(750);
-        this.intakeController.intakePivotYPosition();
+        sleep(200);
 
 
-        sleep(3000);
+        drive.setPoseEstimate(new Pose2d(8.5, -63.5, Math.toRadians(270)));
 
-
-        drive.setPoseEstimate(new Pose2d(-22.5, 65, Math.toRadians(90)));
-
-        Trajectory moveOffWall = drive.trajectoryBuilder(new Pose2d(22.5, 65, Math.toRadians(90)))
-                .lineToLinearHeading(new Pose2d(22.5, 54, Math.toRadians(90)))
+        Trajectory moveOffWall = drive.trajectoryBuilder(new Pose2d(8.5, -63.5, Math.toRadians(270)))
+                .lineTo(new Vector2d(8.5, -19.0))
                 .build();
 
         drive.followTrajectoryAsync(moveOffWall);
         this.loopUntilDriveDone(); // Stuck until trajectory done.
 
         sleep(750);
-        this.intakeController.capturePivotYPosition();
-        sleep(500);
+        liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
+        sleep(2000);
 
-        Trajectory moveToScore = drive.trajectoryBuilder(new Pose2d(22.5, 54, Math.toRadians(90)))
-                .lineTo(new Vector2d(22.5, 63))
+        Trajectory moveToScore = drive.trajectoryBuilder(new Pose2d(8.5, -19, Math.toRadians(270)))
+                .lineTo(new Vector2d(8.5, -63.5))
                 .build();
 
         drive.followTrajectoryAsync(moveToScore);
         this.loopUntilDriveDone();
-        this.intakeController.tension();
-
-        this.liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
 
 
-        sleep(1500);
-
-        Trajectory backUp = drive.trajectoryBuilder(new Pose2d(22.5, 53, Math.toRadians(90)))
-                .lineTo(new Vector2d(-55.0, 55.0))
+        Trajectory backUp = drive.trajectoryBuilder(new Pose2d(8.5, -63.5, Math.toRadians(270)))
+                .lineTo(new Vector2d(63.5, -63.5))
                 .build();
 
         drive.followTrajectoryAsync(backUp);
         this.loopUntilDriveDone();
-        this.intakeController.tensionServosOff();
-
-
-        sleep(10000);
-
 
         while(opModeIsActive()) {
             this.liftController.update();

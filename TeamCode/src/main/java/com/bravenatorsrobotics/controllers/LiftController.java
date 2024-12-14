@@ -28,11 +28,11 @@ public class LiftController extends AbstractController {
     public static double LEFT_BOTTOM_BASKET_POSITION = 0.0;
     public static double RIGHT_BOTTOM_BASKET_POSITION = 0.0;
 
-    public static double LEFT_HIGH_BAR_POSITION = 0.0;
-    public static double RIGHT_HIGH_BAR_POSITION = 0.0;
+    public static double LEFT_HIGH_BAR_POSITION = 0.42;
+    public static double RIGHT_HIGH_BAR_POSITION = 0.42;
 
-    public static double LEFT_LOW_BAR_POSITION = 0.0;
-    public static double RIGHT_LOW_BAR_POSITION = 0.0;
+    public static double LEFT_LOW_BAR_POSITION = 0.28;
+    public static double RIGHT_LOW_BAR_POSITION = 0.28;
 
 
 
@@ -68,8 +68,8 @@ public class LiftController extends AbstractController {
     }
 
     //Set Max Encoder Positions
-    private static final int LEFT_LIFT_MAX_ENCODER_POSITION = 11350;
-    private static final int RIGHT_LIFT_MAX_ENCODER_POSITION = 11350 ;
+    private static final int LEFT_LIFT_MAX_ENCODER_POSITION = 11300;
+    private static final int RIGHT_LIFT_MAX_ENCODER_POSITION = 11300 ;
 
     private LiftController.LiftPosition targetLiftPosition = LiftController.LiftPosition.REST;
 

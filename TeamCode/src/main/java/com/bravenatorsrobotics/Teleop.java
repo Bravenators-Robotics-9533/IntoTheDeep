@@ -193,7 +193,6 @@ public class Teleop extends LinearOpMode {
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.LOW_BAR);
                     this.outtakeController.passOffServoClosed();
                     this.intakeController.passOffPivotYPosition();
-                    this.intakeController.release();
                     autoDisableSlowMode();
                 }
                 break;
@@ -205,7 +204,6 @@ public class Teleop extends LinearOpMode {
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.HIGH_BAR);
                     this.outtakeController.passOffServoClosed();
                     this.intakeController.passOffPivotYPosition();
-                    this.intakeController.release();
                     autoDisableSlowMode();
                 }
 
@@ -267,7 +265,7 @@ public class Teleop extends LinearOpMode {
 
             case FtcGamePad.GAMEPAD_RBUMPER:
                 if(isPressed) {
-                    this.outtakeController.passOffServoOpen();
+                    this.outtakeController.toggleWallClawServoPosition();
                     this.autoDisableSlowMode();
                 }
 
