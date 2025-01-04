@@ -112,6 +112,7 @@ public class Teleop extends LinearOpMode {
             this.intakeController.update();
             this.outtakeController.update();
 
+            this.handlePivotServoX();
             this.handleSlide();
             this.handleDrive(); // Handle Drive
 
@@ -271,9 +272,27 @@ public class Teleop extends LinearOpMode {
 
                 break;
 
+            case FtcGamePad.GAMEPAD_RSTICK_BTN:
+                if(isPressed) {
+                    this.intakeController.togglePivotXPosition();
+                    this.autoDisableSlowMode();
+                }
+
+                break;
+
 
         }
 
+    }
+
+
+    private void handlePivotServoX() {
+        double joystickValue = gamepad2.right_stick_x;
+
+        if (Math.abs(joystickValue) > 0.05) { // Joystick input detected
+            intakeController.resetPivotXManualOverride(); // Disable manual override
+            intakeController.updatePivotXPositionFromJoystick(joystickValue);
+        }
     }
 
     private void handleSlide() {
