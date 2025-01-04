@@ -183,6 +183,7 @@ public class Teleop extends LinearOpMode {
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
                     this.outtakeController.passOffServoOpen();
                     this.intakeController.passOffPivotYPosition();
+                    this.intakeController.initialPivotXPosition();
                     autoDisableSlowMode();
 
                 }
@@ -266,7 +267,7 @@ public class Teleop extends LinearOpMode {
 
             case FtcGamePad.GAMEPAD_RBUMPER:
                 if(isPressed) {
-                    this.outtakeController.toggleWallClawServoPosition();
+                    this.intakeController.release();
                     this.autoDisableSlowMode();
                 }
 
@@ -289,7 +290,7 @@ public class Teleop extends LinearOpMode {
     private void handlePivotServoX() {
         double joystickValue = gamepad2.right_stick_x;
 
-        if (Math.abs(joystickValue) > 0.05) { // Joystick input detected
+        if (Math.abs(joystickValue) > 0.02) { // Joystick input detected
             intakeController.resetPivotXManualOverride(); // Disable manual override
             intakeController.updatePivotXPositionFromJoystick(joystickValue);
         }
