@@ -305,8 +305,8 @@ public class Teleop extends LinearOpMode {
             this.gamepad1.setLedColor(180, 0, 255, Gamepad.LED_DURATION_CONTINUOUS);
             this.gamepad2.setLedColor(180, 0, 255, Gamepad.LED_DURATION_CONTINUOUS);
         } else {
-            this.gamepad1.setLedColor(255, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
-            this.gamepad2.setLedColor(0, 0, 255, Gamepad.LED_DURATION_CONTINUOUS);
+            this.gamepad1.setLedColor(0, 0, 255, Gamepad.LED_DURATION_CONTINUOUS);
+            this.gamepad2.setLedColor(255, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
         }
 
 
