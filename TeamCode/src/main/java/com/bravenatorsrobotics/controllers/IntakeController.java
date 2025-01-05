@@ -4,10 +4,6 @@ import com.acmerobotics.dashboard.config.Config;
 import com.bravenatorsrobotics.components.IntakeComponent;
 import com.qualcomm.robotcore.util.Range;
 
-/*
- * 1. Find and set the intake controller static finals for servo position
- *
- */
 @Config
 public class IntakeController extends AbstractController {
 
@@ -87,6 +83,10 @@ public class IntakeController extends AbstractController {
         intakeComponent.setTensionServoRPosition(FULL_TENSION_R_POSITION);
     }
 
+    public boolean isInReleasePosition() {
+        return intakeComponent.getTargetTensionServoLPosition() == FULL_TENSION_L_POSITION
+            || intakeComponent.getTargetTensionServoRPosition() == FULL_TENSION_R_POSITION;
+    }
 
     public void togglePivotXPosition() {
         isPivotXManualOverride = true; // Enable manual override
@@ -97,40 +97,20 @@ public class IntakeController extends AbstractController {
         }
     }
 
-
     public void togglePivotYPosition() {
 
-        if (intakeComponent.getTargetPivotServoYPosition() == INTAKE_PIVOT_Y_POSITION)
+        if (intakeComponent.getTargetPivotServoYPosition() == INTAKE_PIVOT_Y_POSITION) {
             intakeComponent.setPivotServoYPosition(CAPTURE_PIVOT_Y_POSITION);
-        else
+        } else {
             intakeComponent.setPivotServoYPosition(INTAKE_PIVOT_Y_POSITION);
+        }
 
     }
 
-    public void passOffPivotYPosition() {
-
-        intakeComponent.setPivotServoYPosition(PASS_OFF_PIVOT_Y_POSITION);
-
-    }
-
-
-    public void capturePivotYPosition() {
-
-        intakeComponent.setPivotServoYPosition(CAPTURE_PIVOT_Y_POSITION);
-
-    }
-
-    public void intakePivotYPosition() {
-
-        intakeComponent.setPivotServoYPosition(INTAKE_PIVOT_Y_POSITION);
-
-    }
-
-    public void initialPivotXPosition(){
-
-        intakeComponent.setPivotServoXPosition(INITIAL_PIVOT_X_POSITION);
-
-    }
+    public void goToPassOffPivotYPosition() { intakeComponent.setPivotServoYPosition(PASS_OFF_PIVOT_Y_POSITION); }
+    public void goToCapturePivotYPosition() { intakeComponent.setPivotServoYPosition(CAPTURE_PIVOT_Y_POSITION); }
+    public void goToIntakePivotYPosition() { intakeComponent.setPivotServoYPosition(INTAKE_PIVOT_Y_POSITION); }
+    public void goToInitialPivotXPosition() { intakeComponent.setPivotServoXPosition(INITIAL_PIVOT_X_POSITION); }
 
     // Method for joystick dynamic control
     public void updatePivotXPositionFromJoystick(double joystickValue) {

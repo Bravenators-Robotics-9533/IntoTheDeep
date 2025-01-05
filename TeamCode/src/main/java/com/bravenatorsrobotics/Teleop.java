@@ -16,6 +16,7 @@ import com.bravenatorsrobotics.io.FtcGamePad;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.drive.MecanumDrive;
@@ -93,7 +94,6 @@ public class Teleop extends LinearOpMode {
         telemetry.addData("Status", "Initialized!");
         telemetry.update();
 
-
     }
 
     private void runUpdateLoop() {
@@ -106,6 +106,9 @@ public class Teleop extends LinearOpMode {
             // Handle the GamePads
             this.driverGamePad.update();
             this.operatorGamePad.update();
+
+            // Update Status LED
+            this.updateStatusLED();
 
             // Update the component controllers
             this.liftController.update();
@@ -182,8 +185,8 @@ public class Teleop extends LinearOpMode {
 
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
                     this.outtakeController.passOffServoOpen();
-                    this.intakeController.passOffPivotYPosition();
-                    this.intakeController.initialPivotXPosition();
+                    this.intakeController.goToPassOffPivotYPosition();
+                    this.intakeController.goToInitialPivotXPosition();
                     autoDisableSlowMode();
 
                 }
@@ -194,7 +197,7 @@ public class Teleop extends LinearOpMode {
                 if(isPressed) {
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.LOW_BAR);
                     this.outtakeController.passOffServoClosed();
-                    this.intakeController.passOffPivotYPosition();
+                    this.intakeController.goToPassOffPivotYPosition();
                     autoDisableSlowMode();
                 }
                 break;
@@ -205,7 +208,7 @@ public class Teleop extends LinearOpMode {
                 if(isPressed) {
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.HIGH_BAR);
                     this.outtakeController.passOffServoClosed();
-                    this.intakeController.passOffPivotYPosition();
+                    this.intakeController.goToPassOffPivotYPosition();
                     autoDisableSlowMode();
                 }
 
@@ -236,7 +239,7 @@ public class Teleop extends LinearOpMode {
                 if(isPressed) {
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.BOTTOM_BASKET);
                     this.outtakeController.passOffServoClosed();
-                    this.intakeController.passOffPivotYPosition();
+                    this.intakeController.goToPassOffPivotYPosition();
                     this.intakeController.release();
                     this.shouldAutoDisableSlowMode = true;
                     this.isSlowModeEnabled = true;
@@ -248,7 +251,7 @@ public class Teleop extends LinearOpMode {
                 if(isPressed) {
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.TOP_BASKET);
                     this.outtakeController.passOffServoClosed();
-                    this.intakeController.passOffPivotYPosition();
+                    this.intakeController.goToPassOffPivotYPosition();
                     this.intakeController.release();
                     this.shouldAutoDisableSlowMode = true;
                     this.isSlowModeEnabled = true;
@@ -296,14 +299,28 @@ public class Teleop extends LinearOpMode {
         }
     }
 
+    private void updateStatusLED() {
+
+        if(this.intakeController.isInReleasePosition()) {
+            this.gamepad1.setLedColor(180, 0, 255, Gamepad.LED_DURATION_CONTINUOUS);
+            this.gamepad2.setLedColor(180, 0, 255, Gamepad.LED_DURATION_CONTINUOUS);
+        } else {
+            this.gamepad1.setLedColor(255, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
+            this.gamepad2.setLedColor(0, 0, 255, Gamepad.LED_DURATION_CONTINUOUS);
+        }
+
+
+    }
+
     private void handleSlide() {
+
         double extendTrigger = gamepad2.right_trigger; // Extend with the right trigger
         double retractTrigger = gamepad2.left_trigger; // Retract with the left trigger
 
         // Update dynamic minimum position periodically
         slideController.update(extendTrigger, retractTrigger);
-
         slideController.update(extendTrigger, retractTrigger);
+
     }
 
     // Field-Centric Mecanum Logic

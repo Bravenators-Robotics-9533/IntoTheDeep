@@ -99,7 +99,7 @@ public class Auto extends LinearOpMode {
             return;
 
         //this.intakeController.release();
-        this.intakeController.capturePivotYPosition();
+        this.intakeController.goToCapturePivotYPosition();
         this.liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
 
         sleep(1500);
@@ -126,7 +126,7 @@ public class Auto extends LinearOpMode {
         this.loopUntilDriveDone();
 
         // Drop the thing
-        this.intakeController.capturePivotYPosition();
+        this.intakeController.goToCapturePivotYPosition();
         this.intakeController.tension();
 
 
