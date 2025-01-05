@@ -25,7 +25,7 @@ public class DriveConstants {
     public static final double MAX_RPM          = 312.5;
 
     /*
-     * Set RUN_USING_ENCODER to true to enable built-in hub velocity control using drive encoders.
+     * Set RUN_USING_ENCODER to true to enable built-in hub velocity control using drive encoders.  `
      * Set this flag to false if drive encoders are not present and an alternative localization
      * method is in use (e.g., tracking wheels).
      *
@@ -77,9 +77,9 @@ public class DriveConstants {
      * Adjust the orientations here to match your robot. See the FTC SDK documentation for details.
      */
     public static RevHubOrientationOnRobot.LogoFacingDirection LOGO_FACING_DIR =
-            RevHubOrientationOnRobot.LogoFacingDirection.DOWN;
+            RevHubOrientationOnRobot.LogoFacingDirection.FORWARD;
     public static RevHubOrientationOnRobot.UsbFacingDirection USB_FACING_DIR =
-            RevHubOrientationOnRobot.UsbFacingDirection.RIGHT;
+            RevHubOrientationOnRobot.UsbFacingDirection.LEFT;
 
 
     public static double encoderTicksToInches(double ticks) {
