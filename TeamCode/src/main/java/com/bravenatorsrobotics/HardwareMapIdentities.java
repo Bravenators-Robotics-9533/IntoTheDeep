@@ -8,6 +8,7 @@ public final class HardwareMapIdentities {
     public static final String SLIDE_MOTOR = "slideMotor";
 
     public static final String PASS_OFF_CLAW = "passOffClaw";
+    public static final String PASS_OFF_PIVOT = "passOffPivot";
     public static final String WALL_CLAW = "wallClaw";
 
     public static final String INTAKE_PIVOT_X = "intakePivotX";

@@ -48,7 +48,7 @@ public class IntakeController extends AbstractController {
 
         double distance = intakeComponent.getDistanceInCm();
         String color = intakeComponent.detectBlockColor();
-            if (distance < 1.25 && (intakeComponent.getTargetTensionServoLPosition()==INITIAL_TENSION_L_POSITION && (intakeComponent.getTargetTensionServoRPosition()==INITIAL_TENSION_R_POSITION))) {
+            if (distance < 1.26 && (intakeComponent.getTargetTensionServoLPosition()==INITIAL_TENSION_L_POSITION && (intakeComponent.getTargetTensionServoRPosition()==INITIAL_TENSION_R_POSITION))) {
                  // Replace with your desired threshold
                     tensionServosOff();
             }

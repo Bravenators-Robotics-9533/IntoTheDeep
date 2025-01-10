@@ -68,8 +68,8 @@ public class LiftController extends AbstractController {
     }
 
     //Set Max Encoder Positions
-    private static final int LEFT_LIFT_MAX_ENCODER_POSITION = 11300;
-    private static final int RIGHT_LIFT_MAX_ENCODER_POSITION = 11300 ;
+    private static final int LEFT_LIFT_MAX_ENCODER_POSITION = 10800;
+    private static final int RIGHT_LIFT_MAX_ENCODER_POSITION = 10800 ;
 
     private LiftController.LiftPosition targetLiftPosition = LiftController.LiftPosition.REST;
 

@@ -115,6 +115,7 @@ public class Teleop extends LinearOpMode {
             this.intakeController.update();
             this.outtakeController.update();
 
+            this.handlePassOffPivotServo();
             this.handlePivotServoX();
             this.handleSlide();
             this.handleDrive(); // Handle Drive
@@ -184,7 +185,8 @@ public class Teleop extends LinearOpMode {
                 if(isPressed) {
 
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
-                    this.outtakeController.passOffServoOpen();
+                    this.outtakeController.setPassOffClawOpen();
+                    this.outtakeController.setPassOffPivotInitial();
                     this.intakeController.goToPassOffPivotYPosition();
                     this.intakeController.goToInitialPivotXPosition();
                     autoDisableSlowMode();
@@ -196,7 +198,6 @@ public class Teleop extends LinearOpMode {
             case FtcGamePad.GAMEPAD_DPAD_LEFT:
                 if(isPressed) {
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.LOW_BAR);
-                    this.outtakeController.passOffServoClosed();
                     this.intakeController.goToPassOffPivotYPosition();
                     autoDisableSlowMode();
                 }
@@ -207,7 +208,7 @@ public class Teleop extends LinearOpMode {
             case FtcGamePad.GAMEPAD_DPAD_UP:
                 if(isPressed) {
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.HIGH_BAR);
-                    this.outtakeController.passOffServoClosed();
+                    this.intakeController.release();
                     this.intakeController.goToPassOffPivotYPosition();
                     autoDisableSlowMode();
                 }
@@ -238,7 +239,7 @@ public class Teleop extends LinearOpMode {
             case FtcGamePad.GAMEPAD_X:
                 if(isPressed) {
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.BOTTOM_BASKET);
-                    this.outtakeController.passOffServoClosed();
+                    this.outtakeController.setPassOffClawClosed();
                     this.intakeController.goToPassOffPivotYPosition();
                     this.intakeController.release();
                     this.shouldAutoDisableSlowMode = true;
@@ -250,7 +251,7 @@ public class Teleop extends LinearOpMode {
             case FtcGamePad.GAMEPAD_Y:
                 if(isPressed) {
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.TOP_BASKET);
-                    this.outtakeController.passOffServoClosed();
+                    this.outtakeController.setPassOffClawClosed();
                     this.intakeController.goToPassOffPivotYPosition();
                     this.intakeController.release();
                     this.shouldAutoDisableSlowMode = true;
@@ -284,11 +285,27 @@ public class Teleop extends LinearOpMode {
 
                 break;
 
+            case FtcGamePad.GAMEPAD_LSTICK_BTN:
+                if(isPressed) {
+                    this.outtakeController.togglePassOffClaw();
+                    this.autoDisableSlowMode();
+                }
+
+                break;
+
 
         }
 
     }
 
+    private void handlePassOffPivotServo() {
+        double leftJoystickValue = gamepad2.left_stick_y;
+        if (leftJoystickValue > 0.075) { // Joystick input detected
+            outtakeController.setPassOffPivotInitial();
+        } else if (leftJoystickValue < -0.075) {
+            outtakeController.setPassOffPivotScore();
+        }
+    }
 
     private void handlePivotServoX() {
         double joystickValue = gamepad2.right_stick_x;

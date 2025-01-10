@@ -2,12 +2,18 @@ package com.bravenatorsrobotics.controllers;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.bravenatorsrobotics.components.OuttakeComponent;
+import com.qualcomm.robotcore.util.Range;
 
 @Config
 public class OuttakeController extends AbstractController {
 
-    public static final double PASS_OFF_CLOSED = 0;
-    public static final double PASS_OFF_OPEN = 1;
+    private boolean doesPivothavetarget = false;
+
+    public static final double PASS_OFF_PIVOT_INITIAL = 0.025;
+    public static final double PASS_OFF_PIVOT_SCORE = 1;
+
+    public static final double PASS_OFF_CLAW_CLOSED = 0;
+    public static final double PASS_OFF_CLAW_OPEN = 0.75;
 
     public static final double WALL_CLAW_CLOSED = 0;
     public static final double WALL_CLAW_OPEN = 1;
@@ -21,8 +27,8 @@ public class OuttakeController extends AbstractController {
 
     @Override
     public void initialize() {
-        // Initialize the outtake servo in the closed position
-        this.outtakeComponent.setPassOffServoPosition(PASS_OFF_OPEN);
+        this.outtakeComponent.setPassOffPivotServoPosition(PASS_OFF_PIVOT_INITIAL);
+        this.outtakeComponent.setPassOffClawServoPosition(PASS_OFF_CLAW_OPEN);
         this.outtakeComponent.setWallClawServoPosition(WALL_CLAW_CLOSED);
     }
 
@@ -31,22 +37,23 @@ public class OuttakeController extends AbstractController {
         // No periodic updates required for this controller, as outtake position is managed via direct methods
     }
 
-    /**
-     * Opens the outtake servo.
-     */
-    public void passOffServoOpen() {
-        outtakeComponent.setPassOffServoPosition(PASS_OFF_OPEN);
+
+
+    public void togglePassOffClaw() {
+        double currentPosition = outtakeComponent.getTargetPassOffClawServoPosition();
+        if (currentPosition == PASS_OFF_CLAW_CLOSED) {
+            outtakeComponent.setPassOffClawServoPosition(PASS_OFF_CLAW_OPEN);
+        } else {
+            outtakeComponent.setPassOffClawServoPosition(PASS_OFF_CLAW_CLOSED);
+        }
     }
 
-    /**
-     * Toggles the outtake position between open and closed.
-     */
-    public void togglePassOffServoPosition() {
-        double currentPosition = outtakeComponent.getTargetOuttakeServoPosition();
-        if (currentPosition == PASS_OFF_CLOSED) {
-            outtakeComponent.setPassOffServoPosition(PASS_OFF_OPEN);
+    public void togglePassOffPivot() {
+        double currentPosition = outtakeComponent.getTargetPassOffPivotServoPosition();
+        if (currentPosition == PASS_OFF_PIVOT_INITIAL) {
+            outtakeComponent.setPassOffPivotServoPosition(PASS_OFF_PIVOT_SCORE);
         } else {
-            outtakeComponent.setPassOffServoPosition(PASS_OFF_CLOSED);
+            outtakeComponent.setPassOffPivotServoPosition(PASS_OFF_PIVOT_INITIAL);
         }
     }
 
@@ -58,19 +65,22 @@ public class OuttakeController extends AbstractController {
         }
     }
 
-    public void wallClawClosed(){
+
+    public void setWallClawClosed(){
         outtakeComponent.setWallClawServoPosition(WALL_CLAW_CLOSED);
     }
 
-    public void wallClawOpen(){
+    public void setWallClawOpen(){
         outtakeComponent.setWallClawServoPosition(WALL_CLAW_OPEN);
     }
 
+    public void setPassOffClawClosed() { outtakeComponent.setPassOffClawServoPosition(PASS_OFF_CLAW_CLOSED); }
 
-    /**
-     * Sets the outtake servo to the closed position.
-     */
-    public void passOffServoClosed() {
-        outtakeComponent.setPassOffServoPosition(PASS_OFF_CLOSED);
-    }
+    public void setPassOffClawOpen() { outtakeComponent.setPassOffClawServoPosition(PASS_OFF_CLAW_OPEN); }
+
+    public void setPassOffPivotInitial() { outtakeComponent.setPassOffPivotServoPosition(PASS_OFF_PIVOT_INITIAL); }
+
+    public void setPassOffPivotScore() { outtakeComponent.setPassOffPivotServoPosition(PASS_OFF_PIVOT_SCORE); }
+
+
 }

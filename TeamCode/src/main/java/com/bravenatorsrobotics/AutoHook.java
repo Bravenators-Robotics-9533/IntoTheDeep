@@ -49,7 +49,7 @@ public class AutoHook extends LinearOpMode {
 
         StaticEnvironment.ShouldZeroLift = false;
 
-        this.outtakeController.wallClawClosed();
+        this.outtakeController.setWallClawClosed();
 
         telemetry.addData("Status", "Initialized!");
         telemetry.update();
@@ -108,7 +108,7 @@ public class AutoHook extends LinearOpMode {
         if (!super.opModeIsActive())
             return;
 
-        this.outtakeController.wallClawClosed();
+        this.outtakeController.setWallClawClosed();
         sleep(100);
         this.liftController.setTargetLiftPosition(LiftController.LiftPosition.HIGH_BAR);
         sleep(200);
