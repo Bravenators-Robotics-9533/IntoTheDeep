@@ -111,7 +111,7 @@ public class AutoHook extends LinearOpMode {
         this.outtakeController.setWallClawClosed();
         sleep(100);
         this.liftController.setTargetLiftPosition(LiftController.LiftPosition.HIGH_BAR);
-        sleep(200);
+        sleep(600);
 
 
         drive.setPoseEstimate(new Pose2d(8.5, -63.5, Math.toRadians(270)));
@@ -124,8 +124,11 @@ public class AutoHook extends LinearOpMode {
         this.loopUntilDriveDone(); // Stuck until trajectory done.
 
         sleep(750);
+        liftController.setTargetLiftPosition(LiftController.LiftPosition.LOW_BAR);
+        sleep(1500);
+        outtakeController.setWallClawOpen();
+        sleep(500);
         liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
-        sleep(2000);
 
         Trajectory moveToScore = drive.trajectoryBuilder(new Pose2d(8.5, -19, Math.toRadians(270)))
                 .lineTo(new Vector2d(8.5, -63.5))
