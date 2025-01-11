@@ -165,6 +165,13 @@ public class Teleop extends LinearOpMode {
 
                 break;
 
+            case FtcGamePad.GAMEPAD_Y:
+                if(isPressed) {
+                    liftController.setLiftEncodersTo0();
+                }
+
+                break;
+
         }
 
 

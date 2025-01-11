@@ -13,7 +13,7 @@ public class IntakeController extends AbstractController {
     public static final double FULL_PIVOT_X_POSITION = 1; //Fix Value
 
     public static final double PASS_OFF_PIVOT_Y_POSITION = 0;
-    public static final double INTAKE_PIVOT_Y_POSITION = 0.6 ;
+    public static final double INTAKE_PIVOT_Y_POSITION = 0.57 ;
     public static final double CAPTURE_PIVOT_Y_POSITION = 1;
 
     public static final double INITIAL_TENSION_L_POSITION = 0;

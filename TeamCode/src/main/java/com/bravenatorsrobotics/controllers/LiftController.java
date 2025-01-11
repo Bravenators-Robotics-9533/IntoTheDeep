@@ -119,6 +119,8 @@ public class LiftController extends AbstractController {
 
     }
 
+    public void setLiftEncodersTo0 () { this.liftComponent.resetSystemEncoders(); }
+
 
 
 }
