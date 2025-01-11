@@ -18,8 +18,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.drive.MecanumDrive;
 
 @Config
-@Autonomous(name="Auto2BlockPush", group="Competition")
-public class Auto2BlockPush extends LinearOpMode {
+@Autonomous(name="AutoDoubleHook", group="Competition")
+public class AutoDoubleHook extends LinearOpMode {
 
 
     private LiftController liftController;
@@ -165,43 +165,21 @@ public class Auto2BlockPush extends LinearOpMode {
         drive.followTrajectoryAsync(pushBlock1);
         this.loopUntilDriveDone();
 
-        Trajectory driveUpToPushBlock2 = drive.trajectoryBuilder(new Pose2d(55, -61, Math.toRadians(270)))
-                .lineTo(new Vector2d(55, -14))
-                .build();
+        drive.setPoseEstimate(new Pose2d(70, -61, Math.toRadians(270)));
 
-        drive.followTrajectoryAsync(driveUpToPushBlock2);
-        this.loopUntilDriveDone();
-
-        Trajectory moveToPushBlock2 = drive.trajectoryBuilder(new Pose2d(55, -14, Math.toRadians(270)))
-                .lineTo(new Vector2d(70, -14))
-                .build();
-
-        drive.followTrajectoryAsync(moveToPushBlock2);
-        this.loopUntilDriveDone();
-
-        Trajectory pushBlock2 = drive.trajectoryBuilder(new Pose2d(70, -14, Math.toRadians(270)))
-                .lineTo(new Vector2d(70, -61))
-                .build();
-
-        drive.followTrajectoryAsync(pushBlock2);
-        this.loopUntilDriveDone();
-
-        Trajectory driveUpForHuman = drive.trajectoryBuilder(new Pose2d(70, -61, Math.toRadians(270)))
-                .lineTo(new Vector2d(70, -54.5))
+        Trajectory driveUpForHuman = drive.trajectoryBuilder(drive.getPoseEstimate())
+                .lineTo(new Vector2d(70, -50)) // Pure linear motion
                 .build();
 
         drive.followTrajectoryAsync(driveUpForHuman);
         this.loopUntilDriveDone();
 
-        Trajectory park = drive.trajectoryBuilder(new Pose2d(70, -55, Math.toRadians(270)))
-                .lineTo(new Vector2d(70, -61))
-                .build();
+        drive.turn(Math.toRadians(90) - drive.getPoseEstimate().getHeading());
 
-        drive.followTrajectoryAsync(park);
-        this.loopUntilDriveDone();
+        this.outtakeController.setWallClawOpen();
+        sleep(1500);
 
-
-
+        
 
         while(opModeIsActive()) {
             this.liftController.update();

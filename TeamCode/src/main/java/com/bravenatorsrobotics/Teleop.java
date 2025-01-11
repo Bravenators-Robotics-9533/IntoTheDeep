@@ -326,6 +326,8 @@ public class Teleop extends LinearOpMode {
     private void updateStatusLED() {
 
         if(this.intakeController.isInReleasePosition()) {
+            this.gamepad1.rumble(100);
+            this.gamepad2.rumble(100);
             this.gamepad1.setLedColor(180, 0, 255, Gamepad.LED_DURATION_CONTINUOUS);
             this.gamepad2.setLedColor(180, 0, 255, Gamepad.LED_DURATION_CONTINUOUS);
         } else {
