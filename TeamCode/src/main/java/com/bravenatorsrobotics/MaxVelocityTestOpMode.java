@@ -28,6 +28,13 @@ public class MaxVelocityTestOpMode extends LinearOpMode {
     private void initialize() {
 
         this.gamepad = new FtcGamePad("Gamepad1", super.gamepad1, this::handleGamepad);
+
+        if(!super.hardwareMap.voltageSensor.iterator().hasNext()) {
+            telemetry.addLine("Voltage sensor not found! Please attach or configure");
+            telemetry.update();
+            return;
+        }
+
         this.batteryVoltageSensor = super.hardwareMap.voltageSensor.iterator().next();
 
     }
@@ -74,10 +81,12 @@ public class MaxVelocityTestOpMode extends LinearOpMode {
         telemetry.clearAll();
         telemetry.update();
 
+        double voltage = (this.batteryVoltageSensor != null) ? this.batteryVoltageSensor.getVoltage() : 0;
+
         telemetry.addLine("ALL DONE! Results Below. Please Record ALL RESULTS");
         telemetry.addLine("");
         telemetry.addData("CONFIDENCE INTERVAL", MAX_RECOMMENDED_VELOCITY_CONF_INT);
-        telemetry.addData("BATTERY VOLTAGE", this.batteryVoltageSensor.getVoltage());
+        telemetry.addData("BATTERY VOLTAGE", voltage);
         telemetry.addLine("");
         telemetry.addData("Max Velocity", maxVelocity);
         telemetry.addData("Max Recommended Velocity", maxRecommendedVelocity);
@@ -116,7 +125,15 @@ public class MaxVelocityTestOpMode extends LinearOpMode {
         this.motor.setPower(1.0);
 
         while(!super.isStopRequested() && timer.seconds() < TEST_DURATION_SECONDS) {
-            maxVelocity = Math.max(maxVelocity, this.motor.getVelocity());
+
+            double currVel = this.motor.getVelocity();
+
+            maxVelocity = Math.max(maxVelocity, currVel);
+
+            telemetry.addData("Elapsed Time", timer.seconds());
+            telemetry.addData("Current Velocity", currVel);
+            telemetry.update();
+
         }
 
         this.motor.setPower(0.0);
