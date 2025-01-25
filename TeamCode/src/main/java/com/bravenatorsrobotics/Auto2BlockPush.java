@@ -112,11 +112,10 @@ public class Auto2BlockPush extends LinearOpMode {
         this.liftController.setTargetLiftPosition(LiftController.LiftPosition.HIGH_BAR);
         sleep(500);
 
-
         drive.setPoseEstimate(new Pose2d(11, -63.5, Math.toRadians(270)));
 
         Trajectory moveOffWall = drive.trajectoryBuilder(new Pose2d(11, -63.5, Math.toRadians(270)))
-                .lineTo(new Vector2d(11, -22.0))
+                .lineTo(new Vector2d(11, -24.0))
                 .build();
 
         drive.followTrajectoryAsync(moveOffWall);
@@ -129,13 +128,12 @@ public class Auto2BlockPush extends LinearOpMode {
         sleep(200);
         liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
 
-        Trajectory moveToWall = drive.trajectoryBuilder(new Pose2d(11, -22, Math.toRadians(270)))
+        Trajectory moveToWall = drive.trajectoryBuilder(new Pose2d(11, -24, Math.toRadians(270)))
                 .lineTo(new Vector2d(11, -32))
                 .build();
 
         drive.followTrajectoryAsync(moveToWall);
         this.loopUntilDriveDone();
-
 
         Trajectory lineUpToPush = drive.trajectoryBuilder(new Pose2d(11, -42, Math.toRadians(270)))
                 .lineTo(new Vector2d(45, -42))
@@ -187,7 +185,7 @@ public class Auto2BlockPush extends LinearOpMode {
         this.loopUntilDriveDone();
 
         Trajectory driveUpForHuman = drive.trajectoryBuilder(new Pose2d(70, -61, Math.toRadians(270)))
-                .lineTo(new Vector2d(70, -54.5))
+                .lineTo(new Vector2d(70, -49))
                 .build();
 
         drive.followTrajectoryAsync(driveUpForHuman);
@@ -199,9 +197,6 @@ public class Auto2BlockPush extends LinearOpMode {
 
         drive.followTrajectoryAsync(park);
         this.loopUntilDriveDone();
-
-
-
 
         while(opModeIsActive()) {
             this.liftController.update();

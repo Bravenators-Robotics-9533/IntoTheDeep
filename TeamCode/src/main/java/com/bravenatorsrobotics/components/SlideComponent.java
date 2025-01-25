@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 @Config
 public class SlideComponent extends AbstractComponent {
 
-    public static int MAX_ENCODER_POSITION = 5000; // Maximum slide extension
-    public static int MIN_ENCODER_POSITION = 800;    // Minimum slide retraction
+    public static int MAX_ENCODER_POSITION = 1500; // Maximum slide extension
+    public static int MIN_ENCODER_POSITION = 250;    // Minimum slide retraction
 
     private int dynamicMinEncoderPosition = MIN_ENCODER_POSITION; // Dynamically updated min position
 

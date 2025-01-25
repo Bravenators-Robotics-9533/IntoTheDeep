@@ -196,6 +196,7 @@ public class Teleop extends LinearOpMode {
                     this.outtakeController.setPassOffPivotInitial();
                     this.intakeController.goToPassOffPivotYPosition();
                     this.intakeController.goToInitialPivotXPosition();
+                    this.slideController.disableSlowMode();
                     autoDisableSlowMode();
 
                 }
@@ -206,6 +207,7 @@ public class Teleop extends LinearOpMode {
                 if(isPressed) {
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.LOW_BAR);
                     this.intakeController.goToPassOffPivotYPosition();
+                    this.slideController.disableSlowMode();
                     autoDisableSlowMode();
                 }
                 break;
@@ -217,6 +219,7 @@ public class Teleop extends LinearOpMode {
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.HIGH_BAR);
                     this.intakeController.release();
                     this.intakeController.goToPassOffPivotYPosition();
+                    this.slideController.disableSlowMode();
                     autoDisableSlowMode();
                 }
 
@@ -225,6 +228,7 @@ public class Teleop extends LinearOpMode {
             case FtcGamePad.GAMEPAD_DPAD_RIGHT:
                 if(isPressed) {
                     this.intakeController.togglePivotYPosition();
+
                 }
 
                 break;
@@ -249,6 +253,7 @@ public class Teleop extends LinearOpMode {
                     this.outtakeController.setPassOffClawClosed();
                     this.intakeController.goToPassOffPivotYPosition();
                     this.intakeController.release();
+                    this.slideController.disableSlowMode();
                     this.shouldAutoDisableSlowMode = true;
                     this.isSlowModeEnabled = true;
                 }
@@ -261,6 +266,7 @@ public class Teleop extends LinearOpMode {
                     this.outtakeController.setPassOffClawClosed();
                     this.intakeController.goToPassOffPivotYPosition();
                     this.intakeController.release();
+                    this.slideController.disableSlowMode();
                     this.shouldAutoDisableSlowMode = true;
                     this.isSlowModeEnabled = true;
 
@@ -298,6 +304,11 @@ public class Teleop extends LinearOpMode {
                     this.autoDisableSlowMode();
                 }
 
+                break;
+
+            case FtcGamePad.GAMEPAD_BACK:
+                if(isPressed)
+                    slideController.toggleSlowMode();
                 break;
 
 

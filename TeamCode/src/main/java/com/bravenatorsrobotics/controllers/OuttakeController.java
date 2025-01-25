@@ -16,7 +16,7 @@ public class OuttakeController extends AbstractController {
     public static final double PASS_OFF_CLAW_OPEN = 0.75;
 
     public static final double WALL_CLAW_CLOSED = 0.1;
-    public static final double WALL_CLAW_OPEN = 1;
+    public static final double WALL_CLAW_OPEN = .8;
 
     private final OuttakeComponent outtakeComponent;
 
