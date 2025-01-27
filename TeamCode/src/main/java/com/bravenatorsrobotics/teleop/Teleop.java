@@ -1,4 +1,4 @@
-package com.bravenatorsrobotics;
+package com.bravenatorsrobotics.teleop;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.bravenatorsrobotics.components.LiftComponent;
