@@ -9,6 +9,9 @@ public class SlideController {
     private final SlideComponent slideComponent;
     private final Telemetry telemetry;
     private static final double SLIDE_POWER = 1.0; // Default slide power
+    private boolean isSlowModeEnabled = false;
+    private static final double SLOW_MODE_POWER_SCALING = 0.5;
+
     private int targetPosition; // Target encoder position
 
     public SlideController(SlideComponent slideComponent, Telemetry telemetry) {
@@ -34,6 +37,10 @@ public class SlideController {
     public void update(double extendTrigger, double retractTrigger) {
         // Calculate power based on triggers
         double slidePower = extendTrigger - retractTrigger;
+
+        if (isSlowModeEnabled) {
+            slidePower *= SLOW_MODE_POWER_SCALING;
+        }
 
         // Apply manual control
         slideComponent.setManualPower(slidePower * SLIDE_POWER);
@@ -70,5 +77,13 @@ public class SlideController {
      */
     public int getCurrentPosition() {
         return slideComponent.getCurrentPosition();
+    }
+
+    public void toggleSlowMode() {
+        isSlowModeEnabled = !isSlowModeEnabled;
+    }
+
+    public void disableSlowMode() {
+        isSlowModeEnabled = false;
     }
 }

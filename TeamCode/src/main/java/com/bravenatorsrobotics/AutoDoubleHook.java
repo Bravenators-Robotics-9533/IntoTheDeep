@@ -18,7 +18,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import roadrunner.drive.MecanumDrive;
 
 @Config
-@Autonomous(name="AutoDoubleHook", group="Competition")
+@Autonomous(name="DONOTUSETHISauto", group="Competition")
 public class AutoDoubleHook extends LinearOpMode {
 
 
@@ -179,7 +179,7 @@ public class AutoDoubleHook extends LinearOpMode {
         this.outtakeController.setWallClawOpen();
         sleep(1500);
 
-        
+
 
         while(opModeIsActive()) {
             this.liftController.update();
