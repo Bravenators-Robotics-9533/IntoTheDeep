@@ -13,32 +13,24 @@ import com.bravenatorsrobotics.hardware.controllers.ControlSystemController;
 import com.bravenatorsrobotics.hardware.controllers.IntakeController;
 import com.bravenatorsrobotics.hardware.controllers.OuttakeController;
 import com.bravenatorsrobotics.io.FtcGamePad;
+import com.bravenatorsrobotics.teleop.drivecontrollers.FieldCentricDriveController;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.util.Range;
 
 import roadrunner.drive.MecanumDrive;
 
 @Config
 @TeleOp(name = "Teleop", group = "Competition")
-public class Teleop extends LinearOpMode {
-
-    //MechDrive Controlling
-    public static final int DRIVER_CONTROLLER_EASE_POW = 1;
-    public static final double ROBOT_SPEED_LIMIT = 1.0;
-    public static final double ROBOT_SLOW_SPEED_LIMIT = 0.2;
+public class TeleopOpMode extends LinearOpMode {
 
     private MecanumDrive drive;
+    private FieldCentricDriveController driveController;
 
-    private double offsetHeading = 0.0;
-
-
-    //Create the gamepads
+    // Create the GamePads
     private FtcGamePad driverGamePad;
     private FtcGamePad operatorGamePad;
-
 
     // Controllers
     private ControlSystemController controlSystemController;
@@ -47,7 +39,6 @@ public class Teleop extends LinearOpMode {
     private LiftController liftController;
     private SlideController slideController;
 
-    private boolean isSlowModeEnabled = false;
     private boolean shouldAutoDisableSlowMode = false;
 
     private void initialize() {
@@ -66,13 +57,15 @@ public class Teleop extends LinearOpMode {
         this.drive = new MecanumDrive(super.hardwareMap);
         this.drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        // Create Drive Controller
+        this.driveController = new FieldCentricDriveController(super.gamepad1, this.drive);
+
         // Initialize our components
         ControlSystemComponent controlSystemComponent = new ControlSystemComponent(super.hardwareMap);
         IntakeComponent intakeComponent = new IntakeComponent(super.hardwareMap);
         OuttakeComponent outtakeComponent = new OuttakeComponent(super.hardwareMap);
         LiftComponent liftComponent = new LiftComponent(super.hardwareMap);
         SlideComponent slideComponent = new SlideComponent(super.hardwareMap);
-
 
         // Create the controllers
         this.controlSystemController = new ControlSystemController(controlSystemComponent, ControlSystemController.Strategy.MANUAL);
@@ -118,7 +111,8 @@ public class Teleop extends LinearOpMode {
             this.handlePassOffPivotServo();
             this.handlePivotServoX();
             this.handleSlide();
-            this.handleDrive(); // Handle Drive
+
+            this.driveController.update();
 
         }
 
@@ -152,14 +146,14 @@ public class Teleop extends LinearOpMode {
 
             case FtcGamePad.GAMEPAD_BACK:
                 if(isPressed)
-                    offsetHeading = drive.getRawExternalHeading();
+                    this.driveController.resetOffsetHeading();
                 break;
 
 
 
             case FtcGamePad.GAMEPAD_RBUMPER:
                 if(isPressed) {
-                    isSlowModeEnabled = !isSlowModeEnabled;
+                    this.driveController.toggleSlowMode();
                     shouldAutoDisableSlowMode = false;
                 }
 
@@ -174,14 +168,17 @@ public class Teleop extends LinearOpMode {
 
         }
 
-
     }
 
     private void autoDisableSlowMode() {
+
         if(shouldAutoDisableSlowMode) {
-            this.isSlowModeEnabled = false;
+
+            this.driveController.setSlowModeEnabled(false);
             this.shouldAutoDisableSlowMode = false;
+
         }
+
     }
 
     private void onOperatorGamePadChange(FtcGamePad gamePad, int button, boolean isPressed) {
@@ -248,32 +245,39 @@ public class Teleop extends LinearOpMode {
                 break;
 
             case FtcGamePad.GAMEPAD_X:
+
                 if(isPressed) {
+
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.BOTTOM_BASKET);
                     this.outtakeController.setPassOffClawClosed();
                     this.intakeController.goToPassOffPivotYPosition();
                     this.intakeController.release();
                     this.slideController.disableSlowMode();
                     this.shouldAutoDisableSlowMode = true;
-                    this.isSlowModeEnabled = true;
+
+                    this.driveController.setSlowModeEnabled(true);
+
                 }
 
                 break;
 
             case FtcGamePad.GAMEPAD_Y:
+
                 if(isPressed) {
+
                     this.liftController.setTargetLiftPosition(LiftController.LiftPosition.TOP_BASKET);
                     this.outtakeController.setPassOffClawClosed();
                     this.intakeController.goToPassOffPivotYPosition();
                     this.intakeController.release();
                     this.slideController.disableSlowMode();
                     this.shouldAutoDisableSlowMode = true;
-                    this.isSlowModeEnabled = true;
+
+                    this.driveController.setSlowModeEnabled(true);
 
                 }
 
                 break;
-            //TODO: This Case May Not Be Necessary
+
             case FtcGamePad.GAMEPAD_LBUMPER:
                 if(isPressed) {
                     this.outtakeController.toggleWallClawServoPosition();
@@ -357,32 +361,6 @@ public class Teleop extends LinearOpMode {
         // Update dynamic minimum position periodically
         slideController.update(extendTrigger, retractTrigger);
         slideController.update(extendTrigger, retractTrigger);
-
-    }
-
-    // Field-Centric Mecanum Logic
-    private void handleDrive() {
-
-        double y    = -Range.clip(Math.pow(-gamepad1.left_stick_y, DRIVER_CONTROLLER_EASE_POW), -1.0, 1.0);
-        double xt   = Math.pow(gamepad1.right_trigger, DRIVER_CONTROLLER_EASE_POW) - Math.pow(gamepad1.left_trigger, DRIVER_CONTROLLER_EASE_POW);
-        double x    = -Range.clip(Math.pow(gamepad1.left_stick_x, DRIVER_CONTROLLER_EASE_POW) + xt, -1.0, 1.0);
-        double rx   = Range.clip(Math.pow(gamepad1.right_stick_x, DRIVER_CONTROLLER_EASE_POW), -1.0, 1.0);
-
-        double botHeading = offsetHeading;
-
-        double rotX = (x * Math.cos(botHeading)) - (y * Math.sin(botHeading));
-        double rotY = (x * Math.sin(botHeading)) + (y * Math.cos(botHeading));
-
-        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-
-        double adjustedSpeedLimit = (isSlowModeEnabled ? ROBOT_SLOW_SPEED_LIMIT : ROBOT_SPEED_LIMIT);
-
-        double flPower  = Range.clip((rotY + rotX + rx) / denominator, -adjustedSpeedLimit, adjustedSpeedLimit);
-        double blPower  = Range.clip((rotY - rotX + rx) / denominator, -adjustedSpeedLimit, adjustedSpeedLimit);
-        double frPower  = Range.clip((rotY - rotX - rx) / denominator, -adjustedSpeedLimit, adjustedSpeedLimit);
-        double brPower =  Range.clip((rotY + rotX - rx) / denominator, -adjustedSpeedLimit, adjustedSpeedLimit);
-
-        drive.setMotorPowers(flPower, blPower, brPower, frPower);
 
     }
 
