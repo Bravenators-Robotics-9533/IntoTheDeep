@@ -1,7 +1,7 @@
-package com.bravenatorsrobotics.components;
+package com.bravenatorsrobotics.hardware.components;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.bravenatorsrobotics.HardwareMapIdentities;
+import com.bravenatorsrobotics.hardware.HardwareMapIdentities;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;

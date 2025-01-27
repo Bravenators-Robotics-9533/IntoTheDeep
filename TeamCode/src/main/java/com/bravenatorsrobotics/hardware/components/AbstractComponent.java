@@ -1,4 +1,4 @@
-package com.bravenatorsrobotics.components;
+package com.bravenatorsrobotics.hardware.components;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 

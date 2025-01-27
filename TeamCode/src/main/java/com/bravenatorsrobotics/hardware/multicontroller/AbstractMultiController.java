@@ -1,4 +1,4 @@
-package com.bravenatorsrobotics.multicontroller;
+package com.bravenatorsrobotics.hardware.multicontroller;
 
 public abstract class AbstractMultiController {
 

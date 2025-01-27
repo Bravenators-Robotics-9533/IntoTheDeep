@@ -1,7 +1,7 @@
-package com.bravenatorsrobotics.controllers;
+package com.bravenatorsrobotics.hardware.controllers;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.bravenatorsrobotics.components.IntakeComponent;
+import com.bravenatorsrobotics.hardware.components.IntakeComponent;
 import com.qualcomm.robotcore.util.Range;
 
 @Config

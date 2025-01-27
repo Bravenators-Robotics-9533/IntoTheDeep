@@ -1,6 +1,6 @@
-package com.bravenatorsrobotics.components;
+package com.bravenatorsrobotics.hardware.components;
 
-import com.bravenatorsrobotics.HardwareMapIdentities;
+import com.bravenatorsrobotics.hardware.HardwareMapIdentities;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 

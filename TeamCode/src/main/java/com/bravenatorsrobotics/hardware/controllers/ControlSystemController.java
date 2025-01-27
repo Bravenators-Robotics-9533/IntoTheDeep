@@ -1,6 +1,6 @@
-package com.bravenatorsrobotics.controllers;
+package com.bravenatorsrobotics.hardware.controllers;
 
-import com.bravenatorsrobotics.components.ControlSystemComponent;
+import com.bravenatorsrobotics.hardware.components.ControlSystemComponent;
 import com.qualcomm.hardware.lynx.LynxModule;
 
 public class ControlSystemController extends AbstractController {

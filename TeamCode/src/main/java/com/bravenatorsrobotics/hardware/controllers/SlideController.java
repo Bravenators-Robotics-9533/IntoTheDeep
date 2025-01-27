@@ -1,6 +1,6 @@
-package com.bravenatorsrobotics.controllers;
+package com.bravenatorsrobotics.hardware.controllers;
 
-import com.bravenatorsrobotics.components.SlideComponent;
+import com.bravenatorsrobotics.hardware.components.SlideComponent;
 import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 

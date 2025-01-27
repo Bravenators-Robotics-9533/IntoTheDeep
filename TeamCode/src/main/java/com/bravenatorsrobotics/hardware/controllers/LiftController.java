@@ -1,7 +1,7 @@
-package com.bravenatorsrobotics.controllers;
+package com.bravenatorsrobotics.hardware.controllers;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.bravenatorsrobotics.components.LiftComponent;
+import com.bravenatorsrobotics.hardware.components.LiftComponent;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 

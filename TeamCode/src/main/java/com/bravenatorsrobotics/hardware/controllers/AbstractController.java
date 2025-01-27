@@ -1,4 +1,4 @@
-package com.bravenatorsrobotics.controllers;
+package com.bravenatorsrobotics.hardware.controllers;
 
 public abstract class AbstractController {
 

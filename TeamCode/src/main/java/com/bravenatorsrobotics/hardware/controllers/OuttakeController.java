@@ -1,8 +1,7 @@
-package com.bravenatorsrobotics.controllers;
+package com.bravenatorsrobotics.hardware.controllers;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.bravenatorsrobotics.components.OuttakeComponent;
-import com.qualcomm.robotcore.util.Range;
+import com.bravenatorsrobotics.hardware.components.OuttakeComponent;
 
 @Config
 public class OuttakeController extends AbstractController {

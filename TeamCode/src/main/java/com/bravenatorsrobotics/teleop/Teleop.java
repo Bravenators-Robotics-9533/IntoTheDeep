@@ -1,17 +1,17 @@
 package com.bravenatorsrobotics.teleop;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.bravenatorsrobotics.components.LiftComponent;
-import com.bravenatorsrobotics.components.SlideComponent;
-import com.bravenatorsrobotics.components.ControlSystemComponent;
-import com.bravenatorsrobotics.components.IntakeComponent;
-import com.bravenatorsrobotics.components.OuttakeComponent;
+import com.bravenatorsrobotics.hardware.components.LiftComponent;
+import com.bravenatorsrobotics.hardware.components.SlideComponent;
+import com.bravenatorsrobotics.hardware.components.ControlSystemComponent;
+import com.bravenatorsrobotics.hardware.components.IntakeComponent;
+import com.bravenatorsrobotics.hardware.components.OuttakeComponent;
 import com.bravenatorsrobotics.config.ConfigMap;
-import com.bravenatorsrobotics.controllers.LiftController;
-import com.bravenatorsrobotics.controllers.SlideController;
-import com.bravenatorsrobotics.controllers.ControlSystemController;
-import com.bravenatorsrobotics.controllers.IntakeController;
-import com.bravenatorsrobotics.controllers.OuttakeController;
+import com.bravenatorsrobotics.hardware.controllers.LiftController;
+import com.bravenatorsrobotics.hardware.controllers.SlideController;
+import com.bravenatorsrobotics.hardware.controllers.ControlSystemController;
+import com.bravenatorsrobotics.hardware.controllers.IntakeController;
+import com.bravenatorsrobotics.hardware.controllers.OuttakeController;
 import com.bravenatorsrobotics.io.FtcGamePad;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;

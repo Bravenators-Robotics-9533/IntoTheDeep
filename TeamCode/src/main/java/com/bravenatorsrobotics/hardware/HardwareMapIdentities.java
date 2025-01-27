@@ -1,4 +1,4 @@
-package com.bravenatorsrobotics;
+package com.bravenatorsrobotics.hardware;
 
 public final class HardwareMapIdentities {
 
