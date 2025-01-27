@@ -11,12 +11,11 @@ import com.bravenatorsrobotics.config.ConfigMap;
 import com.bravenatorsrobotics.controllers.IntakeController;
 import com.bravenatorsrobotics.controllers.OuttakeController;
 import com.bravenatorsrobotics.controllers.LiftController;
-import com.bravenatorsrobotics.controllers.OuttakeController;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.drive.MecanumDrive;
+import roadrunner.drive.MecanumDrive;
 
 @Config
 @Autonomous(name="AutoHook", group="Competition")
