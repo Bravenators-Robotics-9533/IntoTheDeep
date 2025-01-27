@@ -53,20 +53,11 @@ public class TeleopOpMode extends LinearOpMode {
 
     }
 
-    private void runUpdateLoop() {
-
-        while(opModeIsActive()) { // Loop until stop pressed
-
-           this.robot.update();
-
-        }
-
-    }
-
     private void onUpdate() {
 
         // Update Controller Adapters
-        this.manualControlAdapter.update();
+        if(this.stateManager.getState() == TeleopState.MANUAL)
+            this.manualControlAdapter.update();
 
     }
 
@@ -91,7 +82,15 @@ public class TeleopOpMode extends LinearOpMode {
         super.waitForStart(); // Blocks thread
 
         // Wait and capture the program for the update loop (while running this will block thread)
-        this.runUpdateLoop();
+        while(opModeIsActive()) {
+
+            this.telemetry.addData("State", this.stateManager.getState().name());
+
+            this.robot.update();
+
+            this.telemetry.update();
+
+        }
 
         // Handle Close Down Sequence
         this.onStop();
