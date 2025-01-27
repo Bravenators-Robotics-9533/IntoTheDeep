@@ -1,8 +1,9 @@
-package com.bravenatorsrobotics;
+package com.bravenatorsrobotics.utils;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.bravenatorsrobotics.io.FtcGamePad;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -13,7 +14,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @TeleOp(name="Max Velocity Test", group = "utils")
-//@Disabled
+@Disabled
 public class MaxVelocityTestOpMode extends LinearOpMode {
 
     private static final double TEST_DURATION_SECONDS = 6.0;
