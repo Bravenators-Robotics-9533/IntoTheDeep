@@ -1,28 +1,30 @@
-package com.bravenatorsrobotics.teleop.drivecontrollers;
+package com.bravenatorsrobotics.teleop.controlAdapters;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.Range;
 
 import roadrunner.drive.MecanumDrive;
 
-public class FieldCentricDriveController extends DriveController {
+public class FieldCentricDriveControlAdapter implements IControlAdapter {
 
     private static final int DRIVER_CONTROLLER_EASE_POW = 1;
     private static final double ROBOT_SPEED_LIMIT = 1.0;
     private static final double ROBOT_SLOW_SPEED_LIMIT = 0.2;
 
+    protected final Gamepad gamepad;
     protected final MecanumDrive drive;
 
     private double offsetHeading = 0.0;
     private boolean isSlowModeEnabled = false;
 
-    public FieldCentricDriveController(Gamepad gamepad, MecanumDrive drive) {
+    public FieldCentricDriveControlAdapter(Gamepad gamepad, MecanumDrive drive) {
 
-        super(gamepad);
-
+        this.gamepad = gamepad;
         this.drive = drive;
 
     }
+
+    public void initialize() {}
 
     public void update() {
 
