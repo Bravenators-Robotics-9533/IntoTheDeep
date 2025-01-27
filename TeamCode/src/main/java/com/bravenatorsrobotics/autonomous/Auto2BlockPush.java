@@ -1,9 +1,10 @@
-package com.bravenatorsrobotics;
+package com.bravenatorsrobotics.autonomous;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.bravenatorsrobotics.StaticEnvironment;
 import com.bravenatorsrobotics.components.IntakeComponent;
 import com.bravenatorsrobotics.components.LiftComponent;
 import com.bravenatorsrobotics.components.OuttakeComponent;
@@ -18,8 +19,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import roadrunner.drive.MecanumDrive;
 
 @Config
-@Autonomous(name="AutoHook", group="Competition")
-public class AutoHook extends LinearOpMode {
+@Autonomous(name="Auto2BlockPush", group="Competition")
+public class Auto2BlockPush extends LinearOpMode {
 
 
     private LiftController liftController;
@@ -109,40 +110,93 @@ public class AutoHook extends LinearOpMode {
         this.outtakeController.setPassOffPivotInitial();
         this.outtakeController.setPassOffClawOpen();
         this.outtakeController.setWallClawClosed();
-        sleep(100);
         this.liftController.setTargetLiftPosition(LiftController.LiftPosition.HIGH_BAR);
-        sleep(600);
+        sleep(500);
 
+        drive.setPoseEstimate(new Pose2d(11, -63.5, Math.toRadians(270)));
 
-        drive.setPoseEstimate(new Pose2d(8.5, -63.5, Math.toRadians(270)));
-
-        Trajectory moveOffWall = drive.trajectoryBuilder(new Pose2d(8.5, -63.5, Math.toRadians(270)))
-                .lineTo(new Vector2d(8.5, -22.0))
+        Trajectory moveOffWall = drive.trajectoryBuilder(new Pose2d(11, -63.5, Math.toRadians(270)))
+                .lineTo(new Vector2d(11, -24.0))
                 .build();
 
         drive.followTrajectoryAsync(moveOffWall);
         this.loopUntilDriveDone(); // Stuck until trajectory done.
 
-        sleep(750);
-        liftController.setTargetLiftPosition(LiftController.LiftPosition.LOW_BAR);
-        sleep(1500);
-        outtakeController.setWallClawOpen();
         sleep(500);
+        liftController.setTargetLiftPosition(LiftController.LiftPosition.LOW_BAR);
+        sleep(1000);
+        outtakeController.setWallClawOpen();
+        sleep(200);
         liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
 
-        Trajectory moveToScore = drive.trajectoryBuilder(new Pose2d(8.5, -22, Math.toRadians(270)))
-                .lineTo(new Vector2d(8.5, -63.5))
+        Trajectory moveToWall = drive.trajectoryBuilder(new Pose2d(11, -24, Math.toRadians(270)))
+                .lineTo(new Vector2d(11, -32))
                 .build();
 
-        drive.followTrajectoryAsync(moveToScore);
+        drive.followTrajectoryAsync(moveToWall);
         this.loopUntilDriveDone();
 
-
-        Trajectory backUp = drive.trajectoryBuilder(new Pose2d(8.5, -63.5, Math.toRadians(270)))
-                .lineTo(new Vector2d(63.5, -63.5))
+        Trajectory lineUpToPush = drive.trajectoryBuilder(new Pose2d(11, -42, Math.toRadians(270)))
+                .lineTo(new Vector2d(45, -42))
                 .build();
 
-        drive.followTrajectoryAsync(backUp);
+        drive.followTrajectoryAsync(lineUpToPush);
+        this.loopUntilDriveDone();
+
+        Trajectory driveUpTopPushBlock1 = drive.trajectoryBuilder(new Pose2d(45, -42, Math.toRadians(270)))
+                .lineTo(new Vector2d(45, -12))
+                .build();
+
+        drive.followTrajectoryAsync(driveUpTopPushBlock1);
+        this.loopUntilDriveDone();
+
+        Trajectory moveToPushBlock1 = drive.trajectoryBuilder(new Pose2d(45, -12, Math.toRadians(270)))
+                .lineTo(new Vector2d(55, -12))
+                .build();
+
+        drive.followTrajectoryAsync(moveToPushBlock1);
+        this.loopUntilDriveDone();
+
+        Trajectory pushBlock1 = drive.trajectoryBuilder(new Pose2d(55, -12, Math.toRadians(270)))
+                .lineTo(new Vector2d(55, -61))
+                .build();
+
+        drive.followTrajectoryAsync(pushBlock1);
+        this.loopUntilDriveDone();
+
+        Trajectory driveUpToPushBlock2 = drive.trajectoryBuilder(new Pose2d(55, -61, Math.toRadians(270)))
+                .lineTo(new Vector2d(55, -14))
+                .build();
+
+        drive.followTrajectoryAsync(driveUpToPushBlock2);
+        this.loopUntilDriveDone();
+
+        Trajectory moveToPushBlock2 = drive.trajectoryBuilder(new Pose2d(55, -14, Math.toRadians(270)))
+                .lineTo(new Vector2d(70, -14))
+                .build();
+
+        drive.followTrajectoryAsync(moveToPushBlock2);
+        this.loopUntilDriveDone();
+
+        Trajectory pushBlock2 = drive.trajectoryBuilder(new Pose2d(70, -14, Math.toRadians(270)))
+                .lineTo(new Vector2d(70, -61))
+                .build();
+
+        drive.followTrajectoryAsync(pushBlock2);
+        this.loopUntilDriveDone();
+
+        Trajectory driveUpForHuman = drive.trajectoryBuilder(new Pose2d(70, -61, Math.toRadians(270)))
+                .lineTo(new Vector2d(70, -49))
+                .build();
+
+        drive.followTrajectoryAsync(driveUpForHuman);
+        this.loopUntilDriveDone();
+
+        Trajectory park = drive.trajectoryBuilder(new Pose2d(70, -55, Math.toRadians(270)))
+                .lineTo(new Vector2d(70, -61))
+                .build();
+
+        drive.followTrajectoryAsync(park);
         this.loopUntilDriveDone();
 
         while(opModeIsActive()) {

@@ -1,9 +1,10 @@
-package com.bravenatorsrobotics;
+package com.bravenatorsrobotics.autonomous;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.bravenatorsrobotics.StaticEnvironment;
 import com.bravenatorsrobotics.components.IntakeComponent;
 import com.bravenatorsrobotics.components.LiftComponent;
 import com.bravenatorsrobotics.components.OuttakeComponent;
