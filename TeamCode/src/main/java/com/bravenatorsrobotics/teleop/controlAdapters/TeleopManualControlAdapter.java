@@ -10,6 +10,7 @@ public class TeleopManualControlAdapter implements IControlAdapter {
 
     private final OpMode opMode;
     private final Robot robot;
+    private final StatusLEDControlAdapter statusLEDControlAdapter;
 
     private FtcGamePad driverGamePad;
     private FtcGamePad operatorGamePad;
@@ -18,10 +19,11 @@ public class TeleopManualControlAdapter implements IControlAdapter {
 
     private boolean shouldAutoDisableSlowMode = false;
 
-    public TeleopManualControlAdapter(OpMode opMode, Robot robot) {
+    public TeleopManualControlAdapter(OpMode opMode, Robot robot, StatusLEDControlAdapter statusLEDControlAdapter) {
 
         this.opMode = opMode;
         this.robot = robot;
+        this.statusLEDControlAdapter = statusLEDControlAdapter;
 
     }
 
@@ -39,8 +41,6 @@ public class TeleopManualControlAdapter implements IControlAdapter {
     @Override
     public void update() {
 
-        this.updateStatusLED();
-
         this.driverGamePad.update();
         this.operatorGamePad.update();
 
@@ -48,6 +48,8 @@ public class TeleopManualControlAdapter implements IControlAdapter {
         this.handlePassOffPivotServo();
         this.handlePivotServoX();
         this.handleSlide();
+
+        this.updateStatusLED();
 
     }
 
@@ -139,7 +141,6 @@ public class TeleopManualControlAdapter implements IControlAdapter {
             case FtcGamePad.GAMEPAD_DPAD_RIGHT:
                 if(isPressed) {
                     this.robot.intakeController.togglePivotYPosition();
-
                 }
 
                 break;
@@ -229,7 +230,6 @@ public class TeleopManualControlAdapter implements IControlAdapter {
                     this.robot.slideController.toggleSlowMode();
                 break;
 
-
         }
 
     }
@@ -259,21 +259,13 @@ public class TeleopManualControlAdapter implements IControlAdapter {
 
     private void updateStatusLED() {
 
-        if(this.robot.intakeController.isInReleasePosition()) {
+        StatusLEDControlAdapter.State ledState = this.statusLEDControlAdapter.getState();
+        boolean isInReleasePosition = this.robot.intakeController.isInReleasePosition();
 
-            this.opMode.gamepad1.rumble(100);
-            this.opMode.gamepad2.rumble(100);
-
-            this.opMode.gamepad1.setLedColor(180, 0, 255, Gamepad.LED_DURATION_CONTINUOUS);
-            this.opMode.gamepad2.setLedColor(180, 0, 255, Gamepad.LED_DURATION_CONTINUOUS);
-
-        } else {
-
-            this.opMode.gamepad1.setLedColor(0, 0, 255, Gamepad.LED_DURATION_CONTINUOUS);
-            this.opMode.gamepad2.setLedColor(255, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
-
-        }
-
+        if(ledState == StatusLEDControlAdapter.State.DEFAULT && isInReleasePosition)
+            this.statusLEDControlAdapter.setState(StatusLEDControlAdapter.State.INDICATE_RELEASE_POSITION);
+        else if(ledState == StatusLEDControlAdapter.State.INDICATE_RELEASE_POSITION && !isInReleasePosition)
+            this.statusLEDControlAdapter.setState(StatusLEDControlAdapter.State.DEFAULT);
 
     }
 

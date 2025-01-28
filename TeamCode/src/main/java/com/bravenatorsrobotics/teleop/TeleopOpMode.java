@@ -14,6 +14,7 @@ import com.bravenatorsrobotics.hardware.controllers.IntakeController;
 import com.bravenatorsrobotics.hardware.controllers.OuttakeController;
 import com.bravenatorsrobotics.robot.Robot;
 import com.bravenatorsrobotics.teleop.controlAdapters.FieldCentricDriveControlAdapter;
+import com.bravenatorsrobotics.teleop.controlAdapters.StatusLEDControlAdapter;
 import com.bravenatorsrobotics.teleop.controlAdapters.TeleopManualControlAdapter;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -29,6 +30,8 @@ public class TeleopOpMode extends LinearOpMode {
     private final TeleopStateManager stateManager;
 
     private Robot robot;
+
+    private StatusLEDControlAdapter statusLEDControlAdapter;
     private TeleopManualControlAdapter manualControlAdapter;
 
     public TeleopOpMode() {
@@ -45,8 +48,11 @@ public class TeleopOpMode extends LinearOpMode {
         this.robot = new Robot(this, this::onUpdate);
         this.robot.initialize();
 
+        this.statusLEDControlAdapter = new StatusLEDControlAdapter(this.gamepad1, this.gamepad2);
+        this.statusLEDControlAdapter.initialize();
+
         // Create Manual Control Adapter
-        this.manualControlAdapter = new TeleopManualControlAdapter(this, this.robot);
+        this.manualControlAdapter = new TeleopManualControlAdapter(this, this.robot, this.statusLEDControlAdapter);
         this.manualControlAdapter.initialize();
 
     }
@@ -56,6 +62,8 @@ public class TeleopOpMode extends LinearOpMode {
         // Update Controller Adapters
         if(this.stateManager.getState() == TeleopState.MANUAL)
             this.manualControlAdapter.update();
+
+        this.statusLEDControlAdapter.update();
 
     }
 

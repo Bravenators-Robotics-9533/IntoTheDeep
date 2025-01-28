@@ -54,8 +54,6 @@ public class FieldCentricDriveControlAdapter implements IControlAdapter {
     public void setSlowModeEnabled(boolean isSlowModeEnabled) { this.isSlowModeEnabled = isSlowModeEnabled; }
     public void toggleSlowMode() { this.isSlowModeEnabled = !this.isSlowModeEnabled; }
 
-    public boolean getIsSlowModeEnabled() { return this.isSlowModeEnabled; }
-
     public void resetOffsetHeading() { this.offsetHeading = this.drive.getRawExternalHeading(); }
 
 }
