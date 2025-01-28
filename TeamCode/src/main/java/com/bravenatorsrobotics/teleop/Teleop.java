@@ -12,18 +12,12 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name = "Teleop", group = "Competition")
 public class Teleop extends LinearOpMode {
 
-    private final TeleopStateManager stateManager;
+    private final TeleopStateManager stateManager = new TeleopStateManager();
 
     private Robot robot;
 
     private StatusLEDControlAdapter statusLEDControlAdapter;
     private TeleopManualControlAdapter manualControlAdapter;
-
-    public Teleop() {
-
-        this.stateManager = new TeleopStateManager();
-
-    }
 
     private void initialize() {
 
@@ -39,20 +33,6 @@ public class Teleop extends LinearOpMode {
         // Create Manual Control Adapter
         this.manualControlAdapter = new TeleopManualControlAdapter(this, this.robot, this.statusLEDControlAdapter);
         this.manualControlAdapter.initialize();
-
-    }
-
-    private void onUpdate() {
-
-        // Update Controller Adapters
-        if(this.stateManager.getState() == TeleopState.MANUAL)
-            this.manualControlAdapter.update();
-
-        this.statusLEDControlAdapter.update();
-
-    }
-
-    private void onStop() {
 
     }
 
@@ -85,6 +65,20 @@ public class Teleop extends LinearOpMode {
 
         // Handle Close Down Sequence
         this.onStop();
+
+    }
+
+    private void onUpdate() {
+
+        // Update Controller Adapters
+        if(this.stateManager.getState() == TeleopState.MANUAL)
+            this.manualControlAdapter.update();
+
+        this.statusLEDControlAdapter.update();
+
+    }
+
+    private void onStop() {
 
     }
 

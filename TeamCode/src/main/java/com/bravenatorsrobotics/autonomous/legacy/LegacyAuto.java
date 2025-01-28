@@ -1,4 +1,4 @@
-package com.bravenatorsrobotics.autonomous;
+package com.bravenatorsrobotics.autonomous.legacy;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -7,25 +7,24 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.bravenatorsrobotics.StaticEnvironment;
 import com.bravenatorsrobotics.hardware.components.IntakeComponent;
 import com.bravenatorsrobotics.hardware.components.LiftComponent;
-import com.bravenatorsrobotics.hardware.components.OuttakeComponent;
 import com.bravenatorsrobotics.config.ConfigMap;
 import com.bravenatorsrobotics.hardware.controllers.IntakeController;
-import com.bravenatorsrobotics.hardware.controllers.OuttakeController;
 import com.bravenatorsrobotics.hardware.controllers.LiftController;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import roadrunner.drive.MecanumDrive;
 
 @Config
-@Autonomous(name="AutoHook", group="Competition")
-public class AutoHook extends LinearOpMode {
-
+@Autonomous(name="Autonomous", group="Competition")
+@Disabled
+@Deprecated
+public class LegacyAuto extends LinearOpMode {
 
     private LiftController liftController;
     private IntakeController intakeController;
-    private OuttakeController outtakeController;
 
     private MecanumDrive drive;
 
@@ -44,12 +43,7 @@ public class AutoHook extends LinearOpMode {
         IntakeComponent intakeComponent = new IntakeComponent(super.hardwareMap);
         this.intakeController = new IntakeController(intakeComponent);
 
-        OuttakeComponent outtakeComponent = new OuttakeComponent(super.hardwareMap);
-        this.outtakeController = new OuttakeController(outtakeComponent);
-
         StaticEnvironment.ShouldZeroLift = false;
-
-        this.outtakeController.setWallClawClosed();
 
         telemetry.addData("Status", "Initialized!");
         telemetry.update();
@@ -90,7 +84,6 @@ public class AutoHook extends LinearOpMode {
     private void update() {
         this.liftController.update();
         this.intakeController.update();
-        this.outtakeController.update();
 
         this.drive.update();
     }
@@ -107,44 +100,78 @@ public class AutoHook extends LinearOpMode {
 
         if (!super.opModeIsActive())
             return;
-        this.outtakeController.setPassOffPivotInitial();
-        this.outtakeController.setPassOffClawOpen();
-        this.outtakeController.setWallClawClosed();
-        sleep(100);
-        this.liftController.setTargetLiftPosition(LiftController.LiftPosition.HIGH_BAR);
-        sleep(600);
+
+        //this.intakeController.release();
+        this.intakeController.goToCapturePivotYPosition();
+        this.liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
+
+        sleep(1500);
+
+        this.liftController.setTargetLiftPosition(LiftController.LiftPosition.TOP_BASKET);
 
 
-        drive.setPoseEstimate(new Pose2d(8.5, -63.5, Math.toRadians(270)));
+        sleep(2000);
 
-        Trajectory moveOffWall = drive.trajectoryBuilder(new Pose2d(8.5, -63.5, Math.toRadians(270)))
-                .lineTo(new Vector2d(8.5, -22.0))
+        drive.setPoseEstimate(new Pose2d(-45, 65, Math.toRadians(90)));
+
+        Trajectory moveOffWall = drive.trajectoryBuilder(new Pose2d(45, 65, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(49.5, 47.5, Math.toRadians(220)))
                 .build();
 
         drive.followTrajectoryAsync(moveOffWall);
         this.loopUntilDriveDone(); // Stuck until trajectory done.
 
-        sleep(750);
-        liftController.setTargetLiftPosition(LiftController.LiftPosition.LOW_BAR);
-        sleep(1500);
-        outtakeController.setWallClawOpen();
-        sleep(500);
-        liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
-
-        Trajectory moveToScore = drive.trajectoryBuilder(new Pose2d(8.5, -22, Math.toRadians(270)))
-                .lineTo(new Vector2d(8.5, -63.5))
+        Trajectory moveToScore = drive.trajectoryBuilder(new Pose2d(49.5, 47.5, Math.toRadians(220)))
+                .lineTo(new Vector2d(68, 58))
                 .build();
 
         drive.followTrajectoryAsync(moveToScore);
         this.loopUntilDriveDone();
 
+        // Drop the thing
+        this.intakeController.goToCapturePivotYPosition();
+        this.intakeController.tension();
 
-        Trajectory backUp = drive.trajectoryBuilder(new Pose2d(8.5, -63.5, Math.toRadians(270)))
-                .lineTo(new Vector2d(63.5, -63.5))
+
+        sleep(1500);
+
+        Trajectory backUp = drive.trajectoryBuilder(new Pose2d(68, 58, Math.toRadians(225)))
+                .lineTo(new Vector2d(45.0, 48.0))
                 .build();
 
         drive.followTrajectoryAsync(backUp);
         this.loopUntilDriveDone();
+
+
+        sleep(1000);
+        this.liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
+
+        Trajectory swingAround = drive.trajectoryBuilder(new Pose2d(45.0, 48.0), Math.toRadians(225))
+                .lineToLinearHeading(new Pose2d(49 + 15, 42, Math.toRadians(90)))
+                .build();
+
+        drive.followTrajectoryAsync(swingAround);
+        this.loopUntilDriveDone();
+
+        sleep(2000);
+
+        this.intakeController.tensionServosOff();
+
+        Trajectory park = drive.trajectoryBuilder(new Pose2d(49 + 15, 40, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(49 + 15, 1, Math.toRadians(0)))
+                .build();
+
+        drive.followTrajectoryAsync(park);
+        this.loopUntilDriveDone();
+
+        Trajectory parkParkLOLNickWroteThis = drive.trajectoryBuilder(new Pose2d(49 + 15, 1))
+                .lineTo(new Vector2d(49 + 15 - 25, 1))
+                .build();
+
+        drive.followTrajectoryAsync(parkParkLOLNickWroteThis);
+        this.loopUntilDriveDone();
+
+        this.liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
 
         while(opModeIsActive()) {
             this.liftController.update();

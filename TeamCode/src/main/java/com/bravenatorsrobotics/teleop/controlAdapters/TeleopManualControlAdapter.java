@@ -4,7 +4,6 @@ import com.bravenatorsrobotics.hardware.controllers.LiftController;
 import com.bravenatorsrobotics.io.FtcGamePad;
 import com.bravenatorsrobotics.robot.Robot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class TeleopManualControlAdapter implements IControlAdapter {
 
