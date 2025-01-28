@@ -1,31 +1,16 @@
 package com.bravenatorsrobotics.teleop;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.bravenatorsrobotics.hardware.components.LiftComponent;
-import com.bravenatorsrobotics.hardware.components.SlideComponent;
-import com.bravenatorsrobotics.hardware.components.ControlSystemComponent;
-import com.bravenatorsrobotics.hardware.components.IntakeComponent;
-import com.bravenatorsrobotics.hardware.components.OuttakeComponent;
 import com.bravenatorsrobotics.config.ConfigMap;
-import com.bravenatorsrobotics.hardware.controllers.LiftController;
-import com.bravenatorsrobotics.hardware.controllers.SlideController;
-import com.bravenatorsrobotics.hardware.controllers.ControlSystemController;
-import com.bravenatorsrobotics.hardware.controllers.IntakeController;
-import com.bravenatorsrobotics.hardware.controllers.OuttakeController;
 import com.bravenatorsrobotics.robot.Robot;
-import com.bravenatorsrobotics.teleop.controlAdapters.FieldCentricDriveControlAdapter;
 import com.bravenatorsrobotics.teleop.controlAdapters.StatusLEDControlAdapter;
 import com.bravenatorsrobotics.teleop.controlAdapters.TeleopManualControlAdapter;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Gamepad;
-
-import roadrunner.drive.MecanumDrive;
 
 @Config
 @TeleOp(name = "Teleop", group = "Competition")
-public class TeleopOpMode extends LinearOpMode {
+public class Teleop extends LinearOpMode {
 
     private final TeleopStateManager stateManager;
 
@@ -34,7 +19,7 @@ public class TeleopOpMode extends LinearOpMode {
     private StatusLEDControlAdapter statusLEDControlAdapter;
     private TeleopManualControlAdapter manualControlAdapter;
 
-    public TeleopOpMode() {
+    public Teleop() {
 
         this.stateManager = new TeleopStateManager();
 

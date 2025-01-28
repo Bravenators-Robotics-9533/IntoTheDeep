@@ -20,7 +20,6 @@ import roadrunner.drive.MecanumDrive;
 @Autonomous(name="Autonomous", group="Competition")
 public class Auto extends LinearOpMode {
 
-
     private LiftController liftController;
     private IntakeController intakeController;
 
