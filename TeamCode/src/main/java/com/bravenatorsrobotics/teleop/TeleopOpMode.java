@@ -29,8 +29,6 @@ public class TeleopOpMode extends LinearOpMode {
     private final TeleopStateManager stateManager;
 
     private Robot robot;
-
-    // Control Adapters
     private TeleopManualControlAdapter manualControlAdapter;
 
     public TeleopOpMode() {
