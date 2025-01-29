@@ -277,4 +277,5 @@ public class TeleopManualControlAdapter implements IControlAdapter {
         this.robot.slideController.update(extendTrigger, retractTrigger);
 
     }
+
 }
