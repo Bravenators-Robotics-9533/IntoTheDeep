@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import roadrunner.Drawing;
 import roadrunner.drive.MecanumDrive;
-import roadrunner.TankDrive;
+import roadrunner.drive.TankDrive;
 
 public class LocalizationTest extends LinearOpMode {
     @Override

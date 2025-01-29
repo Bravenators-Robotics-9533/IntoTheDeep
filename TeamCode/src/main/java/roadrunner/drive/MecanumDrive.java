@@ -41,7 +41,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 import roadrunner.Drawing;
-import roadrunner.Localizer;
+import roadrunner.localizer.Localizer;
 import roadrunner.messages.DriveCommandMessage;
 import roadrunner.messages.MecanumCommandMessage;
 import roadrunner.messages.MecanumLocalizerInputsMessage;

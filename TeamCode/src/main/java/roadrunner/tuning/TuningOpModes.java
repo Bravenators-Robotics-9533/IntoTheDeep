@@ -23,16 +23,16 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeRegistrar;
 
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta;
 import roadrunner.drive.MecanumDrive;
-import roadrunner.TankDrive;
-import roadrunner.ThreeDeadWheelLocalizer;
-import roadrunner.TwoDeadWheelLocalizer;
+import roadrunner.drive.TankDrive;
+import roadrunner.localizer.ThreeDeadWheelLocalizer;
+import roadrunner.localizer.TwoDeadWheelLocalizer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public final class TuningOpModes {
-    // TODO: change this to TankDrive.class if you're using tank
+
     public static final Class<?> DRIVE_CLASS = MecanumDrive.class;
 
     public static final String GROUP = "quickstart";
