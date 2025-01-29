@@ -1,5 +1,7 @@
 package com.bravenatorsrobotics.robot;
 
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.bravenatorsrobotics.hardware.components.ControlSystemComponent;
 import com.bravenatorsrobotics.hardware.components.IntakeComponent;
 import com.bravenatorsrobotics.hardware.components.LiftComponent;
@@ -36,8 +38,8 @@ public class Robot {
         this.opMode = opMode;
         this.updateHandler = updateHandler;
 
-        this.drive = new MecanumDrive(opMode.hardwareMap);
-        this.drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        // TODO: SET THIS STARTING POSITION BETTER
+        this.drive = new MecanumDrive(opMode.hardwareMap, new Pose2d(new Vector2d(0, 0), Math.toRadians(0)));
 
         // Create the components
         ControlSystemComponent controlSystemComponent = new ControlSystemComponent(opMode.hardwareMap);
@@ -82,8 +84,6 @@ public class Robot {
         this.outtakeController.update();
         this.liftController.update();
         // TODO: SLIDE CONTROLLER
-
-        this.drive.update();
 
     }
 

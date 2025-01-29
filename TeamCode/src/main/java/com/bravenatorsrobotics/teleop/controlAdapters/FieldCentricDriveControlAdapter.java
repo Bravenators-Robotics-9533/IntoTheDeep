@@ -33,7 +33,7 @@ public class FieldCentricDriveControlAdapter implements IControlAdapter {
         double x    = -Range.clip(Math.pow(gamepad.left_stick_x, DRIVER_CONTROLLER_EASE_POW) + xt, -1.0, 1.0);
         double rx   = Range.clip(Math.pow(gamepad.right_stick_x, DRIVER_CONTROLLER_EASE_POW), -1.0, 1.0);
 
-        double botHeading = offsetHeading - this.drive.getRawExternalHeading();
+        double botHeading = offsetHeading - this.drive.localizer.getRawExternalHeading();
 
         double rotX = (x * Math.cos(botHeading)) - (y * Math.sin(botHeading));
         double rotY = (x * Math.sin(botHeading)) + (y * Math.cos(botHeading));
@@ -54,6 +54,6 @@ public class FieldCentricDriveControlAdapter implements IControlAdapter {
     public void setSlowModeEnabled(boolean isSlowModeEnabled) { this.isSlowModeEnabled = isSlowModeEnabled; }
     public void toggleSlowMode() { this.isSlowModeEnabled = !this.isSlowModeEnabled; }
 
-    public void resetOffsetHeading() { this.offsetHeading = this.drive.getRawExternalHeading(); }
+    public void resetOffsetHeading() { this.offsetHeading = this.drive.localizer.getRawExternalHeading(); }
 
 }

@@ -1,5 +1,8 @@
 package com.bravenatorsrobotics.teleop.controlAdapters;
 
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.Range;
 
@@ -47,7 +50,7 @@ public class MecanumDriveControlAdapter implements IControlAdapter {
         double frPower  = Range.clip((rotY - rotX - rx) / denominator, -adjustedSpeedLimit, adjustedSpeedLimit);
         double brPower =  Range.clip((rotY + rotX - rx) / denominator, -adjustedSpeedLimit, adjustedSpeedLimit);
 
-        this.drive.setMotorPowers(flPower, blPower, brPower, frPower);
+
 
     }
 
@@ -56,6 +59,6 @@ public class MecanumDriveControlAdapter implements IControlAdapter {
 
     public boolean getIsSlowModeEnabled() { return this.isSlowModeEnabled; }
 
-    public void resetOffsetHeading() { this.offsetHeading = this.drive.getRawExternalHeading(); }
+    public void resetOffsetHeading() { this.offsetHeading = this.drive.localizer.getRawExternalHeading(); }
 
 }
