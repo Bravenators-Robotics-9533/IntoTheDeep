@@ -10,13 +10,13 @@ public class OuttakeController extends AbstractController {
     private boolean doesPivothavetarget = false;
 
     public static final double PASS_OFF_PIVOT_INITIAL = 0.025;
-    public static final double PASS_OFF_PIVOT_SCORE = 1;
+    public static final double PASS_OFF_PIVOT_SCORE = .8;
 
     public static final double PASS_OFF_CLAW_CLOSED = 0;
     public static final double PASS_OFF_CLAW_OPEN = 0.75;
 
     public static final double WALL_CLAW_CLOSED = 0.1;
-    public static final double WALL_CLAW_OPEN = .8;
+    public static final double WALL_CLAW_OPEN = .82;
 
     private final OuttakeComponent outtakeComponent;
 
