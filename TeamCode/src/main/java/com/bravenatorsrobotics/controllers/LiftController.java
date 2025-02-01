@@ -28,8 +28,8 @@ public class LiftController extends AbstractController {
     public static double LEFT_BOTTOM_BASKET_POSITION = 0.0;
     public static double RIGHT_BOTTOM_BASKET_POSITION = 0.0;
 
-    public static double LEFT_HIGH_BAR_POSITION = 0.42;
-    public static double RIGHT_HIGH_BAR_POSITION = 0.42;
+    public static double LEFT_HIGH_BAR_POSITION = 0.45;
+    public static double RIGHT_HIGH_BAR_POSITION = 0.45;
 
     public static double LEFT_LOW_BAR_POSITION = 0.28;
     public static double RIGHT_LOW_BAR_POSITION = 0.28;
