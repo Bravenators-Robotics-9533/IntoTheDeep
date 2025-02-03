@@ -50,7 +50,7 @@ public class MecanumDriveControlAdapter implements IControlAdapter {
         double frPower  = Range.clip((rotY - rotX - rx) / denominator, -adjustedSpeedLimit, adjustedSpeedLimit);
         double brPower =  Range.clip((rotY + rotX - rx) / denominator, -adjustedSpeedLimit, adjustedSpeedLimit);
 
-
+        this.drive.setMotorPowers(1, 1, 1, 1);
 
     }
 
