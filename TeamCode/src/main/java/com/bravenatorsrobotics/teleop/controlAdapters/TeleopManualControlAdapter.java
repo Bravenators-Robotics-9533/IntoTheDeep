@@ -43,7 +43,7 @@ public class TeleopManualControlAdapter implements IControlAdapter {
         this.driverGamePad.update();
         this.operatorGamePad.update();
 
-        this.driveAdapter.update();
+//        this.driveAdapter.update();
         this.handlePassOffPivotServo();
         this.handlePivotServoX();
         this.handleSlide();
@@ -65,13 +65,6 @@ public class TeleopManualControlAdapter implements IControlAdapter {
                 if(isPressed) {
                     this.driveAdapter.toggleSlowMode();
                     this.shouldAutoDisableSlowMode = false;
-                }
-
-                break;
-
-            case FtcGamePad.GAMEPAD_Y:
-                if(isPressed) {
-                    this.robot.liftController.setLiftEncodersTo0();
                 }
 
                 break;

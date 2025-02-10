@@ -6,20 +6,20 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.TouchSensor;
+
+// TODO: Change motors to run by velocity
 
 @Config
 public class LiftComponent extends AbstractComponent {
 
     public DcMotorEx lLiftMotor;
     public DcMotorEx rLiftMotor;
-    private TouchSensor touchSensor;
 
     public LiftComponent(HardwareMap hardwareMap) {
         super(hardwareMap);
 
         // Get Motors
-        this.lLiftMotor  = hardwareMap.get(DcMotorEx.class, HardwareMapIdentities.LEFT_LIFT_MOTOR);
+        this.lLiftMotor     = hardwareMap.get(DcMotorEx.class, HardwareMapIdentities.LEFT_LIFT_MOTOR);
         this.rLiftMotor     = hardwareMap.get(DcMotorEx.class, HardwareMapIdentities.RIGHT_LIFT_MOTOR);
 
         // Reset Encoders
@@ -29,13 +29,10 @@ public class LiftComponent extends AbstractComponent {
         this.lLiftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         //this.rLiftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-
         // Set Zero Power Behavior
-        this.rLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        this.lLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        this.rLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.lLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        // Initialize the Touch Sensor
-        this.touchSensor = hardwareMap.get(TouchSensor.class, HardwareMapIdentities.LIFT_TOUCH_SENSOR);
     }
 
     /**
@@ -50,31 +47,19 @@ public class LiftComponent extends AbstractComponent {
         rLiftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    //Check if touch sensor pressed
-    public boolean isTouchSensorPressed() {
-        return touchSensor.isPressed();
-    }
-
     /**
      * @param position encoder position
      * @param power positive value
      */
-    public void setShoulderMotorPositionAsync(int position, double power) {
+    public void setLiftPositionAsync(int position, double power) {
 
         this.lLiftMotor.setTargetPosition(position);
-        this.lLiftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.lLiftMotor.setPower(Math.abs(power));
-
-    }
-
-    /**
-     * @param position encoder position
-     * @param power positive value
-     */
-    public void setElbowMotorPositionAsync(int position, double power) {
-
         this.rLiftMotor.setTargetPosition(position);
+
+        this.lLiftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         this.rLiftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        this.lLiftMotor.setPower(Math.abs(power));
         this.rLiftMotor.setPower(Math.abs(power));
 
     }
