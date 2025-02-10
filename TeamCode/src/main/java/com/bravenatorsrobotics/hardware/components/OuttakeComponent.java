@@ -6,20 +6,17 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class OuttakeComponent extends AbstractComponent {
 
-
-    protected final Servo passOffClawServo;
-    protected final Servo passOffPivotServo;
-    protected final Servo wallClawServo;
+    private final Servo passOffClawServo;
+    private final Servo passOffPivotServo;
+    private final Servo wallClawServo;
 
     public OuttakeComponent(HardwareMap hardwareMap) {
         super(hardwareMap);
 
-        passOffClawServo  = hardwareMap.get(Servo.class, HardwareMapIdentities.PASS_OFF_CLAW);
-        passOffPivotServo = hardwareMap.get(Servo.class, HardwareMapIdentities.PASS_OFF_PIVOT);
-        wallClawServo     = hardwareMap.get(Servo.class, HardwareMapIdentities.WALL_CLAW);
+        this.passOffClawServo  = hardwareMap.get(Servo.class, HardwareMapIdentities.PASS_OFF_CLAW);
+        this.passOffPivotServo = hardwareMap.get(Servo.class, HardwareMapIdentities.PASS_OFF_PIVOT);
+        this.wallClawServo     = hardwareMap.get(Servo.class, HardwareMapIdentities.WALL_CLAW);
     }
-
-
 
     /**
      * @param position range [0.0, 1.0]
@@ -34,8 +31,6 @@ public class OuttakeComponent extends AbstractComponent {
     public void setPassOffPivotServoPosition(double position) {
         passOffPivotServo.setPosition(position);
     }
-
-    /**
 
     /**
      * @param position range [0.0, 1.0]
