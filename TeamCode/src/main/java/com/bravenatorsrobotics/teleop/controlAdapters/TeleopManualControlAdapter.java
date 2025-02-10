@@ -96,7 +96,6 @@ public class TeleopManualControlAdapter implements IControlAdapter {
                     this.robot.outtakeController.setPassOffPivotInitial();
                     this.robot.intakeController.goToPassOffPivotYPosition();
                     this.robot.intakeController.goToInitialPivotXPosition();
-                    this.robot.slideController.disableSlowMode();
 
                     this.autoDisableSlowMode();
 
@@ -109,7 +108,6 @@ public class TeleopManualControlAdapter implements IControlAdapter {
 
                     this.robot.liftController.setTargetLiftPosition(LiftController.LiftPosition.LOW_BAR);
                     this.robot.intakeController.goToPassOffPivotYPosition();
-                    this.robot.slideController.disableSlowMode();
 
                     this.autoDisableSlowMode();
                 }
@@ -122,7 +120,6 @@ public class TeleopManualControlAdapter implements IControlAdapter {
                     this.robot.liftController.setTargetLiftPosition(LiftController.LiftPosition.HIGH_BAR);
                     this.robot.intakeController.release();
                     this.robot.intakeController.goToPassOffPivotYPosition();
-                    this.robot.slideController.disableSlowMode();
 
                     this.autoDisableSlowMode();
 
@@ -159,7 +156,6 @@ public class TeleopManualControlAdapter implements IControlAdapter {
                     this.robot.outtakeController.setPassOffClawClosed();
                     this.robot.intakeController.goToPassOffPivotYPosition();
                     this.robot.intakeController.release();
-                    this.robot.slideController.disableSlowMode();
                     this.shouldAutoDisableSlowMode = true;
 
                     this.driveAdapter.setSlowModeEnabled(true);
@@ -176,7 +172,6 @@ public class TeleopManualControlAdapter implements IControlAdapter {
                     this.robot.outtakeController.setPassOffClawClosed();
                     this.robot.intakeController.goToPassOffPivotYPosition();
                     this.robot.intakeController.release();
-                    this.robot.slideController.disableSlowMode();
                     this.shouldAutoDisableSlowMode = true;
 
                     this.driveAdapter.setSlowModeEnabled(true);
@@ -215,11 +210,6 @@ public class TeleopManualControlAdapter implements IControlAdapter {
                     this.autoDisableSlowMode();
                 }
 
-                break;
-
-            case FtcGamePad.GAMEPAD_BACK:
-                if(isPressed)
-                    this.robot.slideController.toggleSlowMode();
                 break;
 
         }
@@ -263,11 +253,8 @@ public class TeleopManualControlAdapter implements IControlAdapter {
 
     private void handleSlide() {
 
-        double extendTrigger = this.opMode.gamepad2.right_trigger; // Extend with the right trigger
-        double retractTrigger = this.opMode.gamepad2.left_trigger; // Retract with the left trigger
-
-        // Update dynamic minimum position periodically
-        this.robot.slideController.update(extendTrigger, retractTrigger);
+        double manualSlidePower = this.opMode.gamepad2.right_trigger - this.opMode.gamepad2.left_trigger;
+        this.robot.slideController.setManualSlidePower(manualSlidePower);
 
     }
 

@@ -83,7 +83,7 @@ public class Robot {
         this.intakeController.update();
         this.outtakeController.update();
         this.liftController.update();
-        // TODO: SLIDE CONTROLLER
+        this.slideController.update();
 
     }
 

@@ -26,7 +26,7 @@ public class LiftController extends AbstractController {
     public static double REST_POSITION = 0.0;
     public static double TOP_BASKET_POSITION = 1.0;
     public static double BOTTOM_BASKET_POSITION = 0.0;
-    public static double HIGH_BAR_POSITION = 0.42;
+    public static double HIGH_BAR_POSITION = 0.45;
     public static double LOW_BAR_POSITION = 0.28;
 
     //How you call the positions out of this class
@@ -68,9 +68,8 @@ public class LiftController extends AbstractController {
     public void printTelemetry() {
 
         telemetry.addData("Left Target Position", targetLiftPosition.liftPosition * LIFT_MAX_ENCODER_POSITION);
-        telemetry.addData("Left Lift Motor", (double) liftComponent.lLiftMotor.getCurrentPosition() ); // add / LEFT_LIFT_MAX_ENCODER_POSITION);
-        telemetry.addData("Right Lift Motor", (double) liftComponent.rLiftMotor.getCurrentPosition() ); //add / ELBOW_MAX_ENCODER_POSITION
-        telemetry.update();
+        telemetry.addData("Left Lift Motor", (double) liftComponent.lLiftMotor.getCurrentPosition() );
+        telemetry.addData("Right Lift Motor", (double) liftComponent.rLiftMotor.getCurrentPosition() );
 
     }
 

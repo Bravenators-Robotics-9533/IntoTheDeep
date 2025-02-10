@@ -1,89 +1,49 @@
 package com.bravenatorsrobotics.hardware.controllers;
 
 import com.bravenatorsrobotics.hardware.components.SlideComponent;
-import com.qualcomm.robotcore.util.Range;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class SlideController {
 
+    public enum State {
+        MANUAL,
+        AUTO
+    }
+
+    private static final double MAX_SLIDE_POWER = 1.0; // Default slide power
+
     private final SlideComponent slideComponent;
     private final Telemetry telemetry;
-    private static final double SLIDE_POWER = 1.0; // Default slide power
-    private boolean isSlowModeEnabled = false;
-    private static final double SLOW_MODE_POWER_SCALING = 0.5;
 
-    private int targetPosition; // Target encoder position
+    private State state = State.MANUAL;
+
+    private double manualSlidePower = 0.0;
 
     public SlideController(SlideComponent slideComponent, Telemetry telemetry) {
         this.slideComponent = slideComponent;
         this.telemetry = telemetry;
-        this.targetPosition = slideComponent.getCurrentPosition();
     }
 
-    /**
-     * Initializes the slide controller.
-     */
-    public void initialize() {
-        // Ensure the slide is stopped and encoder values are reset
-        slideComponent.resetSystemEncoders();
-    }
+    public void initialize() {}
 
     /**
      * Updates the slide movement based on operator input.
-     *
-     * @param extendTrigger Value of the right trigger (0.0 to 1.0) for extending the slide.
-     * @param retractTrigger Value of the left trigger (0.0 to 1.0) for retracting the slide.
      */
-    public void update(double extendTrigger, double retractTrigger) {
-        // Calculate power based on triggers
-        double slidePower = extendTrigger - retractTrigger;
+    public void update() {
 
-        if (isSlowModeEnabled) {
-            slidePower *= SLOW_MODE_POWER_SCALING;
+        if(this.state == State.MANUAL) {
+            // Apply manual control
+            slideComponent.setManualPower(manualSlidePower * MAX_SLIDE_POWER);
         }
 
-        // Apply manual control
-        slideComponent.setManualPower(slidePower * SLIDE_POWER);
+        telemetry.addData("Slide Position", this.slideComponent.getCurrentPosition());
 
-        // Optionally, update telemetry for debugging
-        telemetry.addData("Slide Position", slideComponent.getCurrentPosition());
     }
 
-    /**
-     * Moves the slide to a specific encoder position.
-     *
-     * @param position Target encoder position.
-     */
-    public void moveToPosition(int position) {
-        position = Range.clip(position,
-                SlideComponent.MIN_ENCODER_POSITION,
-                SlideComponent.MAX_ENCODER_POSITION);
-        this.targetPosition = position;
+    public void setState(State state) { this.state = state; }
+    public State getState() { return this.state; }
 
-        slideComponent.setSlidePositionAsync(targetPosition, SLIDE_POWER);
-    }
+    public void setManualSlidePower(double manualSlidePower) { this.manualSlidePower = manualSlidePower; }
 
-    /**
-     * Stops the slide immediately.
-     */
-    public void stop() {
-        slideComponent.stop();
-    }
-
-    /**
-     * Gets the current encoder position of the slide.
-     *
-     * @return Current encoder position.
-     */
-    public int getCurrentPosition() {
-        return slideComponent.getCurrentPosition();
-    }
-
-    public void toggleSlowMode() {
-        isSlowModeEnabled = !isSlowModeEnabled;
-    }
-
-    public void disableSlowMode() {
-        isSlowModeEnabled = false;
-    }
 }

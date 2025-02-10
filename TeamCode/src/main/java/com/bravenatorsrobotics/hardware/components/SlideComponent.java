@@ -13,8 +13,6 @@ public class SlideComponent extends AbstractComponent {
     public static int MAX_ENCODER_POSITION = 1500; // Maximum slide extension
     public static int MIN_ENCODER_POSITION = 250;    // Minimum slide retraction
 
-    private int dynamicMinEncoderPosition = MIN_ENCODER_POSITION; // Dynamically updated min position
-
     public DcMotorEx slideMotor;
 
     public SlideComponent(HardwareMap hardwareMap) {
@@ -24,10 +22,10 @@ public class SlideComponent extends AbstractComponent {
         this.slideMotor = hardwareMap.get(DcMotorEx.class, HardwareMapIdentities.SLIDE_MOTOR);
 
         // Reset Encoders
-        this.resetSystemEncoders();
+        this.resetEncoders();
 
         // Reverse Motor Direction if needed
-        this.slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.slideMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         // Set Zero Power Behavior
         this.slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -36,22 +34,25 @@ public class SlideComponent extends AbstractComponent {
     /**
      * Resets the encoder to 0. Should only be used during initialization.
      */
-    public void resetSystemEncoders() {
+    private void resetEncoders() {
         slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     /**
      * Moves the slide to a target encoder position asynchronously.
+     * Expects a target position of between 0 and 1. Will automatically clamp to
+     * game encoder max/min positions. Not Actually 0 and 1 but whatever is set as max and min
      *
      * @param position Target encoder position
      * @param power    Motor power (positive value)
      */
-    public void setSlidePositionAsync(int position, double power) {
+    public void setSlidePositionAsync(double position, double power) {
         // Clamp position within encoder limits
-        position = Math.max(dynamicMinEncoderPosition, Math.min(MAX_ENCODER_POSITION, position));
 
-        slideMotor.setTargetPosition(position);
+        int targetPosition = (int) (position * (MAX_ENCODER_POSITION - MIN_ENCODER_POSITION)) + MAX_ENCODER_POSITION;
+
+        slideMotor.setTargetPosition(targetPosition);
         slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slideMotor.setPower(Math.abs(power));
     }
@@ -66,20 +67,13 @@ public class SlideComponent extends AbstractComponent {
 
         // Clamp movement based on encoder limits
         if ((power > 0 && currentPosition >= MAX_ENCODER_POSITION) ||
-                (power < 0 && currentPosition <= dynamicMinEncoderPosition)) {
+                (power < 0 && currentPosition <= MIN_ENCODER_POSITION)) {
             slideMotor.setPower(0);
-            return;
+        } else {
+            slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            slideMotor.setPower(power);
         }
 
-        slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        slideMotor.setPower(power);
-    }
-
-    /**
-     * Stops the slide motor.
-     */
-    public void stop() {
-        slideMotor.setPower(0);
     }
 
     /**
@@ -91,12 +85,4 @@ public class SlideComponent extends AbstractComponent {
         return slideMotor.getCurrentPosition();
     }
 
-    /**
-     * Gets the current dynamic minimum encoder position.
-     *
-     * @return Dynamic minimum encoder position.
-     */
-    public int getDynamicMinEncoderPosition() {
-        return dynamicMinEncoderPosition;
-    }
 }

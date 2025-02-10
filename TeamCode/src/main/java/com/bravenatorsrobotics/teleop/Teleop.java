@@ -2,6 +2,7 @@ package com.bravenatorsrobotics.teleop;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.bravenatorsrobotics.config.ConfigMap;
+import com.bravenatorsrobotics.hardware.controllers.SlideController;
 import com.bravenatorsrobotics.robot.Robot;
 import com.bravenatorsrobotics.teleop.controlAdapters.StatusLEDControlAdapter;
 import com.bravenatorsrobotics.teleop.controlAdapters.TeleopManualControlAdapter;
@@ -10,7 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @Config
 @TeleOp(name = "Teleop", group = "Competition")
-public class Teleop extends LinearOpMode {
+public class Teleop extends LinearOpMode implements TeleopStateManager.OnTeleopStateChangeCallback {
 
     private final TeleopStateManager stateManager = new TeleopStateManager();
 
@@ -82,4 +83,14 @@ public class Teleop extends LinearOpMode {
 
     }
 
+    @Override
+    public void onTeleopStateChangeCallback(TeleopState previousState, TeleopState currentState) {
+
+        if(currentState == TeleopState.MANUAL) {
+            this.robot.slideController.setState(SlideController.State.MANUAL);
+        } else {
+            this.robot.slideController.setState(SlideController.State.AUTO);
+        }
+
+    }
 }
