@@ -94,8 +94,8 @@ public class TeleopManualControlAdapter implements IControlAdapter {
                     this.robot.liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
                     this.robot.outtakeController.setPassOffClawOpen();
                     this.robot.outtakeController.setPassOffPivotInitial();
-                    this.robot.intakeController.goToPassOffPivotYPosition();
-                    this.robot.intakeController.goToInitialPivotXPosition();
+                    this.robot.intakeController.setFlipPositionToPassOff();
+                    this.robot.intakeController.setPivotPositionToPassOff();
 
                     this.autoDisableSlowMode();
 
@@ -107,7 +107,7 @@ public class TeleopManualControlAdapter implements IControlAdapter {
                 if(isPressed) {
 
                     this.robot.liftController.setTargetLiftPosition(LiftController.LiftPosition.LOW_BAR);
-                    this.robot.intakeController.goToPassOffPivotYPosition();
+                    this.robot.intakeController.setFlipPositionToPassOff();
 
                     this.autoDisableSlowMode();
                 }
@@ -118,8 +118,8 @@ public class TeleopManualControlAdapter implements IControlAdapter {
                 if(isPressed) {
 
                     this.robot.liftController.setTargetLiftPosition(LiftController.LiftPosition.HIGH_BAR);
-                    this.robot.intakeController.release();
-                    this.robot.intakeController.goToPassOffPivotYPosition();
+                    this.robot.intakeController.expelSample();
+                    this.robot.intakeController.setFlipPositionToPassOff();
 
                     this.autoDisableSlowMode();
 
@@ -129,21 +129,21 @@ public class TeleopManualControlAdapter implements IControlAdapter {
 
             case FtcGamePad.GAMEPAD_DPAD_RIGHT:
                 if(isPressed) {
-                    this.robot.intakeController.togglePivotYPosition();
+                    this.robot.intakeController.toggleFlipPosition();
                 }
 
                 break;
 
             case FtcGamePad.GAMEPAD_A:
                 if(isPressed) {
-                    this.robot.intakeController.toggleTensionPosition();
+                    this.robot.intakeController.intakeSample();
                 }
 
                 break;
 
             case FtcGamePad.GAMEPAD_B:
                 if(isPressed) {
-                    this.robot.intakeController.tensionServosOff();
+                    this.robot.intakeController.stopIntake();
                 }
 
                 break;
@@ -154,8 +154,8 @@ public class TeleopManualControlAdapter implements IControlAdapter {
 
                     this.robot.liftController.setTargetLiftPosition(LiftController.LiftPosition.BOTTOM_BASKET);
                     this.robot.outtakeController.setPassOffClawClosed();
-                    this.robot.intakeController.goToPassOffPivotYPosition();
-                    this.robot.intakeController.release();
+                    this.robot.intakeController.setFlipPositionToPassOff();
+                    this.robot.intakeController.expelSample();
                     this.shouldAutoDisableSlowMode = true;
 
                     this.driveAdapter.setSlowModeEnabled(true);
@@ -170,8 +170,8 @@ public class TeleopManualControlAdapter implements IControlAdapter {
 
                     this.robot.liftController.setTargetLiftPosition(LiftController.LiftPosition.TOP_BASKET);
                     this.robot.outtakeController.setPassOffClawClosed();
-                    this.robot.intakeController.goToPassOffPivotYPosition();
-                    this.robot.intakeController.release();
+                    this.robot.intakeController.setFlipPositionToPassOff();
+                    this.robot.intakeController.expelSample();
                     this.shouldAutoDisableSlowMode = true;
 
                     this.driveAdapter.setSlowModeEnabled(true);
@@ -190,7 +190,7 @@ public class TeleopManualControlAdapter implements IControlAdapter {
 
             case FtcGamePad.GAMEPAD_RBUMPER:
                 if(isPressed) {
-                    this.robot.intakeController.release();
+                    this.robot.intakeController.expelSample();
                     this.autoDisableSlowMode();
                 }
 
@@ -198,7 +198,7 @@ public class TeleopManualControlAdapter implements IControlAdapter {
 
             case FtcGamePad.GAMEPAD_RSTICK_BTN:
                 if(isPressed) {
-                    this.robot.intakeController.togglePivotXPosition();
+                    this.robot.intakeController.toggleSnapPivotPosition();
                     this.autoDisableSlowMode();
                 }
 
@@ -230,11 +230,10 @@ public class TeleopManualControlAdapter implements IControlAdapter {
 
     private void handlePivotServoX() {
 
-        double joystickValue = this.opMode.gamepad2.right_stick_x;
+        double joystickValue = -this.opMode.gamepad2.right_stick_x;
 
         if (Math.abs(joystickValue) > 0.02) { // Joystick input detected
-            this.robot.intakeController.resetPivotXManualOverride(); // Disable manual override
-            this.robot.intakeController.updatePivotXPositionFromJoystick(joystickValue);
+            this.robot.intakeController.setManualPivotOffsetPosition(joystickValue);
         }
 
     }
@@ -242,7 +241,7 @@ public class TeleopManualControlAdapter implements IControlAdapter {
     private void updateStatusLED() {
 
         StatusLEDControlAdapter.State ledState = this.statusLEDControlAdapter.getState();
-        boolean isInReleasePosition = this.robot.intakeController.isInReleasePosition();
+        boolean isInReleasePosition = this.robot.intakeController.isExpellingSample();
 
         if(ledState == StatusLEDControlAdapter.State.DEFAULT && isInReleasePosition)
             this.statusLEDControlAdapter.setState(StatusLEDControlAdapter.State.INDICATE_RELEASE_POSITION);

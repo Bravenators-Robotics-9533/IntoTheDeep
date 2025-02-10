@@ -11,8 +11,8 @@ public final class HardwareMapIdentities {
     public static final String PASS_OFF_PIVOT = "passOffPivot";
     public static final String WALL_CLAW = "wallClaw";
 
-    public static final String INTAKE_PIVOT_X = "intakePivotX";
-    public static final String INTAKE_PIVOT_Y = "intakePivotY";
+    public static final String INTAKE_PIVOT = "intakePivotX";
+    public static final String INTAKE_FLIP = "intakePivotY";
     public static final String INTAKE_TENSION_L = "intakeTensionL";
     public static final String INTAKE_TENSION_R = "intakeTensionR";
 

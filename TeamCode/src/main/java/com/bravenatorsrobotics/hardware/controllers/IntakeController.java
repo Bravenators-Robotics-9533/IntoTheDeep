@@ -4,129 +4,101 @@ import com.acmerobotics.dashboard.config.Config;
 import com.bravenatorsrobotics.hardware.components.IntakeComponent;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 @Config
 public class IntakeController extends AbstractController {
 
-    private boolean isPivotXManualOverride = false; // Flag for manual override
+    public static final double MIN_SAMPLE_POSITION = 13;
+    public static final double MANUAL_PIVOT_MULTIPLIER = 0.02;
 
-    public static final double INITIAL_PIVOT_X_POSITION = 0.5; //Fix Value
-    public static final double FULL_PIVOT_X_POSITION = 1; //Fix Value
+    private static final double PASS_OFF_PIVOT_POSITION = 0.5;
+    private static final double MAX_PIVOT_POSITION = 1;
 
-    public static final double PASS_OFF_PIVOT_Y_POSITION = 0;
-    public static final double INTAKE_PIVOT_Y_POSITION = 0.57 ;
-    public static final double CAPTURE_PIVOT_Y_POSITION = 1;
+    private static final double PASS_OFF_FLIP_POSITION = 0;
+    private static final double STANDBY_FLIP_POSITION = 0.57 ;
+    private static final double INTAKE_FLIP_POSITION = 1;
 
-    public static final double INITIAL_TENSION_L_POSITION = 0;
-    public static final double INITIAL_TENSION_R_POSITION = 1;
-    public static final double FULL_TENSION_L_POSITION = 1;
-    public static final double FULL_TENSION_R_POSITION = 0;
-    public static final double TENSION_SERVO_L_OFF = 0.5;
-    public static final double TENSION_SERVO_R_OFF = 0.5;
+    private static final double INTAKE_TENSION_POSITION = 0;
+    private static final double STOP_TENSION_POSITION = 0.5;
+    private static final double EXPEL_TENSION_POSITION = 1.0;
 
+    private final IntakeComponent intakeComponent;
+    private final Telemetry telemetry;
 
-    protected final IntakeComponent intakeComponent;
-
-
-    public IntakeController(IntakeComponent intakeComponent) {
+    public IntakeController(IntakeComponent intakeComponent, Telemetry telemetry) {
 
         this.intakeComponent = intakeComponent;
+        this.telemetry = telemetry;
 
     }
 
     @Override
     public void initialize() {
 
-        this.intakeComponent.setPivotServoXPosition(INITIAL_PIVOT_X_POSITION);
-        this.intakeComponent.setPivotServoYPosition(PASS_OFF_PIVOT_Y_POSITION);
-        this.intakeComponent.setTensionServoLPosition(TENSION_SERVO_L_OFF);
-        this.intakeComponent.setTensionServoRPosition(TENSION_SERVO_R_OFF);
+        this.intakeComponent.setPivotServoPosition(PASS_OFF_PIVOT_POSITION);
+        this.intakeComponent.setFlipServoPosition(PASS_OFF_FLIP_POSITION);
+        this.stopIntake();
 
     }
 
     @Override
     public void update() {
 
-        double distance = intakeComponent.getDistanceInCm();
-        String color = intakeComponent.detectBlockColor();
-            if (distance < 1.26 && (intakeComponent.getTargetTensionServoLPosition()==INITIAL_TENSION_L_POSITION && (intakeComponent.getTargetTensionServoRPosition()==INITIAL_TENSION_R_POSITION))) {
-                 // Replace with your desired threshold
-                    tensionServosOff();
-            }
+        if (intakeComponent.getDistanceInMM() < MIN_SAMPLE_POSITION && this.intakeComponent.getTensionServoPosition() == INTAKE_TENSION_POSITION) {
+            this.stopIntake();
+        }
+
+        this.telemetry.addData("Target Flip Position", this.intakeComponent.getTargetFlipServoPosition());
+        this.telemetry.addData("Sample Distance MM", this.intakeComponent.getDistanceInMM());
+
     }
 
+    public void intakeSample() { this.intakeComponent.setTensionServoPositions(INTAKE_TENSION_POSITION); }
+    public void stopIntake() { this.intakeComponent.setTensionServoPositions(STOP_TENSION_POSITION); }
+    public void expelSample() { this.intakeComponent.setTensionServoPositions(EXPEL_TENSION_POSITION); }
 
-    public void tensionServosOff() {
-        intakeComponent.setTensionServoLPosition(TENSION_SERVO_L_OFF);
-        intakeComponent.setTensionServoRPosition(TENSION_SERVO_R_OFF);
-    }
+    public boolean isExpellingSample() {return this.intakeComponent.getTensionServoPosition() == EXPEL_TENSION_POSITION; }
 
-    public void toggleTensionPosition() {
+    public void toggleSnapPivotPosition() {
 
-        if ((intakeComponent.getTargetTensionServoLPosition() == INITIAL_TENSION_L_POSITION) && (intakeComponent.getTargetTensionServoRPosition() == INITIAL_TENSION_R_POSITION)) {
-            intakeComponent.setTensionServoLPosition(FULL_TENSION_L_POSITION);
-            intakeComponent.setTensionServoRPosition(FULL_TENSION_R_POSITION);
+        if (this.intakeComponent.getTargetPivotServoPosition() == PASS_OFF_PIVOT_POSITION) {
+            this.intakeComponent.setPivotServoPosition(MAX_PIVOT_POSITION);
         } else {
-            intakeComponent.setTensionServoLPosition(INITIAL_TENSION_L_POSITION);
-            intakeComponent.setTensionServoRPosition(INITIAL_TENSION_R_POSITION);
+            this.intakeComponent.setPivotServoPosition(PASS_OFF_PIVOT_POSITION);
         }
 
     }
 
+    public void toggleFlipPosition() {
 
-    public void tension() {
-        intakeComponent.setTensionServoLPosition(INITIAL_TENSION_L_POSITION);
-        intakeComponent.setTensionServoRPosition(INITIAL_TENSION_R_POSITION);
-    }
-
-    public void release() {
-        intakeComponent.setTensionServoLPosition(FULL_TENSION_L_POSITION);
-        intakeComponent.setTensionServoRPosition(FULL_TENSION_R_POSITION);
-    }
-
-    public boolean isInReleasePosition() {
-        return intakeComponent.getTargetTensionServoLPosition() == FULL_TENSION_L_POSITION
-            || intakeComponent.getTargetTensionServoRPosition() == FULL_TENSION_R_POSITION;
-    }
-
-    public void togglePivotXPosition() {
-        isPivotXManualOverride = true; // Enable manual override
-        if (intakeComponent.getTargetPivotServoXPosition() == INITIAL_PIVOT_X_POSITION) {
-            intakeComponent.setPivotServoXPosition(FULL_PIVOT_X_POSITION);
-        } else {
-            intakeComponent.setPivotServoXPosition(INITIAL_PIVOT_X_POSITION);
+        if(this.intakeComponent.getTargetFlipServoPosition() == PASS_OFF_FLIP_POSITION) {
+            this.intakeComponent.setFlipServoPosition(STANDBY_FLIP_POSITION);
+            return;
         }
-    }
 
-    public void togglePivotYPosition() {
-
-        if (intakeComponent.getTargetPivotServoYPosition() == INTAKE_PIVOT_Y_POSITION) {
-            intakeComponent.setPivotServoYPosition(CAPTURE_PIVOT_Y_POSITION);
+        if (this.intakeComponent.getTargetFlipServoPosition() != INTAKE_FLIP_POSITION) {
+            this.intakeComponent.setFlipServoPosition(INTAKE_FLIP_POSITION);
         } else {
-            intakeComponent.setPivotServoYPosition(INTAKE_PIVOT_Y_POSITION);
+            this.intakeComponent.setFlipServoPosition(STANDBY_FLIP_POSITION);
         }
 
     }
 
-    public void goToPassOffPivotYPosition() { intakeComponent.setPivotServoYPosition(PASS_OFF_PIVOT_Y_POSITION); }
-    public void goToCapturePivotYPosition() { intakeComponent.setPivotServoYPosition(CAPTURE_PIVOT_Y_POSITION); }
-    public void goToIntakePivotYPosition() { intakeComponent.setPivotServoYPosition(INTAKE_PIVOT_Y_POSITION); }
-    public void goToInitialPivotXPosition() { intakeComponent.setPivotServoXPosition(INITIAL_PIVOT_X_POSITION); }
+    public void setFlipPositionToPassOff() { intakeComponent.setFlipServoPosition(PASS_OFF_FLIP_POSITION); }
+    public void setPivotPositionToPassOff() { intakeComponent.setPivotServoPosition(PASS_OFF_PIVOT_POSITION); }
 
     // Method for joystick dynamic control
-    public void updatePivotXPositionFromJoystick(double joystickValue) {
-        if (!isPivotXManualOverride) { // Only update if not in manual override
-            double position = Range.clip(
-                    INITIAL_PIVOT_X_POSITION + joystickValue * (FULL_PIVOT_X_POSITION - INITIAL_PIVOT_X_POSITION),
-                    INITIAL_PIVOT_X_POSITION,
-                    FULL_PIVOT_X_POSITION
-            );
-            intakeComponent.setPivotServoXPosition(position);
-        }
-    }
+    public void setManualPivotOffsetPosition(double joystickValue) {
 
-    // Method to reset manual override
-    public void resetPivotXManualOverride() {
-        isPivotXManualOverride = false;
+        double position = Range.clip(
+                this.intakeComponent.getTargetPivotServoPosition() + (Math.pow(joystickValue, 3) * MANUAL_PIVOT_MULTIPLIER),
+                PASS_OFF_PIVOT_POSITION,
+                MAX_PIVOT_POSITION
+        );
+
+        intakeComponent.setPivotServoPosition(position);
+
     }
 
 

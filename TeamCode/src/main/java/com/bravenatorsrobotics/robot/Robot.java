@@ -50,7 +50,7 @@ public class Robot {
 
         // Create the controllers
         this.controlSystemController = new ControlSystemController(controlSystemComponent, ControlSystemController.Strategy.MANUAL);
-        this.intakeController = new IntakeController(intakeComponent);
+        this.intakeController = new IntakeController(intakeComponent, opMode.telemetry);
         this.outtakeController = new OuttakeController(outtakeComponent);
         this.liftController = new LiftController(liftComponent, opMode.telemetry);
         this.slideController = new SlideController(slideComponent, opMode.telemetry);
