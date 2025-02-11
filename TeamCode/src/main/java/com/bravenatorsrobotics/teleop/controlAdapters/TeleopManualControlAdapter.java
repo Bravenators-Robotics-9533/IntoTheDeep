@@ -14,7 +14,7 @@ public class TeleopManualControlAdapter implements IControlAdapter {
     private FtcGamePad driverGamePad;
     private FtcGamePad operatorGamePad;
 
-    private MecanumDriveControlAdapter driveAdapter;
+    private FieldCentricDriveControlAdapter driveAdapter;
 
     private boolean shouldAutoDisableSlowMode = false;
 
@@ -33,7 +33,7 @@ public class TeleopManualControlAdapter implements IControlAdapter {
         this.driverGamePad      = new FtcGamePad("Primary Driver", this.opMode.gamepad1, this::onPrimaryDriverGamePadChange);
         this.operatorGamePad    = new FtcGamePad("Secondary Driver", this.opMode.gamepad2, this::onSecondaryDriverGamePadChange);
 
-        this.driveAdapter       = new MecanumDriveControlAdapter(this.opMode.gamepad1, this.robot.drive);
+        this.driveAdapter       = new FieldCentricDriveControlAdapter(this.opMode.gamepad1, this.robot.drive);
 
     }
 
@@ -43,7 +43,7 @@ public class TeleopManualControlAdapter implements IControlAdapter {
         this.driverGamePad.update();
         this.operatorGamePad.update();
 
-//        this.driveAdapter.update();
+        this.driveAdapter.update();
         this.handlePassOffPivotServo();
         this.handlePivotServoX();
         this.handleSlide();
