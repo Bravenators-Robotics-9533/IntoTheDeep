@@ -6,11 +6,11 @@ import com.bravenatorsrobotics.hardware.components.OuttakeComponent;
 @Config
 public class OuttakeController extends AbstractController {
 
-    public static final double PASS_OFF_PIVOT_INITIAL = 0.025;
+    public static final double PASS_OFF_PIVOT_INITIAL = 0;
     public static final double PASS_OFF_PIVOT_SCORE = 0.8;
 
     public static final double PASS_OFF_CLAW_CLOSED = 0;
-    public static final double PASS_OFF_CLAW_OPEN = 0.75;
+    public static final double PASS_OFF_CLAW_OPEN = 0.65;
 
     public static final double WALL_CLAW_CLOSED = 0.25;
     public static final double WALL_CLAW_OPEN = 0.82;
