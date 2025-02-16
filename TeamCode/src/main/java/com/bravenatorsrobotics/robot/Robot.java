@@ -33,13 +33,14 @@ public class Robot {
     protected final OpMode opMode;
     protected final UpdateHandler updateHandler;
 
-    public Robot(OpMode opMode, UpdateHandler updateHandler) {
+
+    public Robot(ControlSystemController.Strategy updateStrategy, Pose2d startingPosition, OpMode opMode, UpdateHandler updateHandler) {
 
         this.opMode = opMode;
         this.updateHandler = updateHandler;
 
         // TODO: SET THIS STARTING POSITION BETTER
-        this.drive = new MecanumDrive(opMode.hardwareMap, new Pose2d(new Vector2d(0, 0), Math.toRadians(0)));
+        this.drive = new MecanumDrive(opMode.hardwareMap, startingPosition);
 
         // Create the components
         ControlSystemComponent controlSystemComponent = new ControlSystemComponent(opMode.hardwareMap);
@@ -49,7 +50,7 @@ public class Robot {
         SlideComponent slideComponent = new SlideComponent(opMode.hardwareMap);
 
         // Create the controllers
-        this.controlSystemController = new ControlSystemController(controlSystemComponent, ControlSystemController.Strategy.MANUAL);
+        this.controlSystemController = new ControlSystemController(controlSystemComponent, updateStrategy);
         this.intakeController = new IntakeController(intakeComponent, opMode.telemetry);
         this.outtakeController = new OuttakeController(outtakeComponent);
         this.liftController = new LiftController(liftComponent, opMode.telemetry);
@@ -57,7 +58,11 @@ public class Robot {
 
     }
 
-    public Robot(OpMode opMode) { this(opMode, null); }
+    public Robot(ControlSystemController.Strategy strategy, Pose2d startingPosition, OpMode opMode) {
+        this(strategy, startingPosition, opMode, null);
+    }
+
+    public Robot(OpMode opMode, UpdateHandler updateHandler) { this(ControlSystemController.Strategy.MANUAL, new Pose2d(0, 0, 0), opMode, updateHandler); }
 
     public void initialize() {
 

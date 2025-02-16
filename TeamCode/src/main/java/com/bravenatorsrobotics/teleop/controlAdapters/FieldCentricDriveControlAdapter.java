@@ -3,6 +3,8 @@ package com.bravenatorsrobotics.teleop.controlAdapters;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
 import roadrunner.drive.MecanumDrive;
 
 public class FieldCentricDriveControlAdapter implements IControlAdapter {
@@ -33,7 +35,8 @@ public class FieldCentricDriveControlAdapter implements IControlAdapter {
         double x    = -Range.clip(Math.pow(gamepad.left_stick_x, DRIVER_CONTROLLER_EASE_POW) + xt, -1.0, 1.0);
         double rx   = Range.clip(Math.pow(gamepad.right_stick_x, DRIVER_CONTROLLER_EASE_POW), -1.0, 1.0);
 
-        double botHeading = offsetHeading - this.drive.localizer.getRawExternalHeading();
+        double imuHeading = this.drive.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double botHeading = offsetHeading - imuHeading;
 
         double rotX = (x * Math.cos(botHeading)) - (y * Math.sin(botHeading));
         double rotY = (x * Math.sin(botHeading)) + (y * Math.cos(botHeading));
@@ -54,6 +57,8 @@ public class FieldCentricDriveControlAdapter implements IControlAdapter {
     public void setSlowModeEnabled(boolean isSlowModeEnabled) { this.isSlowModeEnabled = isSlowModeEnabled; }
     public void toggleSlowMode() { this.isSlowModeEnabled = !this.isSlowModeEnabled; }
 
-    public void resetOffsetHeading() { this.offsetHeading = this.drive.localizer.getRawExternalHeading(); }
+    public void resetOffsetHeading() {
+        this.offsetHeading = this.drive.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+    }
 
 }

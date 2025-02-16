@@ -23,5 +23,4 @@ public interface Localizer {
      */
     PoseVelocity2d update();
 
-    double getRawExternalHeading();
 }

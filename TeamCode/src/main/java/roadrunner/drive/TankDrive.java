@@ -225,10 +225,6 @@ public final class TankDrive {
             return twist.velocity().value();
         }
 
-        @Override
-        public double getRawExternalHeading() {
-            return 0;
-        }
     }
 
     public TankDrive(HardwareMap hardwareMap, Pose2d pose) {

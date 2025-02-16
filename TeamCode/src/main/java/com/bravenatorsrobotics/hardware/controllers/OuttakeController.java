@@ -1,7 +1,12 @@
 package com.bravenatorsrobotics.hardware.controllers;
 
+import androidx.annotation.NonNull;
+
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
 import com.bravenatorsrobotics.hardware.components.OuttakeComponent;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Config
 public class OuttakeController extends AbstractController {
@@ -9,7 +14,7 @@ public class OuttakeController extends AbstractController {
     public static final double PASS_OFF_PIVOT_INITIAL = 0;
     public static final double PASS_OFF_PIVOT_SCORE = 0.8;
 
-    public static final double PASS_OFF_CLAW_CLOSED = 0;
+    public static final double PASS_OFF_CLAW_CLOSED = 0.1;
     public static final double PASS_OFF_CLAW_OPEN = 0.65;
 
     public static final double WALL_CLAW_CLOSED = 0.25;
@@ -62,6 +67,29 @@ public class OuttakeController extends AbstractController {
 
     public void setPassOffPivotInitial() { outtakeComponent.setPassOffPivotServoPosition(PASS_OFF_PIVOT_INITIAL); }
     public void setPassOffPivotScore() { outtakeComponent.setPassOffPivotServoPosition(PASS_OFF_PIVOT_SCORE); }
+
+    public class OpenWallClawAction implements Action {
+
+        private boolean initialized = false;
+        private final ElapsedTime timer = new ElapsedTime();
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+            if(!this.initialized) {
+                this.timer.reset();
+                this.initialized = true;
+
+                outtakeComponent.setWallClawServoPosition(WALL_CLAW_OPEN);
+            }
+
+            return this.timer.seconds() < 0.5;
+
+        }
+
+    }
+
+    public Action openWallClawAction() { return new OpenWallClawAction(); }
 
 
 }

@@ -59,6 +59,4 @@ public class MecanumDriveControlAdapter implements IControlAdapter {
 
     public boolean getIsSlowModeEnabled() { return this.isSlowModeEnabled; }
 
-    public void resetOffsetHeading() { this.offsetHeading = this.drive.localizer.getRawExternalHeading(); }
-
 }

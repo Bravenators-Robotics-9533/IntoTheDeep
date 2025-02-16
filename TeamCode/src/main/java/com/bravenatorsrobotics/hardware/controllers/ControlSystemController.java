@@ -11,7 +11,7 @@ public class ControlSystemController extends AbstractController {
     }
 
     protected final ControlSystemComponent controlSystem;
-    protected final Strategy strategy;
+    protected Strategy strategy;
 
     public ControlSystemController(ControlSystemComponent controlSystem, Strategy strategy) {
         this.controlSystem = controlSystem;

@@ -64,4 +64,8 @@ public class LiftComponent extends AbstractComponent {
 
     }
 
+    public boolean isBusy() {
+        return this.lLiftMotor.isBusy() || this.rLiftMotor.isBusy();
+    }
+
 }

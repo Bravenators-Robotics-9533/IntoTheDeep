@@ -1,6 +1,10 @@
 package com.bravenatorsrobotics.hardware.controllers;
 
+import androidx.annotation.NonNull;
+
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
 import com.bravenatorsrobotics.hardware.components.LiftComponent;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -29,6 +33,8 @@ public class LiftController extends AbstractController {
     public static double HIGH_BAR_POSITION = 0.45;
     public static double LOW_BAR_POSITION = 0.28;
 
+    public static double HIGH_BAR_RELEASE_POSITION = 0.3;
+
     //How you call the positions out of this class
     public enum LiftPosition {
 
@@ -36,6 +42,7 @@ public class LiftController extends AbstractController {
         TOP_BASKET(TOP_BASKET_POSITION),
         BOTTOM_BASKET(BOTTOM_BASKET_POSITION),
         HIGH_BAR(HIGH_BAR_POSITION),
+        HIGH_BAR_RELEASE(HIGH_BAR_RELEASE_POSITION),
         LOW_BAR(LOW_BAR_POSITION);
 
         public final double liftPosition;
@@ -72,5 +79,51 @@ public class LiftController extends AbstractController {
         telemetry.addData("Right Lift Motor", (double) liftComponent.rLiftMotor.getCurrentPosition() );
 
     }
+
+    public class LiftToHighBarAction implements Action {
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+            targetLiftPosition = LiftPosition.HIGH_BAR;
+            update();
+
+            return liftComponent.isBusy();
+
+        }
+
+    }
+
+    public class LiftToHighBarReleasePosition implements Action {
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+            targetLiftPosition = LiftPosition.HIGH_BAR_RELEASE;
+            update();
+
+            return liftComponent.isBusy();
+
+        }
+
+    }
+
+    public class LiftToRestAction implements Action {
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+            targetLiftPosition = LiftPosition.REST;
+            update();
+
+            return liftComponent.isBusy();
+
+        }
+
+    }
+
+    public Action liftToHighBarAction() { return new LiftToHighBarAction(); }
+    public Action liftToHighBarReleasePosition() { return new LiftToHighBarReleasePosition(); }
+    public Action liftToRestAction() { return new LiftToRestAction(); }
 
 }
