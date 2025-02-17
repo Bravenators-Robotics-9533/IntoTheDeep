@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @TeleOp(name="Max Velocity Test", group = "utils")
-//@Disabled
+@Disabled
 public class MaxVelocityTestOpMode extends LinearOpMode {
 
     private static final double TEST_DURATION_SECONDS = 6.0;
