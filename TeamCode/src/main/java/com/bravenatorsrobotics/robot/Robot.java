@@ -21,9 +21,9 @@ public class Robot {
 
     public interface UpdateHandler { void update(); }
 
-    // Controllers
     public final MecanumDrive drive;
 
+    // Controllers
     public final ControlSystemController controlSystemController;
     public final IntakeController intakeController;
     public final OuttakeController outtakeController;
