@@ -1,9 +1,11 @@
 package com.bravenatorsrobotics.config;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous(name="Config", group="_")
+@Disabled
 public class ConfigOpMode extends LinearOpMode {
 
     private static final SimpleMenu MENU = new SimpleMenu("Configuration Menu");
