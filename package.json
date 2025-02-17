@@ -1,0 +1,21 @@
+{
+  "name": "intothedeep",
+  "version": "1.0.0",
+  "description": "Into the Deep robot controller for FTC Team 9533",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "standard-version": {
+    "skip": {
+      "bump": true,
+      "commit": true,
+      "tag": true
+    }
+  },
+  "dependencies": {
+    "standard-version": "^9.5.0"
+  }
+}
