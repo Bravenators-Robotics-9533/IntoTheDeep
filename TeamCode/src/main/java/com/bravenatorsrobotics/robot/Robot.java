@@ -19,8 +19,6 @@ import roadrunner.drive.MecanumDrive;
 
 public class Robot {
 
-    public interface UpdateHandler { void update(); }
-
     public final MecanumDrive drive;
 
     // Controllers
@@ -32,7 +30,6 @@ public class Robot {
 
     protected final OpMode opMode;
     protected final UpdateHandler updateHandler;
-
 
     public Robot(ControlSystemController.Strategy updateStrategy, Pose2d startingPosition, OpMode opMode, UpdateHandler updateHandler) {
 
@@ -92,8 +89,7 @@ public class Robot {
 
     }
 
-    public void destroy() {
+    public interface UpdateHandler { void update(); }
 
-    }
 
 }
