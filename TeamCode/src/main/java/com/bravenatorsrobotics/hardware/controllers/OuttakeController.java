@@ -18,7 +18,7 @@ public class OuttakeController extends AbstractController {
     public static final double PASS_OFF_CLAW_OPEN = 0.65;
 
     public static final double WALL_CLAW_CLOSED = 0.25;
-    public static final double WALL_CLAW_OPEN = 0.82;
+    public static final double WALL_CLAW_OPEN = 0.73;
 
     private final OuttakeComponent outtakeComponent;
 
@@ -83,13 +83,35 @@ public class OuttakeController extends AbstractController {
                 outtakeComponent.setWallClawServoPosition(WALL_CLAW_OPEN);
             }
 
-            return this.timer.seconds() < 0.5;
+            return this.timer.seconds() < 0.25;
+
+        }
+
+    }
+
+    public class CloseWallClawAction implements Action {
+
+        private boolean initialized = false;
+        private final ElapsedTime timer = new ElapsedTime();
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+            if(!this.initialized) {
+                this.timer.reset();
+                this.initialized = true;
+
+                outtakeComponent.setWallClawServoPosition(WALL_CLAW_CLOSED);
+            }
+
+            return this.timer.seconds() < 0.25;
 
         }
 
     }
 
     public Action openWallClawAction() { return new OpenWallClawAction(); }
+    public Action closeWallClawAction() { return new CloseWallClawAction(); }
 
 
 }

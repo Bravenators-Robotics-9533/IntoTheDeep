@@ -59,37 +59,35 @@ import java.util.List;
 public final class MecanumDrive {
 
     public static class Params {
-        // IMU orientation
-        // TODO: fill in these values based on
-        //   see https://ftc-docs.firstinspires.org/en/latest/programming_resources/imu/imu.html?highlight=imu#physical-hub-mounting
+
         public RevHubOrientationOnRobot.LogoFacingDirection logoFacingDirection =
                 RevHubOrientationOnRobot.LogoFacingDirection.RIGHT;
         public RevHubOrientationOnRobot.UsbFacingDirection usbFacingDirection =
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
 
         // drive model parameters
-        public double inPerTick = 0.0005313731568;
-        public double lateralInPerTick = 0.0003268574284638144; // 1000
-        public double trackWidthTicks = 23464.583519173797;
+        public double inPerTick = 0.0005245817151;
+        public double lateralInPerTick = 0.0003065392420486993;
+        public double trackWidthTicks = 22592.829641600423;
 
         // feedforward parameters (in tick units)
-        public double kS = 1.2464448258982954;
-        public double kV = 0.00010860383944380443;
-        public double kA = 0.000005;
+        public double kS = 1.2340651635814264;
+        public double kV = 0.00011291692705605586;
+        public double kA = 0.000001;
 
         // path profile parameters (in inches)
-        public double maxWheelVel = 35;
+        public double maxWheelVel = 50;
         public double minProfileAccel = -30;
-        public double maxProfileAccel = 35;
+        public double maxProfileAccel = 50;
 
         // turn profile parameters (in radians)
         public double maxAngVel = Math.PI / 2.0; // shared with path
         public double maxAngAccel = Math.PI / 2.0;
 
         // path controller gains
-        public double axialGain = 8;
-        public double lateralGain = 15;
-        public double headingGain = 6; // shared with turn
+        public double axialGain = 5;
+        public double lateralGain = 5;
+        public double headingGain = 5; // shared with turn
 
         public double axialVelGain = 0.0;
         public double lateralVelGain = 0.0;
@@ -103,6 +101,8 @@ public final class MecanumDrive {
 
     public final TurnConstraints defaultTurnConstraints = new TurnConstraints(
             PARAMS.maxAngVel, -PARAMS.maxAngAccel, PARAMS.maxAngAccel);
+    public final TurnConstraints fastTurnConstraints = new TurnConstraints(
+            PARAMS.maxAngVel * 3, -PARAMS.maxAngAccel * 3, PARAMS.maxAngAccel * 3);
     public final VelConstraint defaultVelConstraint =
             new MinVelConstraint(Arrays.asList(
                     kinematics.new WheelVelConstraint(PARAMS.maxWheelVel),

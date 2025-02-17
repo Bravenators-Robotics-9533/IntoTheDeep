@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.bravenatorsrobotics.hardware.components.LiftComponent;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -96,13 +97,23 @@ public class LiftController extends AbstractController {
 
     public class LiftToHighBarReleasePosition implements Action {
 
+        private static final double TIMEOUT_SECONDS = 0.4;
+
+        private boolean isInitialized = false;
+        private ElapsedTime timer = new ElapsedTime();
+
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+            if(!isInitialized) {
+                timer.reset();
+                isInitialized = true;
+            }
 
             targetLiftPosition = LiftPosition.HIGH_BAR_RELEASE;
             update();
 
-            return liftComponent.isBusy();
+            return timer.seconds() < TIMEOUT_SECONDS;
 
         }
 

@@ -23,9 +23,9 @@ import roadrunner.messages.ThreeDeadWheelInputsMessage;
 public final class ThreeDeadWheelLocalizer implements Localizer {
 
     public static class Params {
-        public double par0YTicks = -2118.029568069112; // y position of the first parallel encoder (in tick units)
-        public double par1YTicks = 3060.3813789773726; // y position of the second parallel encoder (in tick units)
-        public double perpXTicks = -3178.2230482456325; // x position of the perpendicular encoder (in tick units)
+        public double par0YTicks = -11231.376567298965; // y position of the first parallel encoder (in tick units)
+        public double par1YTicks = 12048.943643214556; // y position of the second parallel encoder (in tick units)
+        public double perpXTicks = -11223.878464941063; // x position of the perpendicular encoder (in tick units)
     }
 
     public static Params PARAMS = new Params();
@@ -49,6 +49,7 @@ public final class ThreeDeadWheelLocalizer implements Localizer {
 
         par0.setDirection(DcMotorSimple.Direction.FORWARD);
         par1.setDirection(DcMotorSimple.Direction.REVERSE);
+        perp.setDirection(DcMotorSimple.Direction.REVERSE);
 
         FlightRecorder.write("THREE_DEAD_WHEEL_PARAMS", PARAMS);
 

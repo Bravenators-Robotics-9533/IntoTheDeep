@@ -20,7 +20,10 @@ public class Auto extends LinearOpMode {
     private Robot robot;
 
     private Action driveToHighBarAction;
-    private Action pushFirstBlockAction;
+    private Action pushBlocksAction;
+    private Action driveToFirstScoreAction;
+    private Action driveToScoreBlockAgainAction;
+    private Action driveToSecondScoreAction;
 
     private void initialize() {
 
@@ -32,12 +35,36 @@ public class Auto extends LinearOpMode {
     private void createActions() {
 
         this.driveToHighBarAction = this.robot.drive.actionBuilder(INITIAL_STARTING_POSITION)
-                .splineTo(new Vector2d(-5, 32.5), Math.toRadians(270), this.robot.drive.defaultVelConstraint, this.robot.drive.defaultAccelConstraint)
+                .strafeTo(new Vector2d(-3, 32.5))
         .build();
 
-        this.pushFirstBlockAction = this.robot.drive.actionBuilder(new Pose2d(new Vector2d(-5, 33), Math.toRadians(270)))
+        this.pushBlocksAction = this.robot.drive.actionBuilder(new Pose2d(new Vector2d(-3, 32.5), Math.toRadians(270)))
                 .strafeToConstantHeading(new Vector2d(-5, 35))
-                .splineToLinearHeading(new Pose2d(new Vector2d(-37.5, 10), Math.toRadians(90)), new Rotation2d(Math.toRadians(0), Math.toRadians(-180)))
+                .splineToConstantHeading(new Vector2d(-39, 20), new Rotation2d(Math.toRadians(0), Math.toRadians(-180)))
+                .strafeTo(new Vector2d(-39, 15))
+                .strafeTo(new Vector2d(-45, 15))
+                .strafeTo(new Vector2d(-45, 52))
+                .strafeToLinearHeading(new Vector2d(-45, 15), Math.toRadians(90))
+                .strafeTo(new Vector2d(-53, 15))
+                .strafeTo(new Vector2d(-53, 52))
+                .strafeTo(new Vector2d(-48, 52))
+                .strafeTo(new Vector2d(-48, 63))
+        .build();
+
+        this.driveToFirstScoreAction = this.robot.drive.actionBuilder(new Pose2d(-48, 63, Math.toRadians(90)))
+                .strafeToLinearHeading(new Vector2d(-5, 50), Math.toRadians(270))
+                .strafeToConstantHeading(new Vector2d(-5, 32))
+        .build();
+
+        this.driveToScoreBlockAgainAction = this.robot.drive.actionBuilder(new Pose2d(new Vector2d(-5, 32), Math.toRadians(270)))
+                .strafeTo(new Vector2d(-5, 38))
+                .strafeToLinearHeading(new Vector2d(-43, 59), Math.toRadians(90))
+                .strafeTo(new Vector2d(-43, 64))
+        .build();
+
+        this.driveToSecondScoreAction = this.robot.drive.actionBuilder(new Pose2d(-43, 64, Math.toRadians(90)))
+                .strafeTo(new Vector2d(-43, 59))
+                .splineToLinearHeading(new Pose2d(new Vector2d(-5, 32.5), Math.toRadians(270)), new Rotation2d(Math.toRadians(0), Math.toRadians(-90)))
         .build();
 
     }
@@ -64,14 +91,40 @@ public class Auto extends LinearOpMode {
                         // Open claw and lower lift
                         new ParallelAction(
                                 this.robot.liftController.liftToRestAction(),
-                                this.pushFirstBlockAction
-                        )
+                                this.pushBlocksAction
+                        ),
+
+                        this.robot.outtakeController.closeWallClawAction(),
+
+                        new ParallelAction(
+                                this.driveToFirstScoreAction,
+                                this.robot.liftController.liftToHighBarAction()
+                        ),
+
+                        this.robot.liftController.liftToHighBarReleasePosition(),
+
+                        new ParallelAction(
+                                this.robot.outtakeController.openWallClawAction(),
+                                this.robot.liftController.liftToRestAction(),
+                                this.driveToScoreBlockAgainAction
+                        ),
+
+                        this.robot.outtakeController.closeWallClawAction(),
+
+                        new ParallelAction(
+                                this.driveToSecondScoreAction,
+                                this.robot.liftController.liftToHighBarAction()
+                        ),
+
+                        this.robot.liftController.liftToHighBarReleasePosition(),
+                        this.robot.outtakeController.openWallClawAction(),
+                        this.robot.liftController.liftToRestAction()
+
                 )
         );
 
         // Do autonomous code here
 
-
     }
-    
+
 }
