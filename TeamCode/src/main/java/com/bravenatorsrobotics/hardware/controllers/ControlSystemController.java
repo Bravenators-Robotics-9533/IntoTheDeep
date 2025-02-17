@@ -18,10 +18,6 @@ public class ControlSystemController extends AbstractController {
         this.strategy = strategy;
     }
 
-    public ControlSystemController(ControlSystemComponent controlSystem) {
-        this(controlSystem, Strategy.AUTO);
-    }
-
     @Override
     public void initialize() {
 

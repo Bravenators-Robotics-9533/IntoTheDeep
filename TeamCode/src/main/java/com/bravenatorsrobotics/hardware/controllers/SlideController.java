@@ -42,7 +42,6 @@ public class SlideController {
     }
 
     public void setState(State state) { this.state = state; }
-    public State getState() { return this.state; }
 
     public void setManualSlidePower(double manualSlidePower) { this.manualSlidePower = manualSlidePower; }
 

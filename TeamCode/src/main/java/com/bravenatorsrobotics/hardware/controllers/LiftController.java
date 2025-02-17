@@ -100,7 +100,7 @@ public class LiftController extends AbstractController {
         private static final double TIMEOUT_SECONDS = 0.4;
 
         private boolean isInitialized = false;
-        private ElapsedTime timer = new ElapsedTime();
+        private final ElapsedTime timer = new ElapsedTime();
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
