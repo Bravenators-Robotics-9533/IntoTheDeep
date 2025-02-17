@@ -40,7 +40,6 @@ public class OuttakeComponent extends AbstractComponent {
     }
 
     public double getTargetWallClawServoPosition() { return wallClawServo.getPosition(); }
-    public double getTargetPassOffPivotServoPosition() { return passOffClawServo.getPosition(); }
     public double getTargetPassOffClawServoPosition() { return passOffClawServo.getPosition(); }
 
 }
