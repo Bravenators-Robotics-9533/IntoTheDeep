@@ -17,6 +17,7 @@ public class ScoreThreeSpecimenAutonomousAction extends AbstractAutonomousAction
     private Action driveToFirstScoreAction; // Drives to the pole to score
     private Action driveToScoreBlockAgainAction; // Drives back to human player to grab another block
     private Action driveToSecondScoreAction; // Drives back to the pole to score
+    private Action driveToParkAction;
 
     public ScoreThreeSpecimenAutonomousAction(Robot robot, Pose2d initialPosition) {
         super(robot, initialPosition);
@@ -26,36 +27,38 @@ public class ScoreThreeSpecimenAutonomousAction extends AbstractAutonomousAction
     protected void initialize() {
 
         this.driveToHighBarAction = this.robot.drive.actionBuilder(super.initialPosition)
-                .strafeTo(new Vector2d(-3, 32.5))
+                .strafeTo(new Vector2d(-3, 32))
                 .build();
 
-        this.pushBlocksAction = this.robot.drive.actionBuilder(new Pose2d(new Vector2d(-3, 32.5), Math.toRadians(270)))
+        this.pushBlocksAction = this.robot.drive.actionBuilder(new Pose2d(new Vector2d(-3, 32), Math.toRadians(270)))
                 .strafeToConstantHeading(new Vector2d(-5, 35))
-                .splineToConstantHeading(new Vector2d(-39, 20), new Rotation2d(Math.toRadians(0), Math.toRadians(-180)))
-                .strafeTo(new Vector2d(-39, 15))
-                .strafeTo(new Vector2d(-45, 15))
+                .splineToConstantHeading(new Vector2d(-36, 20), new Rotation2d(Math.toRadians(0), Math.toRadians(-180)))
+                .strafeTo(new Vector2d(-36, 15.5))
+                .strafeTo(new Vector2d(-45, 14))
                 .strafeTo(new Vector2d(-45, 52))
-                .strafeToLinearHeading(new Vector2d(-45, 15), Math.toRadians(90))
-                .strafeTo(new Vector2d(-53, 15))
+                .splineToLinearHeading(new Pose2d(new Vector2d(-53, 14), Math.toRadians(90)), Math.toRadians(180))
                 .strafeTo(new Vector2d(-53, 52))
-                .strafeTo(new Vector2d(-48, 52))
-                .strafeTo(new Vector2d(-48, 63))
+                .splineToConstantHeading(new Vector2d(-48, 63), Math.toRadians(110))
                 .build();
 
         this.driveToFirstScoreAction = this.robot.drive.actionBuilder(new Pose2d(-48, 63, Math.toRadians(90)))
-                .strafeToLinearHeading(new Vector2d(-5, 50), Math.toRadians(270))
-                .strafeToConstantHeading(new Vector2d(-5, 32))
+                .strafeToLinearHeading(new Vector2d(-8, 50), Math.toRadians(270))
+                .strafeToConstantHeading(new Vector2d(-8, 32))
                 .build();
 
-        this.driveToScoreBlockAgainAction = this.robot.drive.actionBuilder(new Pose2d(new Vector2d(-5, 32), Math.toRadians(270)))
-                .strafeTo(new Vector2d(-5, 38))
+        this.driveToScoreBlockAgainAction = this.robot.drive.actionBuilder(new Pose2d(new Vector2d(-8, 32), Math.toRadians(270)))
+                .strafeTo(new Vector2d(-8, 38))
                 .strafeToLinearHeading(new Vector2d(-43, 59), Math.toRadians(90))
                 .strafeTo(new Vector2d(-43, 64))
                 .build();
 
         this.driveToSecondScoreAction = this.robot.drive.actionBuilder(new Pose2d(-43, 64, Math.toRadians(90)))
-                .strafeTo(new Vector2d(-43, 59))
-                .splineToLinearHeading(new Pose2d(new Vector2d(-5, 32.5), Math.toRadians(270)), new Rotation2d(Math.toRadians(0), Math.toRadians(-90)))
+                .strafeToLinearHeading(new Vector2d(-9, 40), Math.toRadians(270))
+                .strafeToConstantHeading(new Vector2d(-9, 32))
+        .build();
+
+        this.driveToParkAction = this.robot.drive.actionBuilder(new Pose2d(-10, 32, Math.toRadians(270)))
+                .strafeTo(new Vector2d(-43, 63), this.robot.drive.fastVelConstraint)
                 .build();
 
     }
@@ -104,7 +107,11 @@ public class ScoreThreeSpecimenAutonomousAction extends AbstractAutonomousAction
 
                 this.robot.liftController.liftToHighBarReleasePosition(),
                 this.robot.outtakeController.openWallClawAction(),
-                this.robot.liftController.liftToRestAction()
+
+                new ParallelAction(
+                        this.robot.liftController.liftToRestAction(),
+                        this.driveToParkAction
+                )
 
         );
 
