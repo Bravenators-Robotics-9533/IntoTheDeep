@@ -9,19 +9,19 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 @Config
 public class IntakeController extends AbstractController {
 
-    public static final double MIN_SAMPLE_POSITION = 13;
-    public static final double MANUAL_PIVOT_MULTIPLIER = 0.02;
+    public static double MIN_SAMPLE_POSITION = 13;
+    public static double MANUAL_PIVOT_MULTIPLIER = 0.02;
 
-    private static final double PASS_OFF_PIVOT_POSITION = 0.5;
-    private static final double MAX_PIVOT_POSITION = 1;
+    public static double PASS_OFF_PIVOT_POSITION = 0.5;
+    public static double MAX_PIVOT_POSITION = 1;
 
-    private static final double PASS_OFF_FLIP_POSITION = 0;
-    private static final double STANDBY_FLIP_POSITION = 0.57 ;
-    private static final double INTAKE_FLIP_POSITION = 1;
+    public static double PASS_OFF_FLIP_POSITION = 0;
+    public static double STANDBY_FLIP_POSITION = 0.57;
+    public static double INTAKE_FLIP_POSITION = 1;
 
-    private static final double INTAKE_TENSION_POSITION = 0;
-    private static final double STOP_TENSION_POSITION = 0.5;
-    private static final double EXPEL_TENSION_POSITION = 1.0;
+    public static double INTAKE_TENSION_POSITION = 0;
+    public static double STOP_TENSION_POSITION = 0.5;
+    public static double EXPEL_TENSION_POSITION = 1.0;
 
     private final IntakeComponent intakeComponent;
     private final Telemetry telemetry;
@@ -56,6 +56,9 @@ public class IntakeController extends AbstractController {
 
     public void intakeSample() { this.intakeComponent.setTensionServoPositions(INTAKE_TENSION_POSITION); }
     public void stopIntake() { this.intakeComponent.setTensionServoPositions(STOP_TENSION_POSITION); }
+
+    public boolean isIntakeActive() { return this.intakeComponent.getTensionServoPosition() == INTAKE_TENSION_POSITION; }
+
     public void expelSample() { this.intakeComponent.setTensionServoPositions(EXPEL_TENSION_POSITION); }
 
     public boolean isExpellingSample() {return this.intakeComponent.getTensionServoPosition() == EXPEL_TENSION_POSITION; }
@@ -74,18 +77,26 @@ public class IntakeController extends AbstractController {
 
         if(this.intakeComponent.getTargetFlipServoPosition() == PASS_OFF_FLIP_POSITION) {
             this.intakeComponent.setFlipServoPosition(STANDBY_FLIP_POSITION);
+            this.stopIntake();
             return;
         }
 
         if (this.intakeComponent.getTargetFlipServoPosition() != INTAKE_FLIP_POSITION) {
             this.intakeComponent.setFlipServoPosition(INTAKE_FLIP_POSITION);
+            this.intakeSample();
         } else {
             this.intakeComponent.setFlipServoPosition(STANDBY_FLIP_POSITION);
+            this.stopIntake();
         }
 
     }
 
+    public boolean isFlipPositionInPassOff() { return this.intakeComponent.getTargetFlipServoPosition() == PASS_OFF_FLIP_POSITION; }
+    public boolean isFlipPositionInIntake() { return this.intakeComponent.getTargetFlipServoPosition() == INTAKE_FLIP_POSITION; }
+
     public void setFlipPositionToPassOff() { intakeComponent.setFlipServoPosition(PASS_OFF_FLIP_POSITION); }
+    public void setFlipPositionToStandby() { intakeComponent.setFlipServoPosition(STANDBY_FLIP_POSITION); }
+
     public void setPivotPositionToPassOff() { intakeComponent.setPivotServoPosition(PASS_OFF_PIVOT_POSITION); }
 
     // Method for joystick dynamic control

@@ -1,6 +1,8 @@
 package com.bravenatorsrobotics.teleop;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
 import com.bravenatorsrobotics.config.ConfigMap;
 import com.bravenatorsrobotics.hardware.controllers.SlideController;
 import com.bravenatorsrobotics.robot.Robot;
@@ -9,11 +11,14 @@ import com.bravenatorsrobotics.teleop.controlAdapters.TeleopManualControlAdapter
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import java.util.ArrayList;
+
 @Config
 @TeleOp(name = "Teleop", group = "Competition")
-public class Teleop extends LinearOpMode implements TeleopStateManager.OnTeleopStateChangeCallback {
+public class Teleop extends LinearOpMode {
 
     private final TeleopStateManager stateManager = new TeleopStateManager();
+    private final ActionQueue actionQueue = new ActionQueue();
 
     private Robot robot;
 
@@ -32,7 +37,7 @@ public class Teleop extends LinearOpMode implements TeleopStateManager.OnTeleopS
         this.statusLEDControlAdapter.initialize();
 
         // Create Manual Control Adapter
-        this.manualControlAdapter = new TeleopManualControlAdapter(this, this.robot, this.statusLEDControlAdapter);
+        this.manualControlAdapter = new TeleopManualControlAdapter(this, this.robot, this.statusLEDControlAdapter, this.actionQueue);
         this.manualControlAdapter.initialize();
 
     }
@@ -69,28 +74,28 @@ public class Teleop extends LinearOpMode implements TeleopStateManager.OnTeleopS
 
     }
 
+    private void updateQueuedActions() {
+
+        TelemetryPacket packet = new TelemetryPacket();
+
+        this.actionQueue.printActions(super.telemetry);
+        this.actionQueue.update(packet);
+
+    }
+
     private void onUpdate() {
 
         // Update Controller Adapters
         if(this.stateManager.getState() == TeleopState.MANUAL)
             this.manualControlAdapter.update();
 
+        this.updateQueuedActions();
+
         this.statusLEDControlAdapter.update();
 
     }
 
     private void onStop() {
-
-    }
-
-    @Override
-    public void onTeleopStateChangeCallback(TeleopState previousState, TeleopState currentState) {
-
-        if(currentState == TeleopState.MANUAL) {
-            this.robot.slideController.setState(SlideController.State.MANUAL);
-        } else {
-            this.robot.slideController.setState(SlideController.State.AUTO);
-        }
 
     }
 }

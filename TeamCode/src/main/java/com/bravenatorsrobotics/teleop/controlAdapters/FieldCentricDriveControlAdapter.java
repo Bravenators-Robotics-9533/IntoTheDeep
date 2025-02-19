@@ -35,7 +35,7 @@ public class FieldCentricDriveControlAdapter implements IControlAdapter {
         double x    = -Range.clip(Math.pow(gamepad.left_stick_x, DRIVER_CONTROLLER_EASE_POW) + xt, -1.0, 1.0);
         double rx   = Range.clip(Math.pow(gamepad.right_stick_x, DRIVER_CONTROLLER_EASE_POW), -1.0, 1.0);
 
-        double imuHeading = this.drive.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double imuHeading = this.drive.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS) + Math.toRadians(180);
         double botHeading = offsetHeading - imuHeading;
 
         double rotX = (x * Math.cos(botHeading)) - (y * Math.sin(botHeading));

@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class SlideComponent extends AbstractComponent {
 
     public static int MAX_ENCODER_POSITION = 1500; // Maximum slide extension
-    public static int MIN_ENCODER_POSITION = 250;    // Minimum slide retraction
+    public static int MIN_ENCODER_POSITION = 150;    // Minimum slide retraction
 
     public DcMotorEx slideMotor;
 
@@ -29,6 +29,8 @@ public class SlideComponent extends AbstractComponent {
 
         // Set Zero Power Behavior
         this.slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        this.slideMotor.setTargetPositionTolerance(5);
     }
 
     /**
@@ -50,29 +52,11 @@ public class SlideComponent extends AbstractComponent {
     public void setSlidePositionAsync(double position, double power) {
         // Clamp position within encoder limits
 
-        int targetPosition = (int) (position * (MAX_ENCODER_POSITION - MIN_ENCODER_POSITION)) + MAX_ENCODER_POSITION;
+        int targetPosition = (int) (position * (MAX_ENCODER_POSITION - MIN_ENCODER_POSITION)) + MIN_ENCODER_POSITION;
 
         slideMotor.setTargetPosition(targetPosition);
         slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slideMotor.setPower(Math.abs(power));
-    }
-
-    /**
-     * Sets the motor power directly for manual control.
-     *
-     * @param power Motor power (-1.0 to 1.0)
-     */
-    public void setManualPower(double power) {
-        int currentPosition = slideMotor.getCurrentPosition();
-
-        // Clamp movement based on encoder limits
-        if ((power > 0 && currentPosition >= MAX_ENCODER_POSITION) ||
-                (power < 0 && currentPosition <= MIN_ENCODER_POSITION)) {
-            slideMotor.setPower(0);
-        } else {
-            slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            slideMotor.setPower(power);
-        }
 
     }
 
@@ -84,5 +68,7 @@ public class SlideComponent extends AbstractComponent {
     public int getCurrentPosition() {
         return slideMotor.getCurrentPosition();
     }
+
+    public boolean isBusy() { return this.slideMotor.isBusy(); }
 
 }

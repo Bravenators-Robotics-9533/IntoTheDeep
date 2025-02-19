@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Config
 public class OuttakeController extends AbstractController {
 
-    public static final double PASS_OFF_PIVOT_INITIAL = 0.1;
+    public static final double PASS_OFF_PIVOT_INITIAL = 0.06;
     public static final double PASS_OFF_PIVOT_SCORE = 0.8;
 
     public static final double PASS_OFF_CLAW_CLOSED = 0.1;
@@ -52,13 +52,17 @@ public class OuttakeController extends AbstractController {
 
     }
 
+    private boolean isWallClaw = false;
+
     public void toggleWallClawServoPosition() {
 
-        if (outtakeComponent.getTargetWallClawServoPosition() == WALL_CLAW_CLOSED) {
-            outtakeComponent.setWallClawServoPosition(WALL_CLAW_OPEN);
+        if(isWallClaw) {
+            this.outtakeComponent.setWallClawServoPosition(WALL_CLAW_CLOSED);
         } else {
-            outtakeComponent.setWallClawServoPosition(WALL_CLAW_CLOSED);
+            this.outtakeComponent.setWallClawServoPosition(WALL_CLAW_OPEN);
         }
+
+        isWallClaw = !isWallClaw;
 
     }
 
@@ -67,6 +71,8 @@ public class OuttakeController extends AbstractController {
 
     public void setPassOffPivotInitial() { outtakeComponent.setPassOffPivotServoPosition(PASS_OFF_PIVOT_INITIAL); }
     public void setPassOffPivotScore() { outtakeComponent.setPassOffPivotServoPosition(PASS_OFF_PIVOT_SCORE); }
+
+    public boolean isPassOffPivotInScore() { return this.outtakeComponent.getTargetPivotServoPosition() == PASS_OFF_PIVOT_SCORE; }
 
     public class OpenWallClawAction implements Action {
 

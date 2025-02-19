@@ -30,7 +30,7 @@ public class LiftController extends AbstractController {
     // Position Values
     public static double REST_POSITION = 0.0;
     public static double TOP_BASKET_POSITION = 1.0;
-    public static double BOTTOM_BASKET_POSITION = 0.0;
+    public static double BOTTOM_BASKET_POSITION = 0.42;
     public static double HIGH_BAR_POSITION = 0.42;
     public static double LOW_BAR_POSITION = 0.28;
 
@@ -136,5 +136,7 @@ public class LiftController extends AbstractController {
     public Action liftToHighBarAction() { return new LiftToHighBarAction(); }
     public Action liftToHighBarReleasePosition() { return new LiftToHighBarReleasePosition(); }
     public Action liftToRestAction() { return new LiftToRestAction(); }
+
+    public double getLiftPosition() { return this.liftComponent.lLiftMotor.getCurrentPosition(); }
 
 }

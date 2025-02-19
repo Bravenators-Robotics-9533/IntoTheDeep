@@ -1,24 +1,22 @@
 package com.bravenatorsrobotics.hardware.controllers;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.bravenatorsrobotics.hardware.components.SlideComponent;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+@Config
 public class SlideController {
 
-    public enum State {
-        MANUAL,
-        AUTO
-    }
-
+    public static double P = 0.1;
     private static final double MAX_SLIDE_POWER = 1.0; // Default slide power
+    private static final int SLIDE_TOLERANCE = 5;
 
     private final SlideComponent slideComponent;
     private final Telemetry telemetry;
 
-    private State state = State.MANUAL;
-
-    private double manualSlidePower = 0.0;
+    private double targetPosition = 0;
 
     public SlideController(SlideComponent slideComponent, Telemetry telemetry) {
         this.slideComponent = slideComponent;
@@ -32,17 +30,30 @@ public class SlideController {
      */
     public void update() {
 
-        if(this.state == State.MANUAL) {
-            // Apply manual control
-            slideComponent.setManualPower(manualSlidePower * MAX_SLIDE_POWER);
-        }
+        this.slideComponent.setSlidePositionAsync(this.targetPosition, MAX_SLIDE_POWER);
 
         telemetry.addData("Slide Position", this.slideComponent.getCurrentPosition());
 
     }
 
-    public void setState(State state) { this.state = state; }
+    public void setManualSlidePower(double manualSlidePower) {
+        this.targetPosition += P * manualSlidePower;
+        this.targetPosition = Range.clip(this.targetPosition, 0.0, 1.0);
+    }
 
-    public void setManualSlidePower(double manualSlidePower) { this.manualSlidePower = manualSlidePower; }
+    /**
+     * Sets and moves slide position async by value
+     *
+     * @param position range between 0.0 and 1.0
+     */
+    public void setSlidePosition(double position) {
+
+        this.targetPosition = Range.clip(position, 0.0, 1.0);
+
+    }
+
+    public SlideComponent getSlideComponent() { return this.slideComponent; }
+
+    public boolean isBusy() { return Math.abs(this.targetPosition - this.slideComponent.getCurrentPosition()) <= SLIDE_TOLERANCE; }
 
 }

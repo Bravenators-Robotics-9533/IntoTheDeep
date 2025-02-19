@@ -4,10 +4,10 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class FtcGamePad
 {
-    public static final int GAMEPAD_A           = ((int)1 << 0);
-    public static final int GAMEPAD_B           = ((int)1 << 1);
-    public static final int GAMEPAD_X           = ((int)1 << 2);
-    public static final int GAMEPAD_Y           = ((int)1 << 3);
+    public static final int GAMEPAD_BTN_X = ((int)1 << 0);
+    public static final int GAMEPAD_BTN_CIR = ((int)1 << 1);
+    public static final int GAMEPAD_BTN_SQR = ((int)1 << 2);
+    public static final int GAMEPAD_BTN_TRI = ((int)1 << 3);
     public static final int GAMEPAD_BACK        = ((int)1 << 4);
     public static final int GAMEPAD_START       = ((int)1 << 5);
     public static final int GAMEPAD_LBUMPER     = ((int)1 << 6);
@@ -151,10 +151,10 @@ public class FtcGamePad
         final String funcName = "getButtons";
 
         int buttons = 0;
-        buttons |= gamepad.a? GAMEPAD_A: 0;
-        buttons |= gamepad.b? GAMEPAD_B: 0;
-        buttons |= gamepad.x? GAMEPAD_X: 0;
-        buttons |= gamepad.y? GAMEPAD_Y: 0;
+        buttons |= gamepad.a? GAMEPAD_BTN_X : 0;
+        buttons |= gamepad.b? GAMEPAD_BTN_CIR : 0;
+        buttons |= gamepad.x? GAMEPAD_BTN_SQR : 0;
+        buttons |= gamepad.y? GAMEPAD_BTN_TRI : 0;
         buttons |= gamepad.back? GAMEPAD_BACK: 0;
         buttons |= gamepad.start? GAMEPAD_START: 0;
         buttons |= gamepad.left_bumper? GAMEPAD_LBUMPER: 0;

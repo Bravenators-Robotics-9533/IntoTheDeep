@@ -144,7 +144,7 @@ public class MaxVelocityTestOpMode extends LinearOpMode {
 
     private void handleGamepad(FtcGamePad gamePad, int button, boolean isPressed) {
 
-        if(button == FtcGamePad.GAMEPAD_X && isPressed) {
+        if(button == FtcGamePad.GAMEPAD_BTN_SQR && isPressed) {
             this.shouldStartTest = true;
         }
 
