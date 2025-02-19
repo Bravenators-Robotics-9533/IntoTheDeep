@@ -10,8 +10,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-// TODO: Move lift by velocity
-
 @Config
 public class LiftController extends AbstractController {
 

@@ -16,7 +16,7 @@ public class IntakeController extends AbstractController {
     public static double MAX_PIVOT_POSITION = 1;
 
     public static double PASS_OFF_FLIP_POSITION = 0;
-    public static double STANDBY_FLIP_POSITION = 0.57;
+    public static double STANDBY_FLIP_POSITION = 0.55;
     public static double INTAKE_FLIP_POSITION = 1;
 
     public static double INTAKE_TENSION_POSITION = 0;
