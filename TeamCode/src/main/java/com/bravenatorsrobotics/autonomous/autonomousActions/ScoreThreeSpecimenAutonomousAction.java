@@ -27,17 +27,17 @@ public class ScoreThreeSpecimenAutonomousAction extends AbstractAutonomousAction
     protected void initialize() {
 
         this.driveToHighBarAction = this.robot.drive.actionBuilder(super.initialPosition)
-                .strafeTo(new Vector2d(-3, 32))
+                .strafeTo(new Vector2d(-3, 30))
                 .build();
 
-        this.pushBlocksAction = this.robot.drive.actionBuilder(new Pose2d(new Vector2d(-3, 32), Math.toRadians(270)))
+        this.pushBlocksAction = this.robot.drive.actionBuilder(new Pose2d(new Vector2d(-3, 30), Math.toRadians(270)))
                 .strafeToConstantHeading(new Vector2d(-5, 35))
                 .splineToConstantHeading(new Vector2d(-36, 20), new Rotation2d(Math.toRadians(0), Math.toRadians(-180)))
                 .strafeTo(new Vector2d(-36, 15.5))
                 .strafeTo(new Vector2d(-45, 14))
                 .strafeTo(new Vector2d(-45, 52))
-                .splineToLinearHeading(new Pose2d(new Vector2d(-53, 14), Math.toRadians(90)), Math.toRadians(180))
-                .strafeTo(new Vector2d(-53, 52))
+                .splineToLinearHeading(new Pose2d(new Vector2d(-55, 14), Math.toRadians(90)), Math.toRadians(180))
+                .strafeTo(new Vector2d(-55, 52))
                 .splineToConstantHeading(new Vector2d(-48, 63), Math.toRadians(110))
                 .build();
 
@@ -49,10 +49,10 @@ public class ScoreThreeSpecimenAutonomousAction extends AbstractAutonomousAction
         this.driveToScoreBlockAgainAction = this.robot.drive.actionBuilder(new Pose2d(new Vector2d(-8, 32), Math.toRadians(270)))
                 .strafeTo(new Vector2d(-8, 38))
                 .strafeToLinearHeading(new Vector2d(-43, 59), Math.toRadians(90))
-                .strafeTo(new Vector2d(-43, 64))
+                .strafeTo(new Vector2d(-43, 65))
                 .build();
 
-        this.driveToSecondScoreAction = this.robot.drive.actionBuilder(new Pose2d(-43, 64, Math.toRadians(90)))
+        this.driveToSecondScoreAction = this.robot.drive.actionBuilder(new Pose2d(-43, 65, Math.toRadians(90)))
                 .strafeToLinearHeading(new Vector2d(-9, 40), Math.toRadians(270))
                 .strafeToConstantHeading(new Vector2d(-9, 32))
         .build();

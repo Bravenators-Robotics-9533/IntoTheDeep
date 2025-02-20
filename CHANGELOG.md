@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [1.0.0](https://github.com/Bravenators-Robotics-9533/IntoTheDeep/compare/v10.1.1...v1.0.0) (2025-02-19)
+##  v3.0.0 (2025-02-19)
 
 
 ### Features
@@ -52,17 +52,16 @@ All notable changes to this project will be documented in this file. See [standa
 * new java code ([12ca24b](https://github.com/Bravenators-Robotics-9533/IntoTheDeep/commit/12ca24b94b5a7f5540ea4b8a63cf0d4ea9201571))
 * red and blue controller colors ([96702ab](https://github.com/Bravenators-Robotics-9533/IntoTheDeep/commit/96702ab1108d79038073fdc1d3b2bff98b2319df))
 * revert can not flip motor positions ([cc17fb9](https://github.com/Bravenators-Robotics-9533/IntoTheDeep/commit/cc17fb972fbbc2deb9c39a67fc04e289ea809136))
+* standby intake position ([ee504aa](https://github.com/Bravenators-Robotics-9533/IntoTheDeep/commit/ee504aa5e743df9e91ba017f891a5ea0add1b035))
 * update controller position values ([51cf947](https://github.com/Bravenators-Robotics-9533/IntoTheDeep/commit/51cf947040de2fe35e8fde14501090e4d867630a))
 
-# Changelog
+## [1.0.0](https://github.com/Bravenators-Robotics-9533/IntoTheDeep/compare/v10.1.1...v1.0.0) (2025-02-19)
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
-
-## v2.1.0 (2025-02-17)
 
 ### Features
 
 * add arm controller teleop ([30c6cde](https://github.com/Bravenators-Robotics-9533/IntoTheDeep/commit/30c6cde0e2ac80fe2c2503f28488b7cc148b0973))
+* add autonomous control in teleop ([ed1f200](https://github.com/Bravenators-Robotics-9533/IntoTheDeep/commit/ed1f2001b4f1c6ea16ca4e8f3c60d697520accec))
 * add basic autonomous ([e91b0f3](https://github.com/Bravenators-Robotics-9533/IntoTheDeep/commit/e91b0f3a8d54ba9509ab3ea4c651c02f65618f4f))
 * add color changing led lights to controllers ([58e606c](https://github.com/Bravenators-Robotics-9533/IntoTheDeep/commit/58e606c469bc2ee54a5c0a406c8daae593f2bdd5))
 * add config ([28c856e](https://github.com/Bravenators-Robotics-9533/IntoTheDeep/commit/28c856e759a5dc2134b5200d0a7101440b8d985c))
@@ -100,6 +99,7 @@ All notable changes to this project will be documented in this file. See [standa
 * attempt to flip robot 180 degress ([b0ebc92](https://github.com/Bravenators-Robotics-9533/IntoTheDeep/commit/b0ebc9213feb269f19bf01e2fb11c94f316a78f2))
 * attempt to flip robot drive by 180 degrees ([17646b0](https://github.com/Bravenators-Robotics-9533/IntoTheDeep/commit/17646b06bf6db58efd8baed75dceb52b8a379100))
 * auto naming ([f3f9407](https://github.com/Bravenators-Robotics-9533/IntoTheDeep/commit/f3f94078e7d7b26fc92cf36d82147b73223f99ab))
+* autonomous ([11ddb87](https://github.com/Bravenators-Robotics-9533/IntoTheDeep/commit/11ddb871c0fbfcc735800a80f2eed3252278d619))
 * ensure code will run ([25280b9](https://github.com/Bravenators-Robotics-9533/IntoTheDeep/commit/25280b9019bdc566ccc07bc8cb1d9eac7325992a))
 * limits for servo ([a9734f2](https://github.com/Bravenators-Robotics-9533/IntoTheDeep/commit/a9734f22fe65a02e9b6f2581d269144d3f044be1))
 * new java code ([12ca24b](https://github.com/Bravenators-Robotics-9533/IntoTheDeep/commit/12ca24b94b5a7f5540ea4b8a63cf0d4ea9201571))
