@@ -143,12 +143,20 @@ public class TeleopManualControlAdapter implements IControlAdapter {
 
                 if(isPressed) {
 
-                    if(this.robot.liftController.getLiftPosition() < 25)
+                    if(this.robot.liftController.getLiftPosition() < 25) {
+                        this.robot.liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);
+                        this.robot.outtakeController.setPassOffClawOpen();
+                        this.robot.outtakeController.setPassOffPivotInitial();
+                        this.robot.intakeController.setFlipPositionToPassOff();
+                        this.robot.intakeController.setPivotPositionToPassOff();
+
                         break;
+                    }
 
                     if(this.isScoringHighBar) {
                         actionQueue.queueAction(new SequentialAction(
                                 this.robot.liftController.liftToHighBarReleasePosition(),
+                                new SleepAction(0.08),
                                 this.robot.outtakeController.openWallClawAction(),
                                 new InstantAction(() -> {
                                     this.robot.liftController.setTargetLiftPosition(LiftController.LiftPosition.REST);

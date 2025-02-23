@@ -27,7 +27,7 @@ public class ScoreThreeSpecimenAutonomousAction extends AbstractAutonomousAction
     protected void initialize() {
 
         this.driveToHighBarAction = this.robot.drive.actionBuilder(super.initialPosition)
-                .strafeTo(new Vector2d(-3, 30))
+                .strafeTo(new Vector2d(-3, 29.5))
                 .build();
 
         this.pushBlocksAction = this.robot.drive.actionBuilder(new Pose2d(new Vector2d(-3, 30), Math.toRadians(270)))
@@ -58,7 +58,7 @@ public class ScoreThreeSpecimenAutonomousAction extends AbstractAutonomousAction
         .build();
 
         this.driveToParkAction = this.robot.drive.actionBuilder(new Pose2d(-10, 32, Math.toRadians(270)))
-                .strafeTo(new Vector2d(-43, 63), this.robot.drive.fastVelConstraint)
+                .strafeTo(new Vector2d(-52, 66), this.robot.drive.fastVelConstraint)
                 .build();
 
     }

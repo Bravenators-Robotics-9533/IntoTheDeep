@@ -15,7 +15,7 @@ public class OuttakeController extends AbstractController {
     public static final double PASS_OFF_PIVOT_SCORE = 0.8;
 
     public static final double PASS_OFF_CLAW_CLOSED = 0.1;
-    public static final double PASS_OFF_CLAW_OPEN = 0.65;
+    public static final double PASS_OFF_CLAW_OPEN = 0.66;
 
     public static final double WALL_CLAW_CLOSED = 0.25;
     public static final double WALL_CLAW_OPEN = 0.73;
