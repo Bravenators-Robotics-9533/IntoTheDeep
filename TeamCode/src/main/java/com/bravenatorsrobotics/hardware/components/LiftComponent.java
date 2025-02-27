@@ -26,8 +26,8 @@ public class LiftComponent extends AbstractComponent {
         this.resetSystemEncoders();
 
         // Reverse Motors (if needed
-        this.lLiftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        //this.rLiftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.lLiftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.rLiftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Set Zero Power Behavior
         this.rLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
