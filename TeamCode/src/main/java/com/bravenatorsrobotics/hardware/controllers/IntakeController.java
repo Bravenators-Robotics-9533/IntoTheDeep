@@ -96,6 +96,9 @@ public class IntakeController extends AbstractController {
 
     public void setFlipPositionToPassOff() { intakeComponent.setFlipServoPosition(PASS_OFF_FLIP_POSITION); }
     public void setFlipPositionToStandby() { intakeComponent.setFlipServoPosition(STANDBY_FLIP_POSITION); }
+    public void setFlipPositionToIntake() { intakeComponent.setFlipServoPosition(INTAKE_FLIP_POSITION); }
+
+
 
     public void setPivotPositionToPassOff() { intakeComponent.setPivotServoPosition(PASS_OFF_PIVOT_POSITION); }
 

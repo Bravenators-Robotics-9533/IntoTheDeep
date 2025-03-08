@@ -93,6 +93,20 @@ public class LiftController extends AbstractController {
 
     }
 
+    public class LiftToTopBasketAction implements Action {
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+            targetLiftPosition = LiftPosition.TOP_BASKET;
+            update();
+
+            return liftComponent.isBusy();
+
+        }
+
+    }
+
     public class LiftToHighBarReleasePosition implements Action {
 
         private static final double TIMEOUT_SECONDS = 0.4;
@@ -132,6 +146,7 @@ public class LiftController extends AbstractController {
     }
 
     public Action liftToHighBarAction() { return new LiftToHighBarAction(); }
+    public Action liftToTopBasketAction() { return new LiftToTopBasketAction(); }
     public Action liftToHighBarReleasePosition() { return new LiftToHighBarReleasePosition(); }
     public Action liftToRestAction() { return new LiftToRestAction(); }
 

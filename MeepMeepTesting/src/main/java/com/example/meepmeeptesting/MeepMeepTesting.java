@@ -19,9 +19,11 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-43, 64, Math.toRadians(90)))
-                        .strafeToLinearHeading(new Vector2d(-9, 40), Math.toRadians(270))
-                        .strafeToConstantHeading(new Vector2d(-9, 32.5))
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(new Vector2d(14.5 + 24, 62.5), Math.toRadians(360)))
+                .splineToLinearHeading(new Pose2d(52.0, 52, Math.toRadians(405)), Math.toRadians(0))
+
+//                        .strafeToLinearHeading(new Vector2d(-9, 40), Math.toRadians(270))
+//                        .strafeToConstantHeading(new Vector2d(-9, 32.5))
 //                .splineToLinearHeading(new Pose2d(new Vector2d(-9, 32.5), Math.toRadians(270)), new Rotation2d(Math.toRadians(0), Math.toRadians(-90)))
 
 

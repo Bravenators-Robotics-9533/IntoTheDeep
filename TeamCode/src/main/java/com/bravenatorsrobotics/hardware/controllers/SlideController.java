@@ -1,6 +1,10 @@
 package com.bravenatorsrobotics.hardware.controllers;
 
+import androidx.annotation.NonNull;
+
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
 import com.bravenatorsrobotics.hardware.components.SlideComponent;
 import com.qualcomm.robotcore.util.Range;
 
@@ -55,5 +59,28 @@ public class SlideController {
     public SlideComponent getSlideComponent() { return this.slideComponent; }
 
     public boolean isBusy() { return Math.abs(this.targetPosition - this.slideComponent.getCurrentPosition()) <= SLIDE_TOLERANCE; }
+
+    public class SlideOutAction implements Action {
+
+        private final double position;
+
+        public SlideOutAction(double position) {
+            this.position = position;
+        }
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+            targetPosition = this.position;
+
+            update();
+
+            return slideComponent.isBusy();
+
+        }
+
+    }
+
+    public SlideOutAction slideOutAction(double position) { return new SlideOutAction(position); }
 
 }

@@ -5,17 +5,18 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.bravenatorsrobotics.autonomous.autonomousActions.AbstractAutonomousAction;
+import com.bravenatorsrobotics.autonomous.autonomousActions.BucketAutonomousAction;
 import com.bravenatorsrobotics.autonomous.autonomousActions.ScoreThreeSpecimenAutonomousAction;
 import com.bravenatorsrobotics.hardware.controllers.ControlSystemController;
 import com.bravenatorsrobotics.robot.Robot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name="Autonomous", group="Competition")
-public class Auto extends LinearOpMode {
+@Autonomous(name="Bucket Auto", group="Competition")
+public class BucketAuto extends LinearOpMode {
 
     // Pre-defined starting location of the robot.
-    private static final Pose2d INITIAL_STARTING_POSITION = new Pose2d(new Vector2d(-14.75, 62.5), Math.toRadians(270));
+    private static final Pose2d INITIAL_STARTING_POSITION = new Pose2d(new Vector2d(14.75 + 24, 62.5), Math.toRadians(360));
 
     private Robot robot;
 
@@ -28,6 +29,8 @@ public class Auto extends LinearOpMode {
         this.robot = new Robot(ControlSystemController.Strategy.AUTO, INITIAL_STARTING_POSITION, this);
         this.robot.initialize();
 
+        this.robot.outtakeController.setPassOffClawClosed();
+
     }
 
     @Override
@@ -39,7 +42,7 @@ public class Auto extends LinearOpMode {
         this.initialize();
 
         // Create Autonomous Actions
-        AbstractAutonomousAction autonomousAction = new ScoreThreeSpecimenAutonomousAction(this.robot, INITIAL_STARTING_POSITION);
+        AbstractAutonomousAction autonomousAction = new BucketAutonomousAction(this.robot, INITIAL_STARTING_POSITION);
         Action primaryAction = autonomousAction.primaryAction();
 
         telemetry.addData("Status", "Standby");
