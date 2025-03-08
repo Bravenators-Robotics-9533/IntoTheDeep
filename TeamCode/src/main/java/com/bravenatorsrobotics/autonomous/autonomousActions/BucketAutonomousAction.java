@@ -95,7 +95,7 @@ public class BucketAutonomousAction extends AbstractAutonomousAction {
                 new SleepAction(1.0),
 
                 // Bring Slide In
-                this.robot.slideController.slideOutAction(0.0),
+                this.robot.slideController.slideOutAction(-0.05),
 
                 new ParallelAction(
 
