@@ -42,11 +42,11 @@ public class ScoreThreeSpecimenAutonomousAction extends AbstractAutonomousAction
                 .build();
 
         this.driveToFirstScoreAction = this.robot.drive.actionBuilder(new Pose2d(-48, 63, Math.toRadians(90)))
-                .strafeToLinearHeading(new Vector2d(-8, 50), Math.toRadians(270))
-                .strafeToConstantHeading(new Vector2d(-8, 32))
+                .strafeToLinearHeading(new Vector2d(-7, 50), Math.toRadians(270))
+                .strafeToConstantHeading(new Vector2d(-7, 32))
                 .build();
 
-        this.driveToScoreBlockAgainAction = this.robot.drive.actionBuilder(new Pose2d(new Vector2d(-8, 32), Math.toRadians(270)))
+        this.driveToScoreBlockAgainAction = this.robot.drive.actionBuilder(new Pose2d(new Vector2d(-7, 32), Math.toRadians(270)))
                 .strafeTo(new Vector2d(-8, 38))
                 .strafeToLinearHeading(new Vector2d(-43, 59), Math.toRadians(90))
                 .strafeTo(new Vector2d(-43, 65))
@@ -58,6 +58,7 @@ public class ScoreThreeSpecimenAutonomousAction extends AbstractAutonomousAction
         .build();
 
         this.driveToParkAction = this.robot.drive.actionBuilder(new Pose2d(-10, 32, Math.toRadians(270)))
+                .strafeTo(new Vector2d(-10, 45), this.robot.drive.fastVelConstraint)
                 .strafeTo(new Vector2d(-52, 66), this.robot.drive.fastVelConstraint)
                 .build();
 
