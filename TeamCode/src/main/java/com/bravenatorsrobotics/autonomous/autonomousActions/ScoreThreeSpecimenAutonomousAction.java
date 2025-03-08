@@ -33,7 +33,7 @@ public class ScoreThreeSpecimenAutonomousAction extends AbstractAutonomousAction
         this.pushBlocksAction = this.robot.drive.actionBuilder(new Pose2d(new Vector2d(-3, 30), Math.toRadians(270)))
                 .strafeToConstantHeading(new Vector2d(-5, 35))
                 .splineToConstantHeading(new Vector2d(-36, 20), new Rotation2d(Math.toRadians(0), Math.toRadians(-180)))
-                .strafeTo(new Vector2d(-36, 15.5))
+                .strafeTo(new Vector2d(-36, 16))
                 .strafeTo(new Vector2d(-45, 14))
                 .strafeTo(new Vector2d(-45, 52))
                 .splineToLinearHeading(new Pose2d(new Vector2d(-55, 14), Math.toRadians(90)), Math.toRadians(180))

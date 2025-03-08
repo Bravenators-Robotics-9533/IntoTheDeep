@@ -120,7 +120,11 @@ public class BucketAutonomousAction extends AbstractAutonomousAction {
                                 new SleepAction(0.2), // Wait for robot settle
 
                                 new InstantAction(this.robot.outtakeController::setPassOffClawOpen),
-                                new SleepAction(0.5) // Wait for stop
+                                new SleepAction(0.5), // Wait for stop
+                                this.robot.liftController.liftToRestAction(),
+                                this.robot.slideController.slideOutAction(-0.2),
+                                new SleepAction(0.5)
+
                         )
 
                 )
