@@ -57,7 +57,7 @@ public class ScoreThreeSpecimenAutonomousAction extends AbstractAutonomousAction
                 .strafeToConstantHeading(new Vector2d(-12, 32))
         .build();
 
-        this.driveToParkAction = this.robot.drive.actionBuilder(new Pose2d(-10, 32, Math.toRadians(270)))
+        this.driveToParkAction = this.robot.drive.actionBuilder(new Pose2d(-12, 32, Math.toRadians(270)))
                 .strafeTo(new Vector2d(-10, 45), this.robot.drive.fastVelConstraint)
                 .strafeTo(new Vector2d(-52, 66), this.robot.drive.fastVelConstraint)
                 .build();

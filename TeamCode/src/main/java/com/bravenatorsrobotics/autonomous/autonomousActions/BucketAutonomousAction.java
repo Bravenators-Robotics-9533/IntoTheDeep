@@ -29,7 +29,7 @@ public class BucketAutonomousAction extends AbstractAutonomousAction {
                 .splineToLinearHeading(new Pose2d(55.5, 54, Math.toRadians(405)), Math.toRadians(0), this.robot.drive.slowVelConstraint)
                 .build();
 
-        this.driveToSlideFirstBlockAction = this.robot.drive.actionBuilder(new Pose2d(55.0, 54, Math.toRadians(405)))
+        this.driveToSlideFirstBlockAction = this.robot.drive.actionBuilder(new Pose2d(55.5, 54, Math.toRadians(405)))
                 .strafeToLinearHeading(new Vector2d(45.5, 44), Math.toRadians(450), this.robot.drive.slowVelConstraint)
                 .build();
 
