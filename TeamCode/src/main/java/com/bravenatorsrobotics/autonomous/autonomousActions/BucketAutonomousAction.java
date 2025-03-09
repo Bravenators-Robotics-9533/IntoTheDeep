@@ -104,7 +104,7 @@ public class BucketAutonomousAction extends AbstractAutonomousAction {
                 ),
 
                 // Wait for Block to Intake
-                new SleepAction(1.75),
+                new SleepAction(1.2),
 
                 // Bring in Intake
                 new ParallelAction(
@@ -188,7 +188,7 @@ public class BucketAutonomousAction extends AbstractAutonomousAction {
                 ),
 
                 // Wait for Block to Intake
-                new SleepAction(1.0),
+                new SleepAction(0.5),
 
                 // Bring in Intake
                 new ParallelAction(
