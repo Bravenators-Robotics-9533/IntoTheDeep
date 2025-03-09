@@ -26,7 +26,7 @@ public class BucketAutonomousAction extends AbstractAutonomousAction {
     protected void initialize() {
 
         this.driveToBucketAction = this.robot.drive.actionBuilder(super.initialPosition)
-                .splineToLinearHeading(new Pose2d(55, 54, Math.toRadians(405)), Math.toRadians(0), this.robot.drive.slowVelConstraint)
+                .splineToLinearHeading(new Pose2d(55.5, 54, Math.toRadians(405)), Math.toRadians(0), this.robot.drive.slowVelConstraint)
                 .build();
 
         this.driveToSlideFirstBlockAction = this.robot.drive.actionBuilder(new Pose2d(55.0, 54, Math.toRadians(405)))
