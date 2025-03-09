@@ -74,6 +74,8 @@ public class OuttakeController extends AbstractController {
 
     public boolean isPassOffPivotInScore() { return this.outtakeComponent.getTargetPivotServoPosition() == PASS_OFF_PIVOT_SCORE; }
 
+    public void openWallClawServo() { this.outtakeComponent.setWallClawServoPosition(WALL_CLAW_OPEN); }
+
     public class OpenWallClawAction implements Action {
 
         private boolean initialized = false;

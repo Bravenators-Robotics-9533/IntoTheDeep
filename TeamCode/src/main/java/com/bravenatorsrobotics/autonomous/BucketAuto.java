@@ -30,6 +30,7 @@ public class BucketAuto extends LinearOpMode {
         this.robot.initialize();
 
         this.robot.outtakeController.setPassOffClawClosed();
+        this.robot.outtakeController.openWallClawServo();
 
     }
 

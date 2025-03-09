@@ -7,8 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-// TODO: Change motors to run by velocity
-
 @Config
 public class LiftComponent extends AbstractComponent {
 

@@ -27,7 +27,7 @@ public class LiftController extends AbstractController {
 
     // Position Values
     public static double REST_POSITION = 0.0;
-    public static double TOP_BASKET_POSITION = 0.84;
+    public static double TOP_BASKET_POSITION = 0.88;
     public static double BOTTOM_BASKET_POSITION = 0.42;
     public static double HIGH_BAR_POSITION = 0.43;
     public static double LOW_BAR_POSITION = 0.28;
@@ -145,10 +145,24 @@ public class LiftController extends AbstractController {
 
     }
 
+    public class UpdateLoopAction implements Action {
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+            update();
+
+            return true;
+
+        }
+
+    }
+
     public Action liftToHighBarAction() { return new LiftToHighBarAction(); }
     public Action liftToTopBasketAction() { return new LiftToTopBasketAction(); }
     public Action liftToHighBarReleasePosition() { return new LiftToHighBarReleasePosition(); }
     public Action liftToRestAction() { return new LiftToRestAction(); }
+    public Action updateLoopAction() { return new UpdateLoopAction(); }
 
     public double getLiftPosition() { return this.liftComponent.lLiftMotor.getCurrentPosition(); }
 
