@@ -115,6 +115,18 @@ public class IntakeController extends AbstractController {
 
     }
 
+    public void setPivotOffsetPosition(double targetPosition) {
+
+        double position = Range.clip(
+                targetPosition,
+                PASS_OFF_PIVOT_POSITION,
+                MAX_PIVOT_POSITION
+        );
+
+        intakeComponent.setPivotServoPosition(position);
+
+    }
+
 
 }
 

@@ -20,6 +20,9 @@ public class BucketAutonomousAction extends AbstractAutonomousAction {
     private Action driveToBucketSecondAction;
     private Action driveToSlideSecondBlockAction;
     private Action driveToBucketScoreSecondFieldBlockAction;
+    private Action driveToSlideThirdBlockAction;
+    private Action driveToBucketScoreThirdBlockAction;
+    private Action parkAction;
 
     public BucketAutonomousAction(Robot robot, Pose2d initialPosition) {
         super(robot, initialPosition);
@@ -37,16 +40,29 @@ public class BucketAutonomousAction extends AbstractAutonomousAction {
                 .build();
 
         this.driveToBucketSecondAction = this.robot.drive.actionBuilder(new Pose2d(new Vector2d(46, 44), Math.toRadians(450)))
-                .splineToLinearHeading(new Pose2d(53.5, 53.5, Math.toRadians(415)), Math.toRadians(0), this.robot.drive.slowVelConstraint)
+                .splineToLinearHeading(new Pose2d(53.5, 53.5, Math.toRadians(420)), Math.toRadians(0), this.robot.drive.slowVelConstraint)
                 .build();
 
-        this.driveToSlideSecondBlockAction = this.robot.drive.actionBuilder(new Pose2d(53.5, 53.5, Math.toRadians(415)))
-                .splineToLinearHeading(new Pose2d(new Vector2d(56.5, 45), Math.toRadians(450)), Math.toRadians(0), this.robot.drive.slowVelConstraint)
+        this.driveToSlideSecondBlockAction = this.robot.drive.actionBuilder(new Pose2d(53.5, 53.5, Math.toRadians(420)))
+                .splineToLinearHeading(new Pose2d(new Vector2d(56.5, 46), Math.toRadians(445)), Math.toRadians(0), this.robot.drive.slowVelConstraint)
                 .build();
 
-        this.driveToBucketScoreSecondFieldBlockAction = this.robot.drive.actionBuilder(new Pose2d(new Vector2d(56.5, 45), Math.toRadians(450)))
+        this.driveToBucketScoreSecondFieldBlockAction = this.robot.drive.actionBuilder(new Pose2d(new Vector2d(56.5, 46), Math.toRadians(445)))
                 .splineToLinearHeading(new Pose2d(55, 55, Math.toRadians(415)), Math.toRadians(0), this.robot.drive.slowVelConstraint)
                 .build();
+
+        this.driveToSlideThirdBlockAction = this.robot.drive.actionBuilder(new Pose2d(55, 55, Math.toRadians(415)))
+                .splineToLinearHeading(new Pose2d(new Vector2d(53.2, 41.5), Math.toRadians(500)), Math.toRadians(0), this.robot.drive.slowVelConstraint)
+                .build();
+
+        this.driveToBucketScoreThirdBlockAction = this.robot.drive.actionBuilder(new Pose2d(new Vector2d(53.2, 41.5), Math.toRadians(500)))
+                .splineToLinearHeading(new Pose2d(53.5, 54, Math.toRadians(415)), Math.toRadians(0), this.robot.drive.slowVelConstraint)
+                .build();
+
+        this.parkAction = this.robot.drive.actionBuilder(new Pose2d(51.5, 54, Math.toRadians(415)))
+                .strafeToLinearHeading(new Vector2d(20, 10), Math.toRadians(180))
+                .build();
+
     }
 
     @NonNull
@@ -76,7 +92,7 @@ public class BucketAutonomousAction extends AbstractAutonomousAction {
 
                 new SleepAction(0.05), // Settle Robot
                 new InstantAction(this.robot.outtakeController::setPassOffClawOpen), // Open Claw
-                new SleepAction(0.1), // Wait for robot to drop claw
+                new SleepAction(0.25), // Wait for robot to drop claw
 
                 // =================================================================================
                 // Drive and Grab First Block from Field
@@ -89,22 +105,31 @@ public class BucketAutonomousAction extends AbstractAutonomousAction {
                         new InstantAction(this.robot.outtakeController::setPassOffClawOpen),
 
                         // Drive robot and slide out
-                        this.driveToSlideFirstBlockAction,
-                        this.robot.slideController.slideOutAction(0.25),
+                        this.robot.slideController.slideOutAction(0.15),
 
                         // Bring Lift Down
-                        this.robot.liftController.liftToRestAction()
 
-                ),
+                        new RaceAction(
+                            this.robot.liftController.liftToRestAction(),
 
-                // Start Intake
-                new ParallelAction(
-                        new InstantAction(this.robot.intakeController::intakeSample),
-                        new InstantAction(this.robot.intakeController::setFlipPositionToIntake)
+                            new SequentialAction(
+
+                                    this.driveToSlideFirstBlockAction,
+
+                                    new SleepAction(0.25),
+
+                                    // Start Intake
+                                    new ParallelAction(
+                                            new InstantAction(this.robot.intakeController::intakeSample),
+                                            new InstantAction(this.robot.intakeController::setFlipPositionToIntake)
+                                    )
+                            )
+                        )
+
                 ),
 
                 // Wait for Block to Intake
-                new SleepAction(1.2),
+                new SleepAction(1.5),
 
                 // Bring in Intake
                 new ParallelAction(
@@ -113,7 +138,7 @@ public class BucketAutonomousAction extends AbstractAutonomousAction {
                 ),
 
                 // Wait for Flip In
-                new SleepAction(0.9),
+                new SleepAction(1.75),
 
                 // Bring Slide In
                 this.robot.slideController.slideOutAction(0),
@@ -131,7 +156,7 @@ public class BucketAutonomousAction extends AbstractAutonomousAction {
 
                                 // Pass off grab
                                 new InstantAction(this.robot.outtakeController::setPassOffClawClosed),
-                                new SleepAction(0.5), // Wait for grab
+                                new SleepAction(0.75), // Wait for grab
 
                                 // Spit out block and lift
                                 new ParallelAction(
@@ -144,7 +169,7 @@ public class BucketAutonomousAction extends AbstractAutonomousAction {
                                         )
                                 ),
 
-                                new SleepAction(0.5), // Wait for robot settle
+                                new SleepAction(1.75), // Wait for robot settle
 
                                 new InstantAction(this.robot.outtakeController::setPassOffClawOpen),
                                 new InstantAction(this.robot.intakeController::stopIntake),
@@ -168,7 +193,7 @@ public class BucketAutonomousAction extends AbstractAutonomousAction {
                         new InstantAction(this.robot.outtakeController::setPassOffClawOpen),
 
                         // Drive robot and slide out
-                        this.robot.slideController.slideOutAction(0.8),
+                        this.robot.slideController.slideOutAction(0.35),
 
                         // Bring Lift Down
                         this.robot.liftController.liftToRestAction(),
@@ -176,24 +201,23 @@ public class BucketAutonomousAction extends AbstractAutonomousAction {
                         this.driveToSlideSecondBlockAction,
 
                         new SequentialAction(
-                               new SleepAction(0.5), // Wait for slide
+                               new SleepAction(0.6), // Wait for slide
 
                                 // Start Intake
                                 new ParallelAction(
                                         new InstantAction(this.robot.intakeController::intakeSample),
                                         new InstantAction(this.robot.intakeController::setFlipPositionToIntake)
+                                ),
+
+                                new SleepAction(1.5),
+
+                                // Bring in Intake
+                                new ParallelAction(
+                                        new InstantAction(this.robot.intakeController::stopIntake),
+                                        new InstantAction(this.robot.intakeController::setFlipPositionToPassOff)
                                 )
                         )
 
-                ),
-
-                // Wait for Block to Intake
-                new SleepAction(0.5),
-
-                // Bring in Intake
-                new ParallelAction(
-                        new InstantAction(this.robot.intakeController::stopIntake),
-                        new InstantAction(this.robot.intakeController::setFlipPositionToPassOff)
                 ),
 
                 // =================================================================================
@@ -207,7 +231,7 @@ public class BucketAutonomousAction extends AbstractAutonomousAction {
                         new SequentialAction(
 
                                 // Wait for Flip In
-                                new SleepAction(0.8),
+                                new SleepAction(1.25),
 
                                 // Bring Slide In
                                 this.robot.slideController.slideOutAction(0),
@@ -227,15 +251,84 @@ public class BucketAutonomousAction extends AbstractAutonomousAction {
                                                 new SleepAction(0.5),
                                                 new InstantAction(this.robot.outtakeController::setPassOffPivotScore),
 
-                                                new SleepAction(1.0), // Wait for robot settle
+                                                new SleepAction(1.25), // Wait for robot settle
 
                                                 new InstantAction(this.robot.outtakeController::setPassOffClawOpen),
                                                 new InstantAction(this.robot.intakeController::stopIntake)
                                         )
                                 ),
 
-                                new SleepAction(0.2), // Wait for block to drop
-                                this.robot.liftController.liftToRestAction()
+                                new SleepAction(0.2) // Wait for block to drop
+
+                        )
+
+                ),
+
+                // =================================================================================
+                // Drive and Grab Third Block from Field
+                // =================================================================================
+
+                new ParallelAction(
+
+                        this.robot.liftController.liftToRestAction(),
+
+                        // Reset Pass-off Claw
+                        new InstantAction(this.robot.outtakeController::setPassOffPivotInitial),
+                        new InstantAction(this.robot.outtakeController::setPassOffClawOpen),
+
+                        this.driveToSlideThirdBlockAction,
+
+                        this.robot.slideController.slideOutAction(0.5),
+
+                        new SequentialAction(
+                                new SleepAction(0.5),
+                                new InstantAction(this.robot.intakeController::setFlipPositionToIntake),
+                                new InstantAction(this.robot.intakeController::intakeSample)
+                        )
+                ),
+
+                new SleepAction(1.0),
+
+                new ParallelAction(
+                        new InstantAction(this.robot.intakeController::setFlipPositionToPassOff),
+                        new InstantAction(this.robot.intakeController::stopIntake)
+                ),
+
+                new ParallelAction(
+
+                        this.driveToBucketScoreThirdBlockAction,
+
+                        new SequentialAction(
+
+                                // Wait for Flip In
+                                new SleepAction(1.25),
+
+                                // Bring Slide In
+                                this.robot.slideController.slideOutAction(0),
+
+                                new SleepAction(0.45), // Wait for Slide
+
+                                // Pass off grab
+                                new InstantAction(this.robot.outtakeController::setPassOffClawClosed),
+                                new SleepAction(0.4), // Wait for grab
+
+                                // Spit out block and lift
+                                new ParallelAction(
+                                        new InstantAction(this.robot.intakeController::expelSample),
+                                        this.robot.liftController.liftToTopBasketAction(),
+
+                                        new SequentialAction(
+                                                new SleepAction(0.5),
+                                                new InstantAction(this.robot.outtakeController::setPassOffPivotScore),
+
+                                                new SleepAction(1.5), // Wait for robot settle
+
+                                                new InstantAction(this.robot.outtakeController::setPassOffClawOpen),
+                                                new InstantAction(this.robot.intakeController::stopIntake)
+                                        )
+                                ),
+
+                                new SleepAction(0.2) // Wait for block to drop
 
                         )
 
@@ -243,11 +336,15 @@ public class BucketAutonomousAction extends AbstractAutonomousAction {
 
                 new ParallelAction(
 
-                        // Reset Pass-off Position
-                        new InstantAction(this.robot.outtakeController::setPassOffPivotInitial),
-                        new InstantAction(this.robot.outtakeController::setPassOffClawOpen)
+                        this.robot.liftController.liftToRestAction(),
 
+                        // Reset Pass-off Claw
+                        new InstantAction(this.robot.outtakeController::setPassOffPivotInitial),
+                        new InstantAction(this.robot.outtakeController::setPassOffClawOpen),
+
+                        this.parkAction
                 )
+
         );
 
     }

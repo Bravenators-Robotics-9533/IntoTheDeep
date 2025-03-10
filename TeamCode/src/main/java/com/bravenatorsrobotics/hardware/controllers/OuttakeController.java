@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Config
 public class OuttakeController extends AbstractController {
 
-    public static final double PASS_OFF_PIVOT_INITIAL = 0.06;
+    public static final double PASS_OFF_PIVOT_INITIAL = 0.085;
     public static final double PASS_OFF_PIVOT_SCORE = 0.8;
 
     public static final double PASS_OFF_CLAW_CLOSED = 0.1;
