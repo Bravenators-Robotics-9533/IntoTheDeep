@@ -287,7 +287,7 @@ public class BucketAutonomousAction extends AbstractAutonomousAction {
                         )
                 ),
 
-                new SleepAction(1.0),
+                new SleepAction(0.6),
 
                 new ParallelAction(
                         new InstantAction(this.robot.intakeController::setFlipPositionToPassOff),
