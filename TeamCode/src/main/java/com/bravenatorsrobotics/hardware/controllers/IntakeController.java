@@ -12,6 +12,7 @@ public class IntakeController extends AbstractController {
     public static double MIN_SAMPLE_POSITION = 13;
     public static double MANUAL_PIVOT_MULTIPLIER = 0.02;
 
+    public static double MIN_PIVOT_POSITION = 0.0;
     public static double PASS_OFF_PIVOT_POSITION = 0.5;
     public static double MAX_PIVOT_POSITION = 1;
 
@@ -107,7 +108,7 @@ public class IntakeController extends AbstractController {
 
         double position = Range.clip(
                 this.intakeComponent.getTargetPivotServoPosition() + (Math.pow(joystickValue, 3) * MANUAL_PIVOT_MULTIPLIER),
-                PASS_OFF_PIVOT_POSITION,
+                MIN_PIVOT_POSITION,
                 MAX_PIVOT_POSITION
         );
 
@@ -119,7 +120,7 @@ public class IntakeController extends AbstractController {
 
         double position = Range.clip(
                 targetPosition,
-                PASS_OFF_PIVOT_POSITION,
+                MIN_PIVOT_POSITION,
                 MAX_PIVOT_POSITION
         );
 
