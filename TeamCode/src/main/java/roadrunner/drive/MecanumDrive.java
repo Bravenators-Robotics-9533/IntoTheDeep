@@ -514,6 +514,8 @@ public final class MecanumDrive {
         );
     }
 
+    private static final double MAX_WHEEL_VELOCITY = 2780;
+
     public void setMotorPowers(double flPower, double blPower, double brPower, double frPower) {
         this.leftFront.setPower(flPower);
         this.leftBack.setPower(blPower);

@@ -23,6 +23,7 @@ package com.bravenatorsrobotics.utils;
 
 import android.util.Size;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.bravenatorsrobotics.hardware.components.IntakeComponent;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -114,18 +115,7 @@ public class ConceptVision extends LinearOpMode
                 .setBlurSize(5)                               // Smooth the transitions between different colors in image
                 .build();
 
-        /*
-         * Build a vision portal to run the Color Locator process.
-         *
-         *  - Add the colorLocator process created above.
-         *  - Set the desired video resolution.
-         *      Since a high resolution will not improve this process, choose a lower resolution that is
-         *      supported by your camera.  This will improve overall performance and reduce latency.
-         *  - Choose your video source.  This may be
-         *      .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))  .....   for a webcam
-         *  or
-         *      .setCamera(BuiltinCameraDirection.BACK)    ... for a Phone Camera
-         */
+
         VisionPortal portal = new VisionPortal.Builder()
                 .addProcessor(colorLocator)
                 .setCameraResolution(new Size(1920, 1080))
@@ -133,8 +123,7 @@ public class ConceptVision extends LinearOpMode
                 .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
                 .build();
 
-        telemetry.setMsTransmissionInterval(50);   // Speed up telemetry updates, Just use for debugging.
-        telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
+        FtcDashboard.getInstance().startCameraStream(portal, 0);
 
         IntakeComponent intakeComponent = new IntakeComponent(super.hardwareMap);
         intakeComponent.setFlipServoPosition(0.55);
@@ -142,8 +131,6 @@ public class ConceptVision extends LinearOpMode
         // WARNING:  To be able to view the stream preview on the Driver Station, this code runs in INIT mode.
         while (opModeIsActive() || opModeInInit())
         {
-            telemetry.addData("preview on/off", "... Camera Stream\n");
-
             // Read the current list
             List<ColorBlobLocatorProcessor.Blob> blobs = colorLocator.getBlobs();
 
@@ -167,7 +154,7 @@ public class ConceptVision extends LinearOpMode
              *   A blob's Aspect ratio is the ratio of boxFit long side to short side.
              *   A perfect Square has an aspect ratio of 1.  All others are > 1
              */
-            ColorBlobLocatorProcessor.Util.filterByArea(50, 20000, blobs);  // filter out very small blobs.
+            ColorBlobLocatorProcessor.Util.filterByArea(10000, Double.MAX_VALUE, blobs);  // filter out very small blobs.
 
             /*
              * The list of Blobs can be sorted using the same Blob attributes as listed above.
@@ -177,18 +164,30 @@ public class ConceptVision extends LinearOpMode
              *     ColorBlobLocatorProcessor.Util.sortByAspectRatio(SortOrder.DESCENDING, blobs);
              */
 
-            telemetry.addLine(" Area Density Aspect  Center");
-
             // Display the size (area) and center location for each Blob.
+            telemetry.addData("Blob Number", blobs.size());
+
             for(ColorBlobLocatorProcessor.Blob b : blobs)
             {
                 RotatedRect boxFit = b.getBoxFit();
-                telemetry.addLine(String.format("%5d  %4.2f   %5.2f  (%3d,%3d)",
-                          b.getContourArea(), b.getDensity(), b.getAspectRatio(), (int) boxFit.center.x, (int) boxFit.center.y));
+
+                double x0 = boxFit.boundingRect().x;
+                double x1 = boxFit.boundingRect().x + boxFit.boundingRect().width;
+                double c  = (x0 + x1) / 2.0;
+
+                double y0 = boxFit.boundingRect().y;
+
+                telemetry.addData("x0", x0);
+                telemetry.addData("x1", x1);
+                telemetry.addData("c", c);
+                telemetry.addData("y0", y0);
+
             }
 
             telemetry.update();
-            sleep(50);
+
+
+            sleep(10);
         }
     }
 }

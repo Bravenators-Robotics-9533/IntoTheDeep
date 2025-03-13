@@ -58,7 +58,7 @@ public class MaxVelocityTestOpMode extends LinearOpMode {
 
         waitForStart();
 
-        this.motor = super.hardwareMap.get(DcMotorEx.class, "vtest");
+        this.motor = super.hardwareMap.get(DcMotorEx.class, "par0");
         this.motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
