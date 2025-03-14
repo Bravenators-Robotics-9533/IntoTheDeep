@@ -10,10 +10,10 @@ import com.qualcomm.robotcore.util.Range;
 @Config
 public class AutoIntakeControlAdapter implements IControlAdapter {
 
-    public static double TOLERANCE = 0.08;
+    public static double TOLERANCE = 0.06;
 
-    public static double Y0_P = 0.0005;
-    public static double C_P = 0.0006;
+    public static double Y0_P = 0.0004;
+    public static double C_P = 0.0005;
 
     public static double Y0_D = 0.0005;
     public static double C_D = 0.0001;
@@ -131,6 +131,10 @@ public class AutoIntakeControlAdapter implements IControlAdapter {
     }
 
     public void destroy() {
+
+        this.robot.intakeController.stopIntake();
+        this.robot.intakeController.setFlipPositionToStandby();
+
         this.state = State.DETECTING;
     }
 

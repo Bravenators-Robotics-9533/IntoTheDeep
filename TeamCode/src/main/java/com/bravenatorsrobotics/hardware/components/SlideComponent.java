@@ -71,4 +71,8 @@ public class SlideComponent extends AbstractComponent {
 
     public boolean isBusy() { return this.slideMotor.isBusy(); }
 
+    public void setEncoderPosition(int position) {
+
+    }
+
 }

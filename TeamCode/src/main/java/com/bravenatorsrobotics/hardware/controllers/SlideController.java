@@ -83,4 +83,10 @@ public class SlideController {
 
     public SlideOutAction slideOutAction(double position) { return new SlideOutAction(position); }
 
+    public void resetPosition() {
+
+
+
+    }
+
 }

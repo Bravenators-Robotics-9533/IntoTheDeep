@@ -37,27 +37,27 @@ public class ScoreThreeSpecimenAutonomousAction extends AbstractAutonomousAction
                 .strafeTo(new Vector2d(-45, 14))
                 .strafeTo(new Vector2d(-45, 52))
                 .splineToLinearHeading(new Pose2d(new Vector2d(-55, 14), Math.toRadians(90)), Math.toRadians(180))
-                .strafeTo(new Vector2d(-55, 52))
-                .splineToConstantHeading(new Vector2d(-48, 63), Math.toRadians(110))
+                .strafeTo(new Vector2d(-58, 44))
+                .splineToConstantHeading(new Vector2d(-47, 66), new Rotation2d(Math.toRadians(90), Math.toRadians(180)))
                 .build();
 
-        this.driveToFirstScoreAction = this.robot.drive.actionBuilder(new Pose2d(-48, 63, Math.toRadians(90)))
+        this.driveToFirstScoreAction = this.robot.drive.actionBuilder(new Pose2d(-47, 66, Math.toRadians(90)))
                 .strafeToLinearHeading(new Vector2d(-7, 50), Math.toRadians(270))
-                .strafeToConstantHeading(new Vector2d(-7, 32))
+                .strafeToConstantHeading(new Vector2d(-7, 33))
                 .build();
 
-        this.driveToScoreBlockAgainAction = this.robot.drive.actionBuilder(new Pose2d(new Vector2d(-7, 32), Math.toRadians(270)))
+        this.driveToScoreBlockAgainAction = this.robot.drive.actionBuilder(new Pose2d(new Vector2d(-7, 33), Math.toRadians(270)))
                 .strafeTo(new Vector2d(-8, 38))
-                .strafeToLinearHeading(new Vector2d(-43, 59), Math.toRadians(90))
-                .strafeTo(new Vector2d(-43, 65))
+                .strafeToLinearHeading(new Vector2d(-46, 59), Math.toRadians(90))
+                .strafeTo(new Vector2d(-45, 66.5))
                 .build();
 
-        this.driveToSecondScoreAction = this.robot.drive.actionBuilder(new Pose2d(-43, 65, Math.toRadians(90)))
+        this.driveToSecondScoreAction = this.robot.drive.actionBuilder(new Pose2d(-46, 66.5, Math.toRadians(90)))
                 .strafeToLinearHeading(new Vector2d(-9, 40), Math.toRadians(270))
-                .strafeToConstantHeading(new Vector2d(-9, 32))
+                .strafeToConstantHeading(new Vector2d(-9, 33))
                 .build();
 
-        this.driveToParkAction = this.robot.drive.actionBuilder(new Pose2d(-10, 32, Math.toRadians(270)))
+        this.driveToParkAction = this.robot.drive.actionBuilder(new Pose2d(-10, 33, Math.toRadians(270)))
                 .strafeTo(new Vector2d(-10, 45), this.robot.drive.fastVelConstraint)
                 .strafeTo(new Vector2d(-52, 66), this.robot.drive.fastVelConstraint)
                 .build();
