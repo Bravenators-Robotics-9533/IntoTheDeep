@@ -25,7 +25,7 @@ public class Teleop extends LinearOpMode {
 
     private StatusLEDControlAdapter statusLEDControlAdapter;
     private TeleopManualControlAdapter manualControlAdapter;
-    private AutoIntakeControlAdapter autoIntakeControlAdapter;
+//    private AutoIntakeControlAdapter autoIntakeControlAdapter;
 
     private void initialize() {
 
@@ -42,8 +42,8 @@ public class Teleop extends LinearOpMode {
         this.manualControlAdapter = new TeleopManualControlAdapter(this, this.robot, this.statusLEDControlAdapter, this.actionQueue);
         this.manualControlAdapter.initialize();
 
-        this.autoIntakeControlAdapter = new AutoIntakeControlAdapter(this, this.robot);
-        this.autoIntakeControlAdapter.initialize();
+//        this.autoIntakeControlAdapter = new AutoIntakeControlAdapter(this, this.robot);
+//        this.autoIntakeControlAdapter.initialize();
 
     }
 
@@ -90,22 +90,22 @@ public class Teleop extends LinearOpMode {
 
     private void onUpdate() {
 
-        if(gamepad1.a && this.stateManager.getState() != TeleopState.AUTO_INTAKE_BLOCK) {
-            this.stateManager.setState(TeleopState.AUTO_INTAKE_BLOCK);
-        }
+//        if(gamepad1.a && this.stateManager.getState() != TeleopState.AUTO_INTAKE_BLOCK) {
+//            this.stateManager.setState(TeleopState.AUTO_INTAKE_BLOCK);
+//        }
 
-        if(!gamepad1.a && this.stateManager.getState() != TeleopState.MANUAL) {
-            this.stateManager.setState(TeleopState.MANUAL);
-            this.autoIntakeControlAdapter.destroy();
-        }
+//        if(!gamepad1.a && this.stateManager.getState() != TeleopState.MANUAL) {
+//            this.stateManager.setState(TeleopState.MANUAL);
+//            this.autoIntakeControlAdapter.destroy();
+//        }
 
 
         // Update Controller Adapters
-        if(this.stateManager.getState() == TeleopState.MANUAL)
+//        if(this.stateManager.getState() == TeleopState.MANUAL)
             this.manualControlAdapter.update();
-        else if(this.stateManager.getState() == TeleopState.AUTO_INTAKE_BLOCK) {
-            this.autoIntakeControlAdapter.update();
-        }
+//        else if(this.stateManager.getState() == TeleopState.AUTO_INTAKE_BLOCK) {
+//            this.autoIntakeControlAdapter.update();
+//        }
 
         this.updateQueuedActions();
 

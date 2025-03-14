@@ -4,22 +4,23 @@ import com.acmerobotics.dashboard.config.Config;
 import com.bravenatorsrobotics.hardware.controllers.IntakeController;
 import com.bravenatorsrobotics.robot.Robot;
 import com.bravenatorsrobotics.utils.BlockDetectVisionPipeline;
+import com.bravenatorsrobotics.utils.PIDController;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.Range;
 
 @Config
 public class AutoIntakeControlAdapter implements IControlAdapter {
 
-    public static double TOLERANCE = 0.06;
+    public static double TOLERANCE = 0.1;
 
     public static double Y0_P = 0.0004;
-    public static double C_P = 0.0005;
+    public static double C_P = 0.0004;
 
-    public static double Y0_D = 0.0005;
-    public static double C_D = 0.0001;
+    public static double Y0_D = 0.0004;
+    public static double C_D = 0.0004;
 
-    public static double TARGET_Y0 = 500.0;
-    public static double TARGET_C = 945.0;
+    public static double TARGET_Y0 = 600;
+    public static double TARGET_C = 960;
 
     private static final double DX_FILTER = 0.1;
 
@@ -73,6 +74,8 @@ public class AutoIntakeControlAdapter implements IControlAdapter {
 
             case INTAKING:
 
+                this.robot.drive.setMotorPowers(0, 0, 0, 0);
+
                 this.robot.intakeController.intakeSample();
                 this.robot.intakeController.setFlipPositionToIntake();
 
@@ -89,6 +92,11 @@ public class AutoIntakeControlAdapter implements IControlAdapter {
 
     }
 
+    public static PIDController pidY0 = new PIDController(0.0004, 0.0001, 0.0001, 0.0);
+    public static PIDController pidC = new PIDController(0.0004, 0.0001, 0.0001, 0.0);
+
+    public static double LAG_COEFFICIENT = 0.8;
+
     /**
      *
      * @return isDone driving to block
@@ -101,32 +109,55 @@ public class AutoIntakeControlAdapter implements IControlAdapter {
         double errorY0 = TARGET_Y0 - data.y0;
         double errorC = TARGET_C - data.c;
 
-        double dxY0 = DX_FILTER * (errorY0 - this.errorY0) + (1 - DX_FILTER) * this.dxY0;
-        double dxC = DX_FILTER * (errorC - this.errorC) + (1 - DX_FILTER) * this.dxC;
+        double predictedY0 = errorY0 * LAG_COEFFICIENT;  // Adjust as needed for lag compensation
+        double predictedC = errorC * LAG_COEFFICIENT;
 
-        this.errorY0 = errorY0;
-        this.errorC = errorC;
+        double y = pidY0.calculate(errorY0, predictedY0);
+        double x = pidC.calculate(errorC, predictedC);
 
-        this.dxY0 = dxY0;
-        this.dxC = dxC;
-
-        double y = (Y0_P * errorY0) + (dxY0 * Y0_D);
-        double x = C_P * errorC + (dxC * C_D);
-
-        // Calculate Drive
         double denominator = Math.max(Math.abs(y) + Math.abs(x), 1);
 
-        double flPower  = Range.clip((y - x) / denominator, -1.0, 1.0);
-        double blPower  = Range.clip((y + x) / denominator, -1.0, 1.0);
-        double frPower  = Range.clip((y + x) / denominator, -1.0, 1.0);
-        double brPower =  Range.clip((y - x) / denominator, -1.0, 1.0);
+        double flPower = Range.clip((y - x) / denominator, -1.0, 1.0);
+        double blPower = Range.clip((y + x) / denominator, -1.0, 1.0);
+        double frPower = Range.clip((y + x) / denominator, -1.0, 1.0);
+        double brPower = Range.clip((y - x) / denominator, -1.0, 1.0);
 
+        // Apply Power to Motors
         this.robot.drive.setMotorPowerByVoltage(flPower, blPower, brPower, frPower);
 
-        // Calculate Intake Movement
+        // Set Intake Pivot Position Based on Block Angle
         this.robot.intakeController.setPivotOffsetPosition(data.angle == 90 ? 1 : 0.5);
 
-        return y < TOLERANCE && x < TOLERANCE;
+        // Check if the robot is close enough to the target
+        return Math.abs(errorY0) < TOLERANCE && Math.abs(errorC) < TOLERANCE;
+
+//
+//        double dxY0 = (errorY0 - this.errorY0) * this.dxY0;
+//        double dxC = (errorC - this.errorC) * this.dxC;
+//
+//        this.errorY0 = errorY0;
+//        this.errorC = errorC;
+//
+//        this.dxY0 = dxY0;
+//        this.dxC = dxC;
+//
+//        double y = (Y0_P * errorY0) - (dxY0 * Y0_D);
+//        double x = C_P * errorC - (dxC * C_D);
+//
+//        // Calculate Drive
+//        double denominator = Math.max(Math.abs(y) + Math.abs(x), 1);
+//
+//        double flPower  = Range.clip((y - x) / denominator, -1.0, 1.0);
+//        double blPower  = Range.clip((y + x) / denominator, -1.0, 1.0);
+//        double frPower  = Range.clip((y + x) / denominator, -1.0, 1.0);
+//        double brPower =  Range.clip((y - x) / denominator, -1.0, 1.0);
+//
+//        this.robot.drive.setMotorPowerByVoltage(flPower, blPower, brPower, frPower);
+//
+//        // Calculate Intake Movement
+//        this.robot.intakeController.setPivotOffsetPosition(data.angle == 90 ? 1 : 0.5);
+//
+//        return y < TOLERANCE && x < TOLERANCE;
 
     }
 

@@ -418,7 +418,7 @@ public class BucketAutonomousAction extends AbstractAutonomousAction {
                         new InstantAction(this.robot.outtakeController::setPassOffPivotFlippedUp),
                         new InstantAction(this.robot.outtakeController::setPassOffClawClosed),
 
-
+                        new InstantAction(this.robot.slideController::resetPosition),
 
                         this.parkAction
                 )

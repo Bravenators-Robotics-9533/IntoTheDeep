@@ -530,6 +530,7 @@ public class TeleopManualControlAdapter implements IControlAdapter {
                     }),
                     new SleepAction(delaySeconds),
                     new InstantAction(() -> {
+                        robot.intakeController.setFlipPositionToPassOff();
                         robot.slideController.setSlidePosition(0.0);
                     })
             );
