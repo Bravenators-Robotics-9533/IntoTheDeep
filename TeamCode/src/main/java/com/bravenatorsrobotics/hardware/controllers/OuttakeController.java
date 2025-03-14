@@ -71,6 +71,7 @@ public class OuttakeController extends AbstractController {
 
     public void setPassOffPivotInitial() { outtakeComponent.setPassOffPivotServoPosition(PASS_OFF_PIVOT_INITIAL); }
     public void setPassOffPivotScore() { outtakeComponent.setPassOffPivotServoPosition(PASS_OFF_PIVOT_SCORE); }
+    public void setPassOffPivotFlippedUp() { outtakeComponent.setPassOffPivotServoPosition(0.74); }
 
     public boolean isPassOffPivotInScore() { return this.outtakeComponent.getTargetPivotServoPosition() == PASS_OFF_PIVOT_SCORE; }
 

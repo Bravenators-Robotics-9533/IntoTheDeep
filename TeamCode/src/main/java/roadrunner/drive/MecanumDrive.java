@@ -108,8 +108,8 @@ public final class MecanumDrive {
             ));
     public final VelConstraint slowVelConstraint =
             new MinVelConstraint(Arrays.asList(
-                    kinematics.new WheelVelConstraint(PARAMS.maxWheelVel * 0.75),
-                    new AngularVelConstraint(PARAMS.maxAngVel * 0.75)
+                    kinematics.new WheelVelConstraint(PARAMS.maxWheelVel * 0.88),
+                    new AngularVelConstraint(PARAMS.maxAngVel * 0.88)
             ));
     public final VelConstraint fastVelConstraint =
             new MinVelConstraint(Arrays.asList(
