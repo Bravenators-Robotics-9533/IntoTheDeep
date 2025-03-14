@@ -33,8 +33,6 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
@@ -514,13 +512,22 @@ public final class MecanumDrive {
         );
     }
 
-    private static final double MAX_WHEEL_VELOCITY = 2780;
-
     public void setMotorPowers(double flPower, double blPower, double brPower, double frPower) {
         this.leftFront.setPower(flPower);
         this.leftBack.setPower(blPower);
         this.rightFront.setPower(frPower);
         this.rightBack.setPower(brPower);
+    }
+
+    public void setMotorPowerByVoltage(double flPower, double blPower, double brPower, double frPower) {
+
+        double voltageCompensationFactor = 12.0 / voltageSensor.getVoltage();
+
+        this.leftFront.setPower(flPower * voltageCompensationFactor);
+        this.leftBack.setPower(blPower * voltageCompensationFactor);
+        this.rightFront.setPower(frPower * voltageCompensationFactor);
+        this.rightBack.setPower(brPower * voltageCompensationFactor);
+
     }
 
 }

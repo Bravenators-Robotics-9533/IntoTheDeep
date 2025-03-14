@@ -55,6 +55,8 @@ public class IntakeController extends AbstractController {
 
     }
 
+    public double getDistanceInMM() { return this.intakeComponent.getDistanceInMM(); }
+
     public void intakeSample() { this.intakeComponent.setTensionServoPositions(INTAKE_TENSION_POSITION); }
     public void stopIntake() { this.intakeComponent.setTensionServoPositions(STOP_TENSION_POSITION); }
 
