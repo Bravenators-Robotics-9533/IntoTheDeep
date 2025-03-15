@@ -85,7 +85,7 @@ public class SlideController {
 
     public void resetPosition() {
 
-
+        this.slideComponent.setEncoderPosition(0);
 
     }
 
